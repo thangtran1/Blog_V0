@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   FileText,
@@ -12,9 +12,9 @@ import {
   Code,
   ChevronLeft,
   ChevronRight,
-} from "lucide-react"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
+} from "lucide-react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 const navigation = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
@@ -23,18 +23,18 @@ const navigation = [
   { name: "Tags", href: "/admin/tags", icon: Tags },
   { name: "Comments", href: "/admin/comments", icon: MessageSquare },
   { name: "Cài đặt", href: "/admin/settings", icon: Settings },
-]
+];
 
 export default function AdminSidebar() {
-  const pathname = usePathname()
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const pathname = usePathname();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const isActive = (href: string) => {
     if (href === "/admin/dashboard") {
-      return pathname === "/admin/dashboard" || pathname === "/admin"
+      return pathname === "/admin/dashboard" || pathname === "/admin";
     }
-    return pathname.startsWith(href)
-  }
+    return pathname.startsWith(href);
+  };
 
   return (
     <div
@@ -45,15 +45,20 @@ export default function AdminSidebar() {
       <div className="flex flex-col h-full">
         {/* Header */}
         <div
-          className={`flex items-center p-4 border-b border-gray-200 dark:border-gray-800 ${isCollapsed ? "justify-center" : "justify-between"}`}
+          className={`flex items-center p-4 border-b border-gray-200 dark:border-gray-800 ${
+            isCollapsed ? "justify-center" : "justify-between"
+          }`}
         >
           {!isCollapsed && (
-            <Link href="/admin/dashboard" className="flex items-center gap-2 group">
+            <Link
+              href="/admin/dashboard"
+              className="flex items-center gap-2 group"
+            >
               <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-green-600 rounded-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
                 <Code className="w-4 h-4 text-white" />
               </div>
               <span className="font-bold text-lg bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">
-                CodeEasy
+                NoBugKai
               </span>
             </Link>
           )}
@@ -68,14 +73,18 @@ export default function AdminSidebar() {
             onClick={() => setIsCollapsed(!isCollapsed)}
             className={`h-8 w-8 ${isCollapsed ? "absolute top-4 right-2" : ""}`}
           >
-            {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+            {isCollapsed ? (
+              <ChevronRight className="w-4 h-4" />
+            ) : (
+              <ChevronLeft className="w-4 h-4" />
+            )}
           </Button>
         </div>
 
         {/* Navigation */}
         <nav className="flex-1 p-4 space-y-2">
           {navigation.map((item) => {
-            const active = isActive(item.href)
+            const active = isActive(item.href);
             return (
               <Link
                 key={item.name}
@@ -88,19 +97,23 @@ export default function AdminSidebar() {
                 title={isCollapsed ? item.name : ""}
               >
                 <item.icon
-                  className={`w-5 h-5 transition-transform group-hover:scale-110 ${active ? "text-white" : ""} ${isCollapsed ? "mx-auto" : ""}`}
+                  className={`w-5 h-5 transition-transform group-hover:scale-110 ${
+                    active ? "text-white" : ""
+                  } ${isCollapsed ? "mx-auto" : ""}`}
                 />
                 {!isCollapsed && (
                   <>
                     <span>{item.name}</span>
-                    {active && <div className="absolute right-3 w-2 h-2 bg-white rounded-full animate-pulse"></div>}
+                    {active && (
+                      <div className="absolute right-3 w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                    )}
                   </>
                 )}
                 {isCollapsed && active && (
                   <div className="absolute right-2 w-2 h-2 bg-white rounded-full animate-pulse"></div>
                 )}
               </Link>
-            )
+            );
           })}
         </nav>
 
@@ -120,5 +133,5 @@ export default function AdminSidebar() {
         )}
       </div>
     </div>
-  )
+  );
 }

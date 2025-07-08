@@ -75,12 +75,12 @@ export default function EnhancedHeader() {
             <div className="absolute -inset-1 bg-green-500/20 rounded-full blur animate-pulse opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
           <span className="font-bold text-green-500 text-xl transition-all duration-300 group-hover:text-green-400">
-            CodeEasy
+            NoBugKai
           </span>
         </Link>
 
         {/* Desktop Navigation with enhanced animations */}
-        <nav className="hidden md:flex items-center space-x-8 flex-1">
+        <nav className="hidden md:flex items-center space-x-8 flex-1 justify-center">
           {navigation.map((item, index) => (
             <Link
               key={item.name}

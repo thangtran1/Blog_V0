@@ -1,5 +1,5 @@
-import Link from "next/link"
-import { Code, Github, Linkedin, Mail, Heart } from "lucide-react"
+import Link from "next/link";
+import { Code, Github, Linkedin, Mail, Heart } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -10,19 +10,29 @@ export default function Footer() {
           <div className="space-y-4 sm:col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center space-x-2">
               <Code className="h-6 w-6 text-green-500" />
-              <span className="font-bold text-xl text-green-500">CodeEasy</span>
+              <span className="font-bold text-xl text-green-500">NoBugKai</span>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
-              Nơi chia sẻ kiến thức lập trình và công nghệ. Từ Frontend đến Backend, từ cơ bản đến nâng cao.
+              Nơi chia sẻ kiến thức lập trình và công nghệ. Từ Frontend đến
+              Backend, từ cơ bản đến nâng cao.
             </p>
             <div className="flex space-x-4">
-              <Link href="#" className="text-muted-foreground hover:text-green-500 transition-colors">
+              <Link
+                href="#"
+                className="text-muted-foreground hover:text-green-500 transition-colors"
+              >
                 <Github className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-green-500 transition-colors">
+              <Link
+                href="#"
+                className="text-muted-foreground hover:text-green-500 transition-colors"
+              >
                 <Linkedin className="h-5 w-5" />
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-green-500 transition-colors">
+              <Link
+                href="#"
+                className="text-muted-foreground hover:text-green-500 transition-colors"
+              >
                 <Mail className="h-5 w-5" />
               </Link>
             </div>
@@ -30,20 +40,31 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-foreground text-base">Liên kết nhanh</h3>
+            <h3 className="font-semibold text-foreground text-base">
+              Liên kết nhanh
+            </h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/" className="text-muted-foreground hover:text-green-500 transition-colors block py-1">
+                <Link
+                  href="/"
+                  className="text-muted-foreground hover:text-green-500 transition-colors block py-1"
+                >
                   Trang chủ
                 </Link>
               </li>
               <li>
-                <Link href="/posts" className="text-muted-foreground hover:text-green-500 transition-colors block py-1">
+                <Link
+                  href="/posts"
+                  className="text-muted-foreground hover:text-green-500 transition-colors block py-1"
+                >
                   Tất cả bài viết
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-muted-foreground hover:text-green-500 transition-colors block py-1">
+                <Link
+                  href="/about"
+                  className="text-muted-foreground hover:text-green-500 transition-colors block py-1"
+                >
                   Về tác giả
                 </Link>
               </li>
@@ -60,7 +81,9 @@ export default function Footer() {
 
           {/* Categories */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-foreground text-base">Danh mục</h3>
+            <h3 className="font-semibold text-foreground text-base">
+              Danh mục
+            </h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
@@ -99,8 +122,12 @@ export default function Footer() {
 
           {/* Newsletter */}
           <div className="space-y-4 sm:col-span-2 lg:col-span-1">
-            <h3 className="font-semibold text-foreground text-base">Theo dõi blog</h3>
-            <p className="text-muted-foreground text-sm">Nhận thông báo về bài viết mới nhất</p>
+            <h3 className="font-semibold text-foreground text-base">
+              Theo dõi blog
+            </h3>
+            <p className="text-muted-foreground text-sm">
+              Nhận thông báo về bài viết mới nhất
+            </p>
             <div className="space-y-3">
               <input
                 type="email"
@@ -117,13 +144,13 @@ export default function Footer() {
         {/* Bottom section */}
         <div className="border-t mt-8 pt-6 px-4 sm:px-0 flex flex-col space-y-4 md:flex-row md:justify-between md:items-center md:space-y-0">
           <p className="text-muted-foreground text-sm text-center md:text-left">
-            © 2025 CodeEasy. Tất cả quyền được bảo lưu.
+            © 2025 NoBugKai. Tất cả quyền được bảo lưu.
           </p>
           <p className="text-muted-foreground text-sm flex items-center justify-center md:justify-end gap-1">
-            Được tạo với <Heart className="h-4 w-4 text-red-500" /> bởi CodeEasy
+            Được tạo với <Heart className="h-4 w-4 text-red-500" /> bởi NoBugKai
           </p>
         </div>
       </div>
     </footer>
-  )
+  );
 }

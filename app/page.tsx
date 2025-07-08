@@ -156,7 +156,7 @@ export default function HomePage() {
               </div>
             </div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-green-100 bg-clip-text text-transparent animate-slide-in-up stagger-1">
-              Chào mừng đến với CodeEasy!
+              Chào mừng đến với NoBugKai!
             </h1>
             <p className="text-xl md:text-2xl mb-4 text-green-100 animate-slide-in-up stagger-2">
               Nơi chia sẻ kiến thức lập trình và công nghệ

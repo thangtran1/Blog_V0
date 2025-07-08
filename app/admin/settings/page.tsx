@@ -1,21 +1,30 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Switch } from "@/components/ui/switch"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Settings, Globe, Shield, Bell, Palette, Database, Mail, User } from "lucide-react"
-import { useState } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Settings,
+  Globe,
+  Shield,
+  Bell,
+  Palette,
+  Database,
+  Mail,
+  User,
+} from "lucide-react";
+import { useState } from "react";
 
 export default function AdminSettings() {
   const [settings, setSettings] = useState({
-    siteName: "CodeEasy Blog",
+    siteName: "NoBugKai Blog",
     siteDescription: "Blog về lập trình và công nghệ",
-    siteUrl: "https://codeeasy.blog",
-    adminEmail: "admin@codeeasy.blog",
+    siteUrl: "https://NoBugKai.blog",
+    adminEmail: "admin@NoBugKai.blog",
     enableComments: true,
     enableNewsletter: true,
     enableDarkMode: true,
@@ -23,12 +32,12 @@ export default function AdminSettings() {
     postsPerPage: 10,
     autoSave: true,
     seoEnabled: true,
-  })
+  });
 
   const handleSave = () => {
     // Handle save logic here
-    console.log("Settings saved:", settings)
-  }
+    console.log("Settings saved:", settings);
+  };
 
   return (
     <div className="space-y-6">
@@ -39,9 +48,14 @@ export default function AdminSettings() {
             <Settings className="w-6 h-6" />
             Cài đặt hệ thống
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">Quản lý cấu hình và tùy chỉnh blog của bạn</p>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
+            Quản lý cấu hình và tùy chỉnh blog của bạn
+          </p>
         </div>
-        <Button onClick={handleSave} className="bg-gradient-to-r from-green-500 to-green-600">
+        <Button
+          onClick={handleSave}
+          className="bg-gradient-to-r from-green-500 to-green-600"
+        >
           Lưu thay đổi
         </Button>
       </div>
@@ -60,7 +74,10 @@ export default function AdminSettings() {
             <Shield className="w-4 h-4" />
             Bảo mật
           </TabsTrigger>
-          <TabsTrigger value="notifications" className="flex items-center gap-2">
+          <TabsTrigger
+            value="notifications"
+            className="flex items-center gap-2"
+          >
             <Bell className="w-4 h-4" />
             Thông báo
           </TabsTrigger>
@@ -86,7 +103,9 @@ export default function AdminSettings() {
                   <Input
                     id="siteName"
                     value={settings.siteName}
-                    onChange={(e) => setSettings({ ...settings, siteName: e.target.value })}
+                    onChange={(e) =>
+                      setSettings({ ...settings, siteName: e.target.value })
+                    }
                   />
                 </div>
                 <div>
@@ -94,7 +113,12 @@ export default function AdminSettings() {
                   <Textarea
                     id="siteDescription"
                     value={settings.siteDescription}
-                    onChange={(e) => setSettings({ ...settings, siteDescription: e.target.value })}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        siteDescription: e.target.value,
+                      })
+                    }
                     rows={3}
                   />
                 </div>
@@ -103,7 +127,9 @@ export default function AdminSettings() {
                   <Input
                     id="siteUrl"
                     value={settings.siteUrl}
-                    onChange={(e) => setSettings({ ...settings, siteUrl: e.target.value })}
+                    onChange={(e) =>
+                      setSettings({ ...settings, siteUrl: e.target.value })
+                    }
                   />
                 </div>
               </CardContent>
@@ -123,7 +149,9 @@ export default function AdminSettings() {
                     id="adminEmail"
                     type="email"
                     value={settings.adminEmail}
-                    onChange={(e) => setSettings({ ...settings, adminEmail: e.target.value })}
+                    onChange={(e) =>
+                      setSettings({ ...settings, adminEmail: e.target.value })
+                    }
                   />
                 </div>
                 <div>
@@ -132,7 +160,12 @@ export default function AdminSettings() {
                     id="postsPerPage"
                     type="number"
                     value={settings.postsPerPage}
-                    onChange={(e) => setSettings({ ...settings, postsPerPage: Number.parseInt(e.target.value) })}
+                    onChange={(e) =>
+                      setSettings({
+                        ...settings,
+                        postsPerPage: Number.parseInt(e.target.value),
+                      })
+                    }
                   />
                 </div>
                 <div className="flex items-center justify-between">
@@ -140,7 +173,9 @@ export default function AdminSettings() {
                   <Switch
                     id="autoSave"
                     checked={settings.autoSave}
-                    onCheckedChange={(checked) => setSettings({ ...settings, autoSave: checked })}
+                    onCheckedChange={(checked) =>
+                      setSettings({ ...settings, autoSave: checked })
+                    }
                   />
                 </div>
               </CardContent>
@@ -161,11 +196,15 @@ export default function AdminSettings() {
               <div className="flex items-center justify-between">
                 <div>
                   <Label>Dark Mode</Label>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Cho phép người dùng chuyển đổi theme</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Cho phép người dùng chuyển đổi theme
+                  </p>
                 </div>
                 <Switch
                   checked={settings.enableDarkMode}
-                  onCheckedChange={(checked) => setSettings({ ...settings, enableDarkMode: checked })}
+                  onCheckedChange={(checked) =>
+                    setSettings({ ...settings, enableDarkMode: checked })
+                  }
                 />
               </div>
 
@@ -255,11 +294,15 @@ export default function AdminSettings() {
               <div className="flex items-center justify-between">
                 <div>
                   <Label>Thông báo email</Label>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Nhận thông báo qua email</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Nhận thông báo qua email
+                  </p>
                 </div>
                 <Switch
                   checked={settings.enableNotifications}
-                  onCheckedChange={(checked) => setSettings({ ...settings, enableNotifications: checked })}
+                  onCheckedChange={(checked) =>
+                    setSettings({ ...settings, enableNotifications: checked })
+                  }
                 />
               </div>
 
@@ -299,31 +342,43 @@ export default function AdminSettings() {
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>SEO tối ưu</Label>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Tự động tối ưu SEO</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Tự động tối ưu SEO
+                    </p>
                   </div>
                   <Switch
                     checked={settings.seoEnabled}
-                    onCheckedChange={(checked) => setSettings({ ...settings, seoEnabled: checked })}
+                    onCheckedChange={(checked) =>
+                      setSettings({ ...settings, seoEnabled: checked })
+                    }
                   />
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Comments</Label>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Cho phép bình luận</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Cho phép bình luận
+                    </p>
                   </div>
                   <Switch
                     checked={settings.enableComments}
-                    onCheckedChange={(checked) => setSettings({ ...settings, enableComments: checked })}
+                    onCheckedChange={(checked) =>
+                      setSettings({ ...settings, enableComments: checked })
+                    }
                   />
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Newsletter</Label>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Đăng ký nhận tin</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Đăng ký nhận tin
+                    </p>
                   </div>
                   <Switch
                     checked={settings.enableNewsletter}
-                    onCheckedChange={(checked) => setSettings({ ...settings, enableNewsletter: checked })}
+                    onCheckedChange={(checked) =>
+                      setSettings({ ...settings, enableNewsletter: checked })
+                    }
                   />
                 </div>
               </CardContent>
@@ -347,7 +402,9 @@ export default function AdminSettings() {
                   Import dữ liệu
                 </Button>
                 <div className="pt-4 border-t">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Backup gần nhất: 15/01/2024</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    Backup gần nhất: 15/01/2024
+                  </p>
                   <Button variant="destructive" size="sm">
                     Xóa tất cả dữ liệu
                   </Button>
@@ -358,5 +415,5 @@ export default function AdminSettings() {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

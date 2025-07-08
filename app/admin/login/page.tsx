@@ -1,52 +1,62 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Eye, EyeOff, Lock, Mail, Shield, ArrowLeft } from "lucide-react"
-import { useAdminAuth } from "@/lib/admin-auth"
-import Link from "next/link"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Eye, EyeOff, Lock, Mail, Shield, ArrowLeft } from "lucide-react";
+import { useAdminAuth } from "@/lib/admin-auth";
+import Link from "next/link";
 
 export default function AdminLoginPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [error, setError] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const { login } = useAdminAuth()
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAdminAuth();
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError("")
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
 
     try {
-      const success = await login(email, password)
+      const success = await login(email, password);
       if (success) {
-        router.push("/admin/dashboard")
+        router.push("/admin/dashboard");
       } else {
-        setError("Email hoặc mật khẩu không đúng")
+        setError("Email hoặc mật khẩu không đúng");
       }
     } catch (error) {
-      setError("Đã có lỗi xảy ra. Vui lòng thử lại.")
+      setError("Đã có lỗi xảy ra. Vui lòng thử lại.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4">
       <div className="w-full max-w-md">
         {/* Back to site */}
         <div className="mb-6">
-          <Button variant="ghost" asChild className="text-gray-600 hover:text-gray-900">
+          <Button
+            variant="ghost"
+            asChild
+            className="text-gray-600 hover:text-gray-900"
+          >
             <Link href="/">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Quay lại trang chủ
@@ -62,19 +72,26 @@ export default function AdminLoginPage() {
           <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent mb-2">
             Admin Panel
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">Đăng nhập để quản lý blog CodeEasy</p>
+          <p className="text-gray-600 dark:text-gray-400">
+            Đăng nhập để quản lý blog NoBugKai
+          </p>
         </div>
 
         {/* Login Form */}
         <Card className="shadow-2xl border-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
           <CardHeader className="space-y-1 pb-6">
             <CardTitle className="text-2xl text-center">Đăng nhập</CardTitle>
-            <CardDescription className="text-center">Nhập thông tin đăng nhập của bạn</CardDescription>
+            <CardDescription className="text-center">
+              Nhập thông tin đăng nhập của bạn
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <Alert variant="destructive" className="border-red-200 bg-red-50 dark:bg-red-900/20">
+                <Alert
+                  variant="destructive"
+                  className="border-red-200 bg-red-50 dark:bg-red-900/20"
+                >
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
@@ -86,7 +103,7 @@ export default function AdminLoginPage() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="admin@codeeasy.com"
+                    placeholder="admin@NoBugKai.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent"
@@ -115,7 +132,11 @@ export default function AdminLoginPage() {
                     className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
                   </Button>
                 </div>
               </div>
@@ -138,10 +159,12 @@ export default function AdminLoginPage() {
 
             {/* Demo credentials */}
             <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-dashed border-gray-200 dark:border-gray-700">
-              <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-2 font-medium">Demo credentials:</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-2 font-medium">
+                Demo credentials:
+              </p>
               <div className="text-xs space-y-1 text-center">
                 <p className="font-mono bg-white dark:bg-gray-900 px-2 py-1 rounded">
-                  <strong>Email:</strong> admin@codeeasy.com
+                  <strong>Email:</strong> admin@NoBugKai.com
                 </p>
                 <p className="font-mono bg-white dark:bg-gray-900 px-2 py-1 rounded">
                   <strong>Password:</strong> admin123
@@ -152,5 +175,5 @@ export default function AdminLoginPage() {
         </Card>
       </div>
     </div>
-  )
+  );
 }

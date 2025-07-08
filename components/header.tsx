@@ -43,7 +43,7 @@ export default function Header() {
         <div className="container flex h-16 items-center">
           <Link href="/" className="flex items-center space-x-2">
             <Code className="h-6 w-6 text-green-500" />
-            <span className="font-bold text-green-500">CodeEasy</span>
+            <span className="font-bold text-green-500">NoBugKai</span>
           </Link>
         </div>
       </header>
@@ -59,7 +59,7 @@ export default function Header() {
             <Code className="h-6 w-6 text-green-500" />
             <div className="absolute -inset-1 bg-green-500/20 rounded-full blur animate-pulse"></div>
           </div>
-          <span className="font-bold text-green-500 text-xl">CodeEasy</span>
+          <span className="font-bold text-green-500 text-xl">NoBugKai</span>
         </Link>
 
         {/* Desktop Navigation */}
