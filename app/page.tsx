@@ -1,19 +1,26 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Calendar, Clock, ArrowRight, Code, Sparkles } from "lucide-react"
-import TrendingCarousel from "@/components/trending-carousel"
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Calendar, Clock, ArrowRight, Code, Sparkles } from "lucide-react";
+import TrendingCarousel from "@/components/trending-carousel";
 
 const featuredPosts = [
   {
     id: 1,
     title: "Elasticsearch Toàn Tập: Search Engine Hiện Đại Cho Ứng Dụng Web",
-    excerpt: "Tìm hiểu về Elasticsearch, một trong những search engine mạnh mẽ nhất hiện nay...",
+    excerpt:
+      "Tìm hiểu về Elasticsearch, một trong những search engine mạnh mẽ nhất hiện nay...",
     date: "23 tháng 6, 2025",
     readTime: "24 phút đọc",
     category: "Backend",
@@ -22,7 +29,8 @@ const featuredPosts = [
   {
     id: 2,
     title: "API Gateway với Kong - Giải pháp toàn diện cho Microservices",
-    excerpt: "Khám phá Kong API Gateway và cách triển khai trong kiến trúc microservices...",
+    excerpt:
+      "Khám phá Kong API Gateway và cách triển khai trong kiến trúc microservices...",
     date: "21 tháng 6, 2025",
     readTime: "18 phút đọc",
     category: "DevOps",
@@ -31,13 +39,14 @@ const featuredPosts = [
   {
     id: 3,
     title: "Micro Frontend Architecture - Hướng dẫn toàn diện",
-    excerpt: "Tìm hiểu về kiến trúc Micro Frontend và cách triển khai trong dự án thực tế...",
+    excerpt:
+      "Tìm hiểu về kiến trúc Micro Frontend và cách triển khai trong dự án thực tế...",
     date: "19 tháng 6, 2025",
     readTime: "22 phút đọc",
     category: "Frontend",
     image: "/placeholder.svg?height=200&width=400",
   },
-]
+];
 
 const categories = [
   {
@@ -51,7 +60,8 @@ const categories = [
   {
     name: "Backend",
     icon: "⚙️",
-    description: "Node.js, Express.js, API development và server-side programming",
+    description:
+      "Node.js, Express.js, API development và server-side programming",
     count: "5 bài viết",
     href: "/categories/backend",
     gradient: "from-green-500 to-teal-600",
@@ -72,7 +82,7 @@ const categories = [
     href: "/categories/ai",
     gradient: "from-purple-500 to-pink-600",
   },
-]
+];
 
 export default function HomePage() {
   // Thêm state cho animations:
@@ -81,35 +91,35 @@ export default function HomePage() {
     trending: false,
     categories: false,
     latest: false,
-  })
+  });
 
   useEffect(() => {
     const observerOptions = {
       threshold: 0.1,
       rootMargin: "0px 0px -50px 0px",
-    }
+    };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const sectionId = entry.target.id
+          const sectionId = entry.target.id;
           setSectionsVisible((prev) => ({
             ...prev,
             [sectionId]: true,
-          }))
+          }));
         }
-      })
-    }, observerOptions)
+      });
+    }, observerOptions);
 
     // Observe sections
-    const sections = ["hero", "trending", "categories", "latest"]
+    const sections = ["hero", "trending", "categories", "latest"];
     sections.forEach((sectionId) => {
-      const element = document.getElementById(sectionId)
-      if (element) observer.observe(element)
-    })
+      const element = document.getElementById(sectionId);
+      if (element) observer.observe(element);
+    });
 
-    return () => observer.disconnect()
-  }, [])
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -127,7 +137,9 @@ export default function HomePage() {
 
         <div
           className={`container relative z-10 transition-all duration-1000 ${
-            sectionsVisible.hero ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            sectionsVisible.hero
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-10"
           }`}
         >
           <div className="max-w-4xl mx-auto text-center">
@@ -150,8 +162,8 @@ export default function HomePage() {
               Nơi chia sẻ kiến thức lập trình và công nghệ
             </p>
             <p className="text-lg mb-8 text-green-200 max-w-2xl mx-auto animate-slide-in-up stagger-3">
-              Khám phá những bài viết chất lượng về Frontend, Backend, DevOps và AI. Từ cơ bản đến nâng cao, từ lý
-              thuyết đến thực hành.
+              Khám phá những bài viết chất lượng về Frontend, Backend, DevOps và
+              AI. Từ cơ bản đến nâng cao, từ lý thuyết đến thực hành.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-scale-in stagger-4">
               <Button
@@ -183,12 +195,17 @@ export default function HomePage() {
           <div className="max-w-6xl mx-auto">
             <div
               className={`text-center mb-16 transition-all duration-1000 ${
-                sectionsVisible.categories ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                sectionsVisible.categories
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-10"
               }`}
             >
-              <h2 className="text-4xl font-bold mb-4 text-green-600 dark:text-green-400">Danh mục bài viết</h2>
+              <h2 className="text-4xl font-bold mb-4 text-green-600 dark:text-green-400">
+                Danh mục bài viết
+              </h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Khám phá các chủ đề công nghệ được phân loại chi tiết, từ cơ bản đến nâng cao
+                Khám phá các chủ đề công nghệ được phân loại chi tiết, từ cơ bản
+                đến nâng cao
               </p>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -196,7 +213,9 @@ export default function HomePage() {
                 <div
                   key={index}
                   className={`transition-all duration-700 ${
-                    sectionsVisible.categories ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                    sectionsVisible.categories
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-10"
                   }`}
                   style={{ transitionDelay: `${index * 150}ms` }}
                 >
@@ -225,7 +244,9 @@ export default function HomePage() {
                         </div>
                       </CardHeader>
                       <CardContent className="relative z-10">
-                        <p className="text-muted-foreground leading-relaxed text-sm">{category.description}</p>
+                        <p className="text-muted-foreground leading-relaxed text-sm">
+                          {category.description}
+                        </p>
                       </CardContent>
                     </Card>
                   </Link>
@@ -255,18 +276,26 @@ export default function HomePage() {
           <div className="max-w-6xl mx-auto">
             <div
               className={`text-center mb-12 transition-all duration-1000 ${
-                sectionsVisible.latest ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                sectionsVisible.latest
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-10"
               }`}
             >
-              <h2 className="text-3xl font-bold mb-4 text-green-600 dark:text-green-400">Bài viết mới nhất</h2>
-              <p className="text-muted-foreground text-lg">Cập nhật những kiến thức và công nghệ mới nhất</p>
+              <h2 className="text-3xl font-bold mb-4 text-green-600 dark:text-green-400">
+                Bài viết mới nhất
+              </h2>
+              <p className="text-muted-foreground text-lg">
+                Cập nhật những kiến thức và công nghệ mới nhất
+              </p>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {featuredPosts.map((post, index) => (
                 <div
                   key={post.id}
                   className={`transition-all duration-700 ${
-                    sectionsVisible.latest ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-10 scale-95"
+                    sectionsVisible.latest
+                      ? "opacity-100 translate-y-0 scale-100"
+                      : "opacity-0 translate-y-10 scale-95"
                   }`}
                   style={{ transitionDelay: `${index * 200}ms` }}
                 >
@@ -283,14 +312,18 @@ export default function HomePage() {
                         className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute top-4 left-4">
-                        <Badge className="bg-green-500 hover:bg-green-600">{post.category}</Badge>
+                        <Badge className="bg-green-500 hover:bg-green-600">
+                          {post.category}
+                        </Badge>
                       </div>
                     </div>
                     <CardHeader>
                       <CardTitle className="line-clamp-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
                         {post.title}
                       </CardTitle>
-                      <CardDescription className="line-clamp-3">{post.excerpt}</CardDescription>
+                      <CardDescription className="line-clamp-3">
+                        {post.excerpt}
+                      </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
@@ -333,5 +366,5 @@ export default function HomePage() {
         </div>
       </section>
     </div>
-  )
+  );
 }

@@ -1,45 +1,50 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { useTheme } from "next-themes"
-import { Moon, Sun, Code, Menu, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { useEffect, useState } from "react"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
+import { Moon, Sun, Code, Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useEffect, useState } from "react";
 
 export default function EnhancedHeader() {
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const pathname = usePathname()
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
-    setMounted(true)
+    setMounted(true);
 
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10)
-    }
+      setIsScrolled(window.scrollY > 10);
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navigation = [
     { name: "Trang chủ", href: "/" },
     { name: "Tất cả bài viết", href: "/posts" },
     { name: "Danh mục", href: "/categories" },
     { name: "Về tác giả", href: "/about" },
-  ]
+  ];
 
   const isActive = (href: string) => {
     if (href === "/") {
-      return pathname === "/"
+      return pathname === "/";
     }
-    return pathname.startsWith(href)
-  }
+    return pathname.startsWith(href);
+  };
 
   if (!mounted) {
     return (
@@ -51,7 +56,7 @@ export default function EnhancedHeader() {
           </div>
         </div>
       </header>
-    )
+    );
   }
 
   return (
@@ -62,7 +67,7 @@ export default function EnhancedHeader() {
           : "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
       }`}
     >
-      <div className="container flex h-16 items-center">
+      <div className="flex h-16 items-center p-2 justify-between w-full">
         {/* Logo with enhanced animation */}
         <Link href="/" className="flex items-center space-x-2 mr-8 group">
           <div className="relative">
@@ -80,7 +85,9 @@ export default function EnhancedHeader() {
             <Link
               key={item.name}
               href={item.href}
-              className={`text-sm font-medium transition-all duration-300 relative group animate-fade-in-down stagger-${index + 1} ${
+              className={`text-sm font-medium transition-all duration-300 relative group animate-fade-in-down stagger-${
+                index + 1
+              } ${
                 isActive(item.href)
                   ? "text-green-600 dark:text-green-400"
                   : "text-muted-foreground hover:text-green-600 dark:hover:text-green-400"
@@ -115,11 +122,17 @@ export default function EnhancedHeader() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="animate-scale-in">
-              <DropdownMenuItem onClick={() => setTheme("light")} className="hover:bg-green-50 dark:hover:bg-green-950">
+              <DropdownMenuItem
+                onClick={() => setTheme("light")}
+                className="hover:bg-green-50 dark:hover:bg-green-950"
+              >
                 <Sun className="mr-2 h-4 w-4" />
                 Light
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("dark")} className="hover:bg-green-50 dark:hover:bg-green-950">
+              <DropdownMenuItem
+                onClick={() => setTheme("dark")}
+                className="hover:bg-green-50 dark:hover:bg-green-950"
+              >
                 <Moon className="mr-2 h-4 w-4" />
                 Dark
               </DropdownMenuItem>
@@ -142,10 +155,18 @@ export default function EnhancedHeader() {
                 className="md:hidden hover:bg-green-100 dark:hover:bg-green-900 transition-all duration-300 hover:scale-110"
               >
                 <Menu
-                  className={`h-5 w-5 transition-all duration-300 ${isMobileMenuOpen ? "rotate-90 scale-0" : "rotate-0 scale-100"}`}
+                  className={`h-5 w-5 transition-all duration-300 ${
+                    isMobileMenuOpen
+                      ? "rotate-90 scale-0"
+                      : "rotate-0 scale-100"
+                  }`}
                 />
                 <X
-                  className={`absolute h-5 w-5 transition-all duration-300 ${isMobileMenuOpen ? "rotate-0 scale-100" : "rotate-90 scale-0"}`}
+                  className={`absolute h-5 w-5 transition-all duration-300 ${
+                    isMobileMenuOpen
+                      ? "rotate-0 scale-100"
+                      : "rotate-90 scale-0"
+                  }`}
                 />
                 <span className="sr-only">Toggle menu</span>
               </Button>
@@ -157,7 +178,9 @@ export default function EnhancedHeader() {
                     key={item.name}
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`text-lg font-medium transition-all duration-300 p-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-950 animate-fade-in-left stagger-${index + 1} ${
+                    className={`text-lg font-medium transition-all duration-300 p-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-950 animate-fade-in-left stagger-${
+                      index + 1
+                    } ${
                       isActive(item.href)
                         ? "text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950"
                         : "text-muted-foreground hover:text-green-600 dark:hover:text-green-400"
@@ -172,5 +195,5 @@ export default function EnhancedHeader() {
         </div>
       </div>
     </header>
-  )
+  );
 }

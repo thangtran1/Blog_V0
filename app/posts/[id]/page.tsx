@@ -1,8 +1,8 @@
-import Link from "next/link"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Calendar, Clock, ArrowLeft, Share2 } from "lucide-react"
+import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Calendar, Clock, ArrowLeft, Share2 } from "lucide-react";
 
 const posts = {
   1: {
@@ -47,17 +47,37 @@ const posts = {
     readTime: "24 phút đọc",
     category: "Backend",
   },
-}
+};
 
 const recentPosts = [
-  { id: 2, title: "API Gateway với Kong - Giải pháp toàn diện cho Microservices", date: "21 tháng 6, 2025" },
-  { id: 3, title: "Micro Frontend Architecture - Hướng dẫn toàn diện", date: "19 tháng 6, 2025" },
-  { id: 4, title: "SQL vs NoSQL - So Sánh Chi Tiết Các Loại Database Hiện Đại", date: "17 tháng 6, 2025" },
-  { id: 5, title: "NocoBase - Nền Tảng Low-Code Cho Doanh Nghiệp Hiện Đại", date: "15 tháng 6, 2025" },
-]
+  {
+    id: 2,
+    title: "API Gateway với Kong - Giải pháp toàn diện cho Microservices",
+    date: "21 tháng 6, 2025",
+  },
+  {
+    id: 3,
+    title: "Micro Frontend Architecture - Hướng dẫn toàn diện",
+    date: "19 tháng 6, 2025",
+  },
+  {
+    id: 4,
+    title: "SQL vs NoSQL - So Sánh Chi Tiết Các Loại Database Hiện Đại",
+    date: "17 tháng 6, 2025",
+  },
+  {
+    id: 5,
+    title: "NocoBase - Nền Tảng Low-Code Cho Doanh Nghiệp Hiện Đại",
+    date: "15 tháng 6, 2025",
+  },
+];
 
 const tableOfContents = [
-  { id: "1", title: "Search Engine là gì? Tại sao cần Search Engine trong ứng dụng hiện đại?" },
+  {
+    id: "1",
+    title:
+      "Search Engine là gì? Tại sao cần Search Engine trong ứng dụng hiện đại?",
+  },
   { id: "1.1", title: "Search Engine (Công cụ tìm kiếm) là gì?" },
   { id: "1.2", title: "Tại sao ứng dụng đại cần Search Engine chuyên dụng?" },
   { id: "1.3", title: "Nhược điểm và thách thức" },
@@ -66,13 +86,13 @@ const tableOfContents = [
   { id: "2.2", title: "Lịch sử phát triển của Elasticsearch" },
   { id: "2.3", title: "Elasticsearch trong hệ sinh thái Elastic Stack" },
   { id: "3", title: "Kiến trúc cốt lõi của Elasticsearch" },
-]
+];
 
 export default function PostDetailPage({ params }: { params: { id: string } }) {
-  const post = posts[Number.parseInt(params.id) as keyof typeof posts]
+  const post = posts[Number.parseInt(params?.id) as keyof typeof posts];
 
   if (!post) {
-    return <div>Bài viết không tồn tại</div>
+    return <div>Bài viết không tồn tại</div>;
   }
 
   return (
@@ -93,16 +113,24 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
             <div className="sticky top-20 space-y-6">
               <Card className="border-green-200 dark:border-green-800 bg-card/50 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">📚 Bài viết gần đây</CardTitle>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    📚 Bài viết gần đây
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {recentPosts.map((recentPost) => (
-                    <Link key={recentPost.id} href={`/posts/${recentPost.id}`} className="block group">
+                    <Link
+                      key={recentPost.id}
+                      href={`/posts/${recentPost.id}`}
+                      className="block group"
+                    >
                       <div className="p-3 rounded-lg hover:bg-muted/50 transition-colors border border-transparent hover:border-green-200 dark:hover:border-green-800">
                         <h4 className="font-medium text-sm line-clamp-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors mb-1">
                           {recentPost.title}
                         </h4>
-                        <p className="text-xs text-muted-foreground">{recentPost.date}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {recentPost.date}
+                        </p>
                       </div>
                     </Link>
                   ))}
@@ -116,9 +144,13 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
             <article className="prose prose-gray max-w-none dark:prose-invert prose-lg">
               <div className="mb-8">
                 <div className="flex items-center gap-2 mb-4">
-                  <Badge className="bg-green-500 hover:bg-green-600 text-white">{post.category}</Badge>
+                  <Badge className="bg-green-500 hover:bg-green-600 text-white">
+                    {post.category}
+                  </Badge>
                 </div>
-                <h1 className="text-3xl md:text-4xl font-bold mb-4 text-foreground leading-tight">{post.title}</h1>
+                <h1 className="text-3xl md:text-4xl font-bold mb-4 text-foreground leading-tight">
+                  {post.title}
+                </h1>
                 <div className="flex items-center gap-6 text-muted-foreground mb-6 pb-6 border-b border-border">
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
@@ -128,7 +160,11 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
                     <Clock className="w-4 h-4" />
                     {post.readTime}
                   </div>
-                  <Button variant="ghost" size="sm" className="hover:text-green-600">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="hover:text-green-600"
+                  >
                     <Share2 className="w-4 h-4 mr-2" />
                     Chia sẻ
                   </Button>
@@ -170,5 +206,5 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
