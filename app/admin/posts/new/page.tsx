@@ -1,25 +1,48 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Save, Eye, ArrowLeft, Upload, X, Hash, Tag, FileText, ImageIcon, Settings } from "lucide-react"
-import Link from "next/link"
-import RichTextEditor from "@/components/admin/rich-text-editor"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Save,
+  Eye,
+  ArrowLeft,
+  Upload,
+  X,
+  Hash,
+  Tag,
+  FileText,
+  ImageIcon,
+  Settings,
+} from "lucide-react";
+import Link from "next/link";
+import RichTextEditor from "@/components/admin/rich-text-editor";
 
 export default function CreatePostPage() {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-  const [tags, setTags] = useState<string[]>([])
-  const [newTag, setNewTag] = useState("")
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [tags, setTags] = useState<string[]>([]);
+  const [newTag, setNewTag] = useState("");
 
   const [formData, setFormData] = useState({
     title: "",
@@ -35,13 +58,13 @@ export default function CreatePostPage() {
     keywords: "",
     allowComments: true,
     featured: false,
-  })
+  });
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
-    }))
+    }));
 
     // Auto-generate slug from title
     if (field === "title") {
@@ -50,45 +73,52 @@ export default function CreatePostPage() {
         .replace(/[^a-z0-9\s-]/g, "")
         .replace(/\s+/g, "-")
         .replace(/-+/g, "-")
-        .trim()
-      setFormData((prev) => ({ ...prev, slug }))
+        .trim();
+      setFormData((prev) => ({ ...prev, slug }));
     }
-  }
+  };
 
   const addTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim())) {
-      setTags([...tags, newTag.trim()])
-      setNewTag("")
+      setTags([...tags, newTag.trim()]);
+      setNewTag("");
     }
-  }
+  };
 
   const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove))
-  }
+    setTags(tags.filter((tag) => tag !== tagToRemove));
+  };
 
   const handleSubmit = async (status: "draft" | "published") => {
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       const postData = {
         ...formData,
         status,
         tags,
-        publishedAt: status === "published" ? new Date().toISOString() : formData.publishedAt,
-      }
+        publishedAt:
+          status === "published"
+            ? new Date().toISOString()
+            : formData.publishedAt,
+      };
 
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      console.log("Post data:", postData)
-      alert(`${status === "published" ? "Xuất bản" : "Lưu nháp"} bài viết thành công!`)
-      router.push("/admin/posts")
+      console.log("Post data:", postData);
+      alert(
+        `${
+          status === "published" ? "Xuất bản" : "Lưu nháp"
+        } bài viết thành công!`
+      );
+      router.push("/admin/posts");
     } catch (error) {
-      alert("Có lỗi xảy ra!")
+      alert("Có lỗi xảy ra!");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="space-y-6 animate-fade-in-up">
@@ -103,11 +133,17 @@ export default function CreatePostPage() {
           </Button>
           <div>
             <h1 className="text-3xl font-bold">Tạo bài viết mới</h1>
-            <p className="text-muted-foreground mt-2">Viết và xuất bản bài viết mới</p>
+            <p className="text-muted-foreground mt-2">
+              Viết và xuất bản bài viết mới
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={() => handleSubmit("draft")} disabled={isLoading}>
+          <Button
+            variant="outline"
+            onClick={() => handleSubmit("draft")}
+            disabled={isLoading}
+          >
             <Save className="w-4 h-4 mr-2" />
             Lưu nháp
           </Button>
@@ -159,7 +195,9 @@ export default function CreatePostPage() {
                     required
                   />
                 </div>
-                <p className="text-xs text-muted-foreground">URL: /posts/{formData.slug}</p>
+                <p className="text-xs text-muted-foreground">
+                  URL: /posts/{formData.slug}
+                </p>
               </div>
 
               <div className="space-y-2">
@@ -171,7 +209,9 @@ export default function CreatePostPage() {
                   placeholder="Tóm tắt ngắn gọn về bài viết..."
                   rows={3}
                 />
-                <p className="text-xs text-muted-foreground">{formData.excerpt.length}/300 ký tự</p>
+                <p className="text-xs text-muted-foreground">
+                  {formData.excerpt.length}/300 ký tự
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -180,10 +220,15 @@ export default function CreatePostPage() {
           <Card>
             <CardHeader>
               <CardTitle>Nội dung bài viết</CardTitle>
-              <CardDescription>Viết nội dung chính của bài viết</CardDescription>
+              <CardDescription>
+                Viết nội dung chính của bài viết
+              </CardDescription>
             </CardHeader>
             <CardContent>
-              <RichTextEditor value={formData.content} onChange={(content) => handleInputChange("content", content)} />
+              <RichTextEditor
+                value={formData.content}
+                onChange={(content) => handleInputChange("content", content)}
+              />
             </CardContent>
           </Card>
 
@@ -205,11 +250,15 @@ export default function CreatePostPage() {
                     <Input
                       id="metaTitle"
                       value={formData.metaTitle}
-                      onChange={(e) => handleInputChange("metaTitle", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("metaTitle", e.target.value)
+                      }
                       placeholder="Tiêu đề SEO..."
                       maxLength={60}
                     />
-                    <p className="text-xs text-muted-foreground">{formData.metaTitle.length}/60 ký tự</p>
+                    <p className="text-xs text-muted-foreground">
+                      {formData.metaTitle.length}/60 ký tự
+                    </p>
                   </div>
 
                   <div className="space-y-2">
@@ -217,12 +266,16 @@ export default function CreatePostPage() {
                     <Textarea
                       id="metaDescription"
                       value={formData.metaDescription}
-                      onChange={(e) => handleInputChange("metaDescription", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("metaDescription", e.target.value)
+                      }
                       placeholder="Mô tả SEO..."
                       rows={2}
                       maxLength={160}
                     />
-                    <p className="text-xs text-muted-foreground">{formData.metaDescription.length}/160 ký tự</p>
+                    <p className="text-xs text-muted-foreground">
+                      {formData.metaDescription.length}/160 ký tự
+                    </p>
                   </div>
 
                   <div className="space-y-2">
@@ -230,7 +283,9 @@ export default function CreatePostPage() {
                     <Input
                       id="keywords"
                       value={formData.keywords}
-                      onChange={(e) => handleInputChange("keywords", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("keywords", e.target.value)
+                      }
                       placeholder="keyword1, keyword2, keyword3"
                     />
                   </div>
@@ -263,7 +318,10 @@ export default function CreatePostPage() {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label>Trạng thái</Label>
-                <Select value={formData.status} onValueChange={(value) => handleInputChange("status", value)}>
+                <Select
+                  value={formData.status}
+                  onValueChange={(value) => handleInputChange("status", value)}
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -277,7 +335,12 @@ export default function CreatePostPage() {
 
               <div className="space-y-2">
                 <Label>Danh mục</Label>
-                <Select value={formData.category} onValueChange={(value) => handleInputChange("category", value)}>
+                <Select
+                  value={formData.category}
+                  onValueChange={(value) =>
+                    handleInputChange("category", value)
+                  }
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Chọn danh mục" />
                   </SelectTrigger>
@@ -297,7 +360,9 @@ export default function CreatePostPage() {
                     id="publishedAt"
                     type="datetime-local"
                     value={formData.publishedAt}
-                    onChange={(e) => handleInputChange("publishedAt", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("publishedAt", e.target.value)
+                    }
                   />
                 </div>
               )}
@@ -305,22 +370,30 @@ export default function CreatePostPage() {
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Bài viết nổi bật</Label>
-                  <p className="text-xs text-muted-foreground">Hiển thị trong slider</p>
+                  <p className="text-xs text-muted-foreground">
+                    Hiển thị trong slider
+                  </p>
                 </div>
                 <Switch
                   checked={formData.featured}
-                  onCheckedChange={(checked) => handleInputChange("featured", checked)}
+                  onCheckedChange={(checked) =>
+                    handleInputChange("featured", checked)
+                  }
                 />
               </div>
 
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Cho phép bình luận</Label>
-                  <p className="text-xs text-muted-foreground">Người dùng có thể comment</p>
+                  <p className="text-xs text-muted-foreground">
+                    Người dùng có thể comment
+                  </p>
                 </div>
                 <Switch
                   checked={formData.allowComments}
-                  onCheckedChange={(checked) => handleInputChange("allowComments", checked)}
+                  onCheckedChange={(checked) =>
+                    handleInputChange("allowComments", checked)
+                  }
                 />
               </div>
             </CardContent>
@@ -355,7 +428,9 @@ export default function CreatePostPage() {
                 ) : (
                   <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center">
                     <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
-                    <p className="text-sm text-muted-foreground mb-2">Kéo thả ảnh hoặc click để chọn</p>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Kéo thả ảnh hoặc click để chọn
+                    </p>
                     <Button variant="outline" size="sm">
                       Chọn ảnh
                     </Button>
@@ -379,7 +454,9 @@ export default function CreatePostPage() {
                   value={newTag}
                   onChange={(e) => setNewTag(e.target.value)}
                   placeholder="Thêm tag..."
-                  onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addTag())}
+                  onKeyPress={(e) =>
+                    e.key === "Enter" && (e.preventDefault(), addTag())
+                  }
                 />
                 <Button onClick={addTag} size="sm">
                   Thêm
@@ -389,9 +466,16 @@ export default function CreatePostPage() {
               {tags.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {tags.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="flex items-center gap-1">
+                    <Badge
+                      key={tag}
+                      variant="secondary"
+                      className="flex items-center gap-1"
+                    >
                       {tag}
-                      <button onClick={() => removeTag(tag)} className="ml-1 hover:text-destructive">
+                      <button
+                        onClick={() => removeTag(tag)}
+                        className="ml-1 hover:text-destructive"
+                      >
                         <X className="w-3 h-3" />
                       </button>
                     </Badge>
@@ -403,5 +487,5 @@ export default function CreatePostPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-
+import { titleName } from "@/styles/classNames";
 const navigation = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   { name: "Bài viết", href: "/admin/posts", icon: FileText },
@@ -58,7 +58,7 @@ export default function AdminSidebar() {
                 <Code className="w-4 h-4 text-white" />
               </div>
               <span className="font-bold text-lg bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">
-                NoBugKai
+                {titleName}
               </span>
             </Link>
           )}
@@ -116,21 +116,6 @@ export default function AdminSidebar() {
             );
           })}
         </nav>
-
-        {/* Footer */}
-        {!isCollapsed && (
-          <div className="p-4 border-t border-gray-200 dark:border-gray-800">
-            <div className="space-y-2">
-              <Link
-                href="/admin/posts/new"
-                className="flex items-center gap-2 text-sm text-green-600 hover:text-green-700 transition-colors"
-              >
-                <FileText className="w-4 h-4" />
-                Tạo bài viết mới
-              </Link>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

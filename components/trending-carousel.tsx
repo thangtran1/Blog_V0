@@ -1,10 +1,11 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { ChevronLeft, ChevronRight, Calendar, TrendingUp } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, Calendar, TrendingUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { maxWidth } from "@/styles/classNames";
 
 const trendingPosts = [
   {
@@ -19,7 +20,8 @@ const trendingPosts = [
   {
     id: 2,
     title: "API Gateway với Kong - Microservices",
-    description: "Tìm hiểu về Kong API Gateway, cách cấu hình và triển khai trong kiến trúc microservices hiện đại.",
+    description:
+      "Tìm hiểu về Kong API Gateway, cách cấu hình và triển khai trong kiến trúc microservices hiện đại.",
     date: "21 tháng 6, 2025",
     category: "DevOps",
     trending: true,
@@ -27,7 +29,8 @@ const trendingPosts = [
   {
     id: 3,
     title: "Micro Frontend Architecture 2025",
-    description: "Hướng dẫn chi tiết về kiến trúc Micro Frontend, từ concept đến implementation trong dự án thực tế.",
+    description:
+      "Hướng dẫn chi tiết về kiến trúc Micro Frontend, từ concept đến implementation trong dự án thực tế.",
     date: "19 tháng 6, 2025",
     category: "Frontend",
     trending: true,
@@ -35,101 +38,112 @@ const trendingPosts = [
   {
     id: 4,
     title: "AI Automation với N8N Workflow",
-    description: "Khám phá N8N - công cụ automation mạnh mẽ, tạo workflow tự động hóa với AI integration.",
+    description:
+      "Khám phá N8N - công cụ automation mạnh mẽ, tạo workflow tự động hóa với AI integration.",
     date: "17 tháng 6, 2025",
     category: "AI",
     trending: true,
   },
-]
+];
 
 export default function TrendingCarousel() {
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [isVisible, setIsVisible] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
-  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Auto-slide effect
   useEffect(() => {
     if (!isPaused) {
       const timer = setInterval(() => {
-        setIsTransitioning(true)
+        setIsTransitioning(true);
         setTimeout(() => {
-          setCurrentSlide((prev) => (prev + 1) % trendingPosts.length)
-          setIsTransitioning(false)
-        }, 300) // Transition duration
-      }, 6000) // 6 giây
+          setCurrentSlide((prev) => (prev + 1) % trendingPosts.length);
+          setIsTransitioning(false);
+        }, 300); // Transition duration
+      }, 6000); // 6 giây
 
-      return () => clearInterval(timer)
+      return () => clearInterval(timer);
     }
-  }, [isPaused])
+  }, [isPaused]);
 
   // Intersection observer for initial animation
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true)
+          setIsVisible(true);
         }
       },
-      { threshold: 0.1 },
-    )
+      { threshold: 0.1 }
+    );
 
-    const element = document.getElementById("trending-section")
+    const element = document.getElementById("trending-section");
     if (element) {
-      observer.observe(element)
+      observer.observe(element);
     }
 
     return () => {
       if (element) {
-        observer.unobserve(element)
+        observer.unobserve(element);
       }
-    }
-  }, [])
+    };
+  }, []);
 
   const nextSlide = () => {
-    setIsTransitioning(true)
+    setIsTransitioning(true);
     setTimeout(() => {
-      setCurrentSlide((prev) => (prev + 1) % trendingPosts.length)
-      setIsTransitioning(false)
-    }, 300)
-  }
+      setCurrentSlide((prev) => (prev + 1) % trendingPosts.length);
+      setIsTransitioning(false);
+    }, 300);
+  };
 
   const prevSlide = () => {
-    setIsTransitioning(true)
+    setIsTransitioning(true);
     setTimeout(() => {
-      setCurrentSlide((prev) => (prev - 1 + trendingPosts.length) % trendingPosts.length)
-      setIsTransitioning(false)
-    }, 300)
-  }
+      setCurrentSlide(
+        (prev) => (prev - 1 + trendingPosts.length) % trendingPosts.length
+      );
+      setIsTransitioning(false);
+    }, 300);
+  };
 
   const goToSlide = (index: number) => {
     if (index !== currentSlide) {
-      setIsTransitioning(true)
+      setIsTransitioning(true);
       setTimeout(() => {
-        setCurrentSlide(index)
-        setIsTransitioning(false)
-      }, 300)
+        setCurrentSlide(index);
+        setIsTransitioning(false);
+      }, 300);
     }
-  }
+  };
 
-  const currentPost = trendingPosts[currentSlide]
+  const currentPost = trendingPosts[currentSlide];
 
   return (
     <section id="trending-section" className="py-20 bg-background">
-      <div className="container">
-        <div className="max-w-6xl mx-auto">
+      <div className="px-4">
+        <div className={`${maxWidth} mx-auto `}>
           <div
             className={`text-center mb-12 transition-all duration-1000 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
             }`}
           >
-            <h2 className="text-4xl font-bold mb-4 text-green-600 dark:text-green-400">Bài viết nổi bật</h2>
-            <p className="text-muted-foreground text-lg">Những bài viết được quan tâm và chia sẻ nhiều nhất</p>
+            <h2 className="text-4xl font-bold mb-4 text-green-600 dark:text-green-400">
+              Bài viết nổi bật
+            </h2>
+            <p className="text-muted-foreground text-lg">
+              Những bài viết được quan tâm và chia sẻ nhiều nhất
+            </p>
           </div>
 
           <div
             className={`relative transition-all duration-1000 delay-300 ${
-              isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-10 scale-95"
+              isVisible
+                ? "opacity-100 translate-y-0 scale-100"
+                : "opacity-0 translate-y-10 scale-95"
             }`}
           >
             {/* Main Carousel */}
@@ -145,7 +159,9 @@ export default function TrendingCarousel() {
               {/* Content with transition */}
               <div
                 className={`relative z-10 transition-all duration-500 ease-in-out ${
-                  isTransitioning ? "opacity-0 translate-y-4 scale-95" : "opacity-100 translate-y-0 scale-100"
+                  isTransitioning
+                    ? "opacity-0 translate-y-4 scale-95"
+                    : "opacity-100 translate-y-0 scale-100"
                 }`}
               >
                 <div className="flex items-start justify-between mb-6">
@@ -161,11 +177,19 @@ export default function TrendingCarousel() {
                   </div>
                 </div>
 
-                <h3 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">{currentPost.title}</h3>
+                <h3 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
+                  {currentPost.title}
+                </h3>
 
-                <p className="text-green-100 text-lg mb-8 leading-relaxed max-w-3xl">{currentPost.description}</p>
+                <p className="text-green-100 text-lg mb-8 leading-relaxed max-w-3xl">
+                  {currentPost.description}
+                </p>
 
-                <Button asChild size="lg" className="bg-white text-green-700 hover:bg-green-50 font-semibold">
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-white text-green-700 hover:bg-green-50 font-semibold"
+                >
                   <Link href={`/posts/${currentPost.id}`}>Đọc ngay →</Link>
                 </Button>
               </div>
@@ -218,5 +242,5 @@ export default function TrendingCarousel() {
         </div>
       </div>
     </section>
-  )
+  );
 }

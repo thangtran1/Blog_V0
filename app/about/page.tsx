@@ -20,6 +20,7 @@ import {
   Camera,
   Gamepad2,
 } from "lucide-react";
+import { maxWidth, titleName } from "@/styles/classNames";
 
 const skills = [
   {
@@ -192,8 +193,8 @@ const lifestyle = [
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
-      <div className="container py-12">
-        <div className="max-w-6xl mx-auto">
+      <div className="py-12 px-4">
+        <div className={`${maxWidth} mx-auto `}>
           {/* Hero Section */}
           <div className="text-center mb-16">
             <div className="relative inline-block mb-8">
@@ -208,7 +209,7 @@ export default function AboutPage() {
               </div>
             </div>
             <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-600 to-green-400 bg-clip-text text-transparent">
-              Chào mừng đến với NoBugKai!
+              Chào mừng đến với {titleName}!
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Xin chào, tôi là một developer đam mê chia sẻ kiến thức và khám

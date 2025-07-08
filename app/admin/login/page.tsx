@@ -15,10 +15,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Eye, EyeOff, Lock, Mail, Shield, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, Shield } from "lucide-react";
 import { useAdminAuth } from "@/lib/admin-auth";
-import Link from "next/link";
-
+import { titleName } from "@/styles/classNames";
 export default function AdminLoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,21 +48,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4">
-      <div className="w-full max-w-md">
-        {/* Back to site */}
-        <div className="mb-6">
-          <Button
-            variant="ghost"
-            asChild
-            className="text-gray-600 hover:text-gray-900"
-          >
-            <Link href="/">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Quay lại trang chủ
-            </Link>
-          </Button>
-        </div>
-
+      <div className="w-full max-w-lg">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl">
@@ -73,7 +58,7 @@ export default function AdminLoginPage() {
             Admin Panel
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
-            Đăng nhập để quản lý blog NoBugKai
+            Đăng nhập để quản lý blog {titleName}
           </p>
         </div>
 
@@ -163,10 +148,10 @@ export default function AdminLoginPage() {
                 Demo credentials:
               </p>
               <div className="text-xs space-y-1 text-center">
-                <p className="font-mono bg-white dark:bg-gray-900 px-2 py-1 rounded">
+                <p className="font-mono  dark:bg-gray-900 px-2 py-1 rounded">
                   <strong>Email:</strong> admin@NoBugKai.com
                 </p>
-                <p className="font-mono bg-white dark:bg-gray-900 px-2 py-1 rounded">
+                <p className="font-mono  dark:bg-gray-900 px-2 py-1 rounded">
                   <strong>Password:</strong> admin123
                 </p>
               </div>

@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useEffect, useState } from "react";
-
+import { titleName } from "@/styles/classNames";
 export default function EnhancedHeader() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -67,7 +67,7 @@ export default function EnhancedHeader() {
           : "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
       }`}
     >
-      <div className="flex h-16 items-center p-2 justify-between w-full">
+      <div className="flex h-16 items-center px-4 justify-between w-full">
         {/* Logo with enhanced animation */}
         <Link href="/" className="flex items-center space-x-2 mr-8 group">
           <div className="relative">
@@ -75,7 +75,7 @@ export default function EnhancedHeader() {
             <div className="absolute -inset-1 bg-green-500/20 rounded-full blur animate-pulse opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
           <span className="font-bold text-green-500 text-xl transition-all duration-300 group-hover:text-green-400">
-            NoBugKai
+            {titleName}
           </span>
         </Link>
 

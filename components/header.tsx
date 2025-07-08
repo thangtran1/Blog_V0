@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useEffect, useState } from "react";
-
+import { titleName } from "@/styles/classNames";
 export default function Header() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -43,7 +43,7 @@ export default function Header() {
         <div className="container flex h-16 items-center">
           <Link href="/" className="flex items-center space-x-2">
             <Code className="h-6 w-6 text-green-500" />
-            <span className="font-bold text-green-500">NoBugKai</span>
+            <span className="font-bold text-green-500">{titleName}</span>
           </Link>
         </div>
       </header>
@@ -59,7 +59,7 @@ export default function Header() {
             <Code className="h-6 w-6 text-green-500" />
             <div className="absolute -inset-1 bg-green-500/20 rounded-full blur animate-pulse"></div>
           </div>
-          <span className="font-bold text-green-500 text-xl">NoBugKai</span>
+          <span className="font-bold text-green-500 text-xl">{titleName}</span>
         </Link>
 
         {/* Desktop Navigation */}

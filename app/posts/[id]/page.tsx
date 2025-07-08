@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, ArrowLeft, Share2 } from "lucide-react";
+import { maxWidth } from "@/styles/classNames";
 
 const posts = {
   1: {
@@ -97,7 +98,7 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="container py-8">
-      <div className="max-w-7xl mx-auto">
+      <div className={`${maxWidth} mx-auto `}>
         <div className="mb-8">
           <Button variant="ghost" asChild>
             <Link href="/posts">

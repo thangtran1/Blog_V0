@@ -9,11 +9,12 @@ import ScrollProgress from "@/components/scroll-progress";
 import ScrollToTop from "@/components/scroll-to-top";
 import ScrollToTopNavigation from "@/components/scroll-to-top-navigation";
 import PageTransition from "@/components/page-transition";
+import { titleName } from "../styles/classNames";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "NoBugKai - Nơi chia sẻ kiến thức lập trình",
+  title: `${titleName} - Nơi chia sẻ kiến thức lập trình`,
   description:
     "Blog chia sẻ kiến thức về lập trình, công nghệ và phát triển phần mềm",
   generator: "v0.dev",

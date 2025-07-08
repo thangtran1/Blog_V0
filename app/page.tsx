@@ -14,7 +14,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, ArrowRight, Code, Sparkles } from "lucide-react";
 import TrendingCarousel from "@/components/trending-carousel";
-
+import { titleName, maxWidth } from "../styles/classNames";
 const featuredPosts = [
   {
     id: 1,
@@ -130,19 +130,14 @@ export default function HomePage() {
       >
         <div className="absolute inset-0 bg-black/10"></div>
         {/* Animated decorative elements */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-white/10 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-32 h-32 bg-white/5 rounded-full blur-2xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-white/5 rounded-full blur-lg animate-pulse delay-500"></div>
-        <div className="absolute top-1/3 right-1/4 w-12 h-12 bg-white/10 rounded-full blur-md animate-bounce"></div>
-
         <div
-          className={`container relative z-10 transition-all duration-1000 ${
+          className={`relative z-10 transition-all duration-1000 ${
             sectionsVisible.hero
               ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-10"
           }`}
         >
-          <div className="max-w-4xl mx-auto text-center">
+          <div className={`${maxWidth} px-4 mx-auto text-center`}>
             <div className="flex justify-center mb-8">
               <div className="relative animate-bounce-in-down">
                 <div className="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30 shadow-2xl">
@@ -156,7 +151,7 @@ export default function HomePage() {
               </div>
             </div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-green-100 bg-clip-text text-transparent animate-slide-in-up stagger-1">
-              Chào mừng đến với NoBugKai!
+              Chào mừng đến với {titleName}!
             </h1>
             <p className="text-xl md:text-2xl mb-4 text-green-100 animate-slide-in-up stagger-2">
               Nơi chia sẻ kiến thức lập trình và công nghệ
@@ -191,8 +186,8 @@ export default function HomePage() {
 
       {/* Categories Section */}
       <section id="categories" className="py-20 bg-muted/50">
-        <div className="container">
-          <div className="max-w-6xl mx-auto">
+        <div className="px-4">
+          <div className={`${maxWidth} mx-auto`}>
             <div
               className={`text-center mb-16 transition-all duration-1000 ${
                 sectionsVisible.categories
@@ -272,8 +267,8 @@ export default function HomePage() {
 
       {/* Latest Posts Section */}
       <section id="latest" className="py-16 bg-background">
-        <div className="container">
-          <div className="max-w-6xl mx-auto">
+        <div className="px-4">
+          <div className={`${maxWidth} mx-auto `}>
             <div
               className={`text-center mb-12 transition-all duration-1000 ${
                 sectionsVisible.latest

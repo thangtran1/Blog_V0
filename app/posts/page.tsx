@@ -1,11 +1,24 @@
-import Link from "next/link"
-import Image from "next/image"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Calendar, Clock, Search, Filter } from "lucide-react"
+import Link from "next/link";
+import Image from "next/image";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Calendar, Clock, Search, Filter } from "lucide-react";
+import { maxWidth } from "@/styles/classNames";
 
 const allPosts = [
   {
@@ -30,7 +43,8 @@ const allPosts = [
   },
   {
     id: 3,
-    title: "Micro Frontend Architecture - Hướng dẫn toàn diện về kiến trúc Frontend hiện đại 2025",
+    title:
+      "Micro Frontend Architecture - Hướng dẫn toàn diện về kiến trúc Frontend hiện đại 2025",
     excerpt:
       "Tìm hiểu chi tiết về Micro Frontend Architecture - từ khái niệm cơ bản, các kỹ thuật triển khai, cho đến hướng dẫn triển khai thực tế trong dự án...",
     date: "19 tháng 6, 2025",
@@ -68,17 +82,20 @@ const allPosts = [
     category: "AI",
     image: "/placeholder.svg?height=200&width=400",
   },
-]
+];
 
 export default function PostsPage() {
   return (
-    <div className="container py-8">
-      <div className="max-w-7xl mx-auto">
+    <div className=" py-8">
+      <div className={`${maxWidth} mx-auto `}>
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-green-600 dark:text-green-400">Tất cả bài viết</h1>
+        <div className="text-center px-4 mb-12">
+          <h1 className="text-4xl font-bold mb-4 text-green-600 dark:text-green-400">
+            Tất cả bài viết
+          </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Khám phá tất cả bài viết về lập trình, công nghệ và phát triển phần mềm
+            Khám phá tất cả bài viết về lập trình, công nghệ và phát triển phần
+            mềm
           </p>
         </div>
 
@@ -92,11 +109,17 @@ export default function PostsPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {allPosts.slice(0, 5).map((post) => (
-                    <Link key={post.id} href={`/posts/${post.id}`} className="block group">
+                    <Link
+                      key={post.id}
+                      href={`/posts/${post.id}`}
+                      className="block group"
+                    >
                       <h4 className="font-medium text-sm line-clamp-2 group-hover:text-green-600 transition-colors">
                         {post.title}
                       </h4>
-                      <p className="text-xs text-muted-foreground mt-1">{post.date}</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {post.date}
+                      </p>
                     </Link>
                   ))}
                 </CardContent>
@@ -105,7 +128,7 @@ export default function PostsPage() {
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 px-4">
             {/* Search and Filter */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <div className="relative flex-1">
@@ -144,14 +167,18 @@ export default function PostsPage() {
                       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-4 left-4">
-                      <Badge className="bg-green-500 hover:bg-green-600">{post.category}</Badge>
+                      <Badge className="bg-green-500 hover:bg-green-600">
+                        {post.category}
+                      </Badge>
                     </div>
                   </div>
                   <CardHeader>
                     <CardTitle className="line-clamp-2 group-hover:text-green-600 transition-colors">
                       <Link href={`/posts/${post.id}`}>{post.title}</Link>
                     </CardTitle>
-                    <CardDescription className="line-clamp-3">{post.excerpt}</CardDescription>
+                    <CardDescription className="line-clamp-3">
+                      {post.excerpt}
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center justify-between text-sm text-muted-foreground">
@@ -174,5 +201,5 @@ export default function PostsPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

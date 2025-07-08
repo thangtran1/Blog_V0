@@ -18,10 +18,10 @@ import {
   User,
 } from "lucide-react";
 import { useState } from "react";
-
+import { titleName } from "@/styles/classNames";
 export default function AdminSettings() {
   const [settings, setSettings] = useState({
-    siteName: "NoBugKai Blog",
+    siteName: `${titleName} Blog`,
     siteDescription: "Blog về lập trình và công nghệ",
     siteUrl: "https://NoBugKai.blog",
     adminEmail: "admin@NoBugKai.blog",

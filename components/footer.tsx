@@ -1,16 +1,20 @@
 import Link from "next/link";
-import { Code, Github, Linkedin, Mail, Heart } from "lucide-react";
-
+import { Code, Github, Linkedin, Mail, Heart, Divide } from "lucide-react";
+import { maxWidth, titleName } from "@/styles/classNames";
 export default function Footer() {
   return (
-    <footer className="bg-muted/30 border-t">
-      <div className="container px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+    <footer className="bg-muted/30 w-full border-t">
+      <div className="p-4 md:py-8">
+        <div
+          className={`grid ${maxWidth}  mx-auto grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8`}
+        >
           {/* Brand */}
-          <div className="space-y-4 sm:col-span-2 lg:col-span-1">
+          <div className="space-y-4  sm:col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center space-x-2">
               <Code className="h-6 w-6 text-green-500" />
-              <span className="font-bold text-xl text-green-500">NoBugKai</span>
+              <span className="font-bold text-xl text-green-500">
+                {titleName}
+              </span>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
               Nơi chia sẻ kiến thức lập trình và công nghệ. Từ Frontend đến
@@ -142,12 +146,16 @@ export default function Footer() {
         </div>
 
         {/* Bottom section */}
-        <div className="border-t mt-8 pt-6 px-4 sm:px-0 flex flex-col space-y-4 md:flex-row md:justify-between md:items-center md:space-y-0">
+        <div className="border-t mt-5"></div>
+        <div
+          className={`${maxWidth} mx-auto mt-2 pt-6 px-4 sm:px-0 flex flex-col space-y-4 md:flex-row md:justify-between md:items-center md:space-y-0`}
+        >
           <p className="text-muted-foreground text-sm text-center md:text-left">
-            © 2025 NoBugKai. Tất cả quyền được bảo lưu.
+            © 2025 {titleName}. Tất cả quyền được bảo lưu.
           </p>
           <p className="text-muted-foreground text-sm flex items-center justify-center md:justify-end gap-1">
-            Được tạo với <Heart className="h-4 w-4 text-red-500" /> bởi NoBugKai
+            Được tạo với <Heart className="h-4 w-4 text-red-500" /> bởi{" "}
+            {titleName}
           </p>
         </div>
       </div>

@@ -1,19 +1,49 @@
-import Link from "next/link"
-import Image from "next/image"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Calendar, Clock, ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import Link from "next/link";
+import Image from "next/image";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Calendar, Clock, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { maxWidth } from "@/styles/classNames";
 
 const categoryData = {
   frontend: {
     name: "Frontend",
-    description: "Các bài viết về phát triển giao diện người dùng, React, Next.js và các công nghệ frontend hiện đại",
+    description:
+      "Các bài viết về phát triển giao diện người dùng, React, Next.js và các công nghệ frontend hiện đại",
     posts: [
       {
         id: 3,
-        title: "Micro Frontend Architecture - Hướng dẫn toàn diện về kiến trúc Frontend hiện đại 2025",
-        excerpt: "Tìm hiểu chi tiết về Micro Frontend Architecture - từ khái niệm cơ bản, các kỹ thuật triển khai...",
+        title:
+          "Micro Frontend Architecture - Hướng dẫn toàn diện về kiến trúc Frontend hiện đại 2025",
+        excerpt:
+          "Tìm hiểu chi tiết về Micro Frontend Architecture - từ khái niệm cơ bản, các kỹ thuật triển khai...",
+        date: "19 tháng 6, 2025",
+        readTime: "43 phút đọc",
+        image: "/placeholder.svg?height=200&width=400",
+      },
+      {
+        id: 3,
+        title:
+          "Micro Frontend Architecture - Hướng dẫn toàn diện về kiến trúc Frontend hiện đại 2025",
+        excerpt:
+          "Tìm hiểu chi tiết về Micro Frontend Architecture - từ khái niệm cơ bản, các kỹ thuật triển khai...",
+        date: "19 tháng 6, 2025",
+        readTime: "43 phút đọc",
+        image: "/placeholder.svg?height=200&width=400",
+      },
+      {
+        id: 3,
+        title:
+          "Micro Frontend Architecture - Hướng dẫn toàn diện về kiến trúc Frontend hiện đại 2025",
+        excerpt:
+          "Tìm hiểu chi tiết về Micro Frontend Architecture - từ khái niệm cơ bản, các kỹ thuật triển khai...",
         date: "19 tháng 6, 2025",
         readTime: "43 phút đọc",
         image: "/placeholder.svg?height=200&width=400",
@@ -22,12 +52,15 @@ const categoryData = {
   },
   backend: {
     name: "Backend",
-    description: "Các bài viết về phát triển server-side, database, API và kiến trúc hệ thống",
+    description:
+      "Các bài viết về phát triển server-side, database, API và kiến trúc hệ thống",
     posts: [
       {
         id: 1,
-        title: "Elasticsearch Toàn Tập: Search Engine Hiện Đại Cho Ứng Dụng Web",
-        excerpt: "Tìm hiểu về Elasticsearch, một trong những search engine mạnh mẽ nhất hiện nay...",
+        title:
+          "Elasticsearch Toàn Tập: Search Engine Hiện Đại Cho Ứng Dụng Web",
+        excerpt:
+          "Tìm hiểu về Elasticsearch, một trong những search engine mạnh mẽ nhất hiện nay...",
         date: "23 tháng 6, 2025",
         readTime: "24 phút đọc",
         image: "/placeholder.svg?height=200&width=400",
@@ -35,7 +68,8 @@ const categoryData = {
       {
         id: 4,
         title: "SQL vs NoSQL - So Sánh Chi Tiết Các Loại Database Hiện Đại",
-        excerpt: "So sánh chi tiết giữa SQL và NoSQL database, ưu nhược điểm của từng loại...",
+        excerpt:
+          "So sánh chi tiết giữa SQL và NoSQL database, ưu nhược điểm của từng loại...",
         date: "17 tháng 6, 2025",
         readTime: "25 phút đọc",
         image: "/placeholder.svg?height=200&width=400",
@@ -44,12 +78,14 @@ const categoryData = {
   },
   devops: {
     name: "DevOps",
-    description: "Các bài viết về CI/CD, containerization, cloud computing và vận hành hệ thống",
+    description:
+      "Các bài viết về CI/CD, containerization, cloud computing và vận hành hệ thống",
     posts: [
       {
         id: 2,
         title: "API Gateway với Kong - Giải pháp toàn diện cho Microservices",
-        excerpt: "Tìm hiểu về API Gateway, Kong và cách triển khai trong kiến trúc microservices...",
+        excerpt:
+          "Tìm hiểu về API Gateway, Kong và cách triển khai trong kiến trúc microservices...",
         date: "21 tháng 6, 2025",
         readTime: "28 phút đọc",
         image: "/placeholder.svg?height=200&width=400",
@@ -58,12 +94,14 @@ const categoryData = {
   },
   ai: {
     name: "AI & Automation",
-    description: "Các bài viết về trí tuệ nhân tạo, machine learning và tự động hóa quy trình",
+    description:
+      "Các bài viết về trí tuệ nhân tạo, machine learning và tự động hóa quy trình",
     posts: [
       {
         id: 5,
         title: "NocoBase - Nền Tảng Low-Code Cho Doanh Nghiệp Hiện Đại",
-        excerpt: "Khám phá NocoBase, một nền tảng low-code mạnh mẽ giúp xây dựng ứng dụng...",
+        excerpt:
+          "Khám phá NocoBase, một nền tảng low-code mạnh mẽ giúp xây dựng ứng dụng...",
         date: "15 tháng 6, 2025",
         readTime: "20 phút đọc",
         image: "/placeholder.svg?height=200&width=400",
@@ -71,25 +109,30 @@ const categoryData = {
       {
         id: 6,
         title: "AI Automation với N8N và hướng dẫn cài đặt chi tiết",
-        excerpt: "Hướng dẫn chi tiết về N8N - công cụ automation mạnh mẽ, cách cài đặt...",
+        excerpt:
+          "Hướng dẫn chi tiết về N8N - công cụ automation mạnh mẽ, cách cài đặt...",
         date: "13 tháng 6, 2025",
         readTime: "32 phút đọc",
         image: "/placeholder.svg?height=200&width=400",
       },
     ],
   },
-}
+};
 
-export default function CategoryPage({ params }: { params: { category: string } }) {
-  const category = categoryData[params.category as keyof typeof categoryData]
+export default function CategoryPage({
+  params,
+}: {
+  params: { category: string };
+}) {
+  const category = categoryData[params.category as keyof typeof categoryData];
 
   if (!category) {
-    return <div>Danh mục không tồn tại</div>
+    return <div>Danh mục không tồn tại</div>;
   }
 
   return (
     <div className="container py-8">
-      <div className="max-w-6xl mx-auto">
+      <div className={`${maxWidth} mx-auto `}>
         <div className="mb-8">
           <Button variant="ghost" asChild>
             <Link href="/">
@@ -101,8 +144,12 @@ export default function CategoryPage({ params }: { params: { category: string } 
 
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-green-600 dark:text-green-400">{category.name}</h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{category.description}</p>
+          <h1 className="text-4xl font-bold mb-4 text-green-600 dark:text-green-400">
+            {category.name}
+          </h1>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            {category.description}
+          </p>
           <div className="mt-6">
             <Badge variant="secondary" className="text-sm">
               {category.posts.length} bài viết
@@ -126,14 +173,18 @@ export default function CategoryPage({ params }: { params: { category: string } 
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute top-4 left-4">
-                  <Badge className="bg-green-500 hover:bg-green-600">{category.name}</Badge>
+                  <Badge className="bg-green-500 hover:bg-green-600">
+                    {category.name}
+                  </Badge>
                 </div>
               </div>
               <CardHeader>
                 <CardTitle className="line-clamp-2 group-hover:text-green-600 transition-colors">
                   <Link href={`/posts/${post.id}`}>{post.title}</Link>
                 </CardTitle>
-                <CardDescription className="line-clamp-3">{post.excerpt}</CardDescription>
+                <CardDescription className="line-clamp-3">
+                  {post.excerpt}
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
@@ -154,5 +205,5 @@ export default function CategoryPage({ params }: { params: { category: string } 
         </div>
       </div>
     </div>
-  )
+  );
 }
