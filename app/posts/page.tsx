@@ -86,10 +86,10 @@ const allPosts = [
 
 export default function PostsPage() {
   return (
-    <div className=" py-8">
+    <div className="px-4 py-8">
       <div className={`${maxWidth} mx-auto `}>
         {/* Header */}
-        <div className="text-center px-4 mb-12">
+        <div className="text-center  mb-12">
           <h1 className="text-4xl font-bold mb-4 text-green-600 dark:text-green-400">
             Tất cả bài viết
           </h1>

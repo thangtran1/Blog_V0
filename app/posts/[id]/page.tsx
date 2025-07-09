@@ -97,7 +97,7 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="container py-8">
+    <div className="p-4">
       <div className={`${maxWidth} mx-auto `}>
         <div className="mb-8">
           <Button variant="ghost" asChild>

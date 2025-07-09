@@ -1,20 +1,32 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Save, X, Hash } from "lucide-react"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Save, X, Hash } from "lucide-react";
 
 interface CategoryFormProps {
-  category?: any
-  onClose: () => void
+  category?: any;
+  onClose: () => void;
 }
 
 const colorOptions = [
@@ -26,9 +38,22 @@ const colorOptions = [
   { name: "Pink", value: "#EC4899", bg: "bg-pink-500" },
   { name: "Indigo", value: "#6366F1", bg: "bg-indigo-500" },
   { name: "Teal", value: "#14B8A6", bg: "bg-teal-500" },
-]
+];
 
-const iconOptions = ["🎨", "⚙️", "🚀", "🤖", "📱", "💻", "🔧", "📊", "🌐", "🔒", "📝", "🎯"]
+const iconOptions = [
+  "🎨",
+  "⚙️",
+  "🚀",
+  "🤖",
+  "📱",
+  "💻",
+  "🔧",
+  "📊",
+  "🌐",
+  "🔒",
+  "📝",
+  "🎯",
+];
 
 export default function CategoryForm({ category, onClose }: CategoryFormProps) {
   const [formData, setFormData] = useState({
@@ -42,15 +67,15 @@ export default function CategoryForm({ category, onClose }: CategoryFormProps) {
     metaTitle: category?.metaTitle || "",
     metaDescription: category?.metaDescription || "",
     keywords: category?.keywords || "",
-  })
+  });
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
-    }))
+    }));
 
     // Auto-generate slug from name
     if (field === "name" && !category) {
@@ -59,28 +84,30 @@ export default function CategoryForm({ category, onClose }: CategoryFormProps) {
         .replace(/[^a-z0-9\s-]/g, "")
         .replace(/\s+/g, "-")
         .replace(/-+/g, "-")
-        .trim()
-      setFormData((prev) => ({ ...prev, slug }))
+        .trim();
+      setFormData((prev) => ({ ...prev, slug }));
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
 
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      console.log("Category data:", formData)
-      alert(category ? "Cập nhật danh mục thành công!" : "Tạo danh mục thành công!")
-      onClose()
+      console.log("Category data:", formData);
+      alert(
+        category ? "Cập nhật danh mục thành công!" : "Tạo danh mục thành công!"
+      );
+      onClose();
     } catch (error) {
-      alert("Có lỗi xảy ra!")
+      alert("Có lỗi xảy ra!");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -116,7 +143,9 @@ export default function CategoryForm({ category, onClose }: CategoryFormProps) {
                   required
                 />
               </div>
-              <p className="text-xs text-muted-foreground">URL: /categories/{formData.slug}</p>
+              <p className="text-xs text-muted-foreground">
+                URL: /categories/{formData.slug}
+              </p>
             </div>
 
             <div className="space-y-2">
@@ -124,7 +153,9 @@ export default function CategoryForm({ category, onClose }: CategoryFormProps) {
               <Textarea
                 id="description"
                 value={formData.description}
-                onChange={(e) => handleInputChange("description", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("description", e.target.value)
+                }
                 placeholder="Mô tả ngắn về danh mục này..."
                 rows={3}
               />
@@ -132,12 +163,16 @@ export default function CategoryForm({ category, onClose }: CategoryFormProps) {
 
             <div className="space-y-2">
               <Label>Danh mục cha</Label>
-              <Select value={formData.parentId} onValueChange={(value) => handleInputChange("parentId", value)}>
+              <Select
+                value={formData.parentId}
+                onValueChange={(value) => handleInputChange("parentId", value)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Chọn danh mục cha (tùy chọn)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="0">Không có danh mục cha</SelectItem> {/* Updated value prop */}
+                  <SelectItem value="0">Không có danh mục cha</SelectItem>{" "}
+                  {/* Updated value prop */}
                   <SelectItem value="1">Frontend</SelectItem>
                   <SelectItem value="2">Backend</SelectItem>
                   <SelectItem value="3">DevOps</SelectItem>
@@ -163,7 +198,9 @@ export default function CategoryForm({ category, onClose }: CategoryFormProps) {
                     type="button"
                     onClick={() => handleInputChange("icon", icon)}
                     className={`w-10 h-10 rounded-lg border-2 flex items-center justify-center text-lg hover:bg-muted transition-colors ${
-                      formData.icon === icon ? "border-green-500 bg-green-50 dark:bg-green-950" : "border-border"
+                      formData.icon === icon
+                        ? "border-green-500 bg-green-50 dark:bg-green-950"
+                        : "border-border"
                     }`}
                   >
                     {icon}
@@ -205,7 +242,9 @@ export default function CategoryForm({ category, onClose }: CategoryFormProps) {
                     {formData.icon}
                   </div>
                   <div>
-                    <h3 className="font-medium">{formData.name || "Tên danh mục"}</h3>
+                    <h3 className="font-medium">
+                      {formData.name || "Tên danh mục"}
+                    </h3>
                     <p className="text-sm text-muted-foreground line-clamp-1">
                       {formData.description || "Mô tả danh mục"}
                     </p>
@@ -218,7 +257,7 @@ export default function CategoryForm({ category, onClose }: CategoryFormProps) {
       </div>
 
       {/* SEO Settings */}
-      <Card>
+      {/* <Card>
         <CardHeader>
           <CardTitle className="text-lg">Cài đặt SEO</CardTitle>
           <CardDescription>Tối ưu hóa cho công cụ tìm kiếm</CardDescription>
@@ -261,7 +300,7 @@ export default function CategoryForm({ category, onClose }: CategoryFormProps) {
             <p className="text-xs text-muted-foreground">{formData.metaDescription.length}/160 ký tự</p>
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
 
       {/* Settings */}
       <Card>
@@ -272,9 +311,16 @@ export default function CategoryForm({ category, onClose }: CategoryFormProps) {
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
               <Label>Trạng thái hoạt động</Label>
-              <p className="text-sm text-muted-foreground">Danh mục có hiển thị trên website không</p>
+              <p className="text-sm text-muted-foreground">
+                Danh mục có hiển thị trên website không
+              </p>
             </div>
-            <Switch checked={formData.isActive} onCheckedChange={(checked) => handleInputChange("isActive", checked)} />
+            <Switch
+              checked={formData.isActive}
+              onCheckedChange={(checked) =>
+                handleInputChange("isActive", checked)
+              }
+            />
           </div>
         </CardContent>
       </Card>
@@ -285,11 +331,19 @@ export default function CategoryForm({ category, onClose }: CategoryFormProps) {
           <X className="w-4 h-4 mr-2" />
           Hủy
         </Button>
-        <Button type="submit" disabled={isLoading} className="bg-green-500 hover:bg-green-600">
-          {isLoading ? <div className="loading-spinner w-4 h-4 mr-2"></div> : <Save className="w-4 h-4 mr-2" />}
+        <Button
+          type="submit"
+          disabled={isLoading}
+          className="bg-green-500 hover:bg-green-600"
+        >
+          {isLoading ? (
+            <div className="loading-spinner w-4 h-4 mr-2"></div>
+          ) : (
+            <Save className="w-4 h-4 mr-2" />
+          )}
           {category ? "Cập nhật" : "Tạo danh mục"}
         </Button>
       </div>
     </form>
-  )
+  );
 }

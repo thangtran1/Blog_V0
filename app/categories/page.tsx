@@ -140,8 +140,8 @@ export default function CategoriesPage() {
 
       {/* Categories Grid */}
       <section className="py-20">
-        <div className="">
-          <div className={`${maxWidth} mx-auto `}>
+        <div className="px-4  ">
+          <div className={`${maxWidth} mx-auto`}>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {categories.map((category, index) => (
                 <div
@@ -209,7 +209,7 @@ export default function CategoriesPage() {
 
       {/* Stats Section */}
       <section className="py-16 bg-muted/50">
-        <div className="">
+        <div className="px-4">
           <div className={`${maxWidth} mx-auto `}>
             <div className="grid md:grid-cols-3 gap-8 text-center">
               <div className="space-y-2">

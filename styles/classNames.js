@@ -1,3 +1,3 @@
 export const titleName = "NoBugKai";
 
-export const maxWidth = "max-w-7xl";
+export const maxWidth = "max-w-5xl";

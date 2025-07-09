@@ -1,14 +1,34 @@
-"use client"
+"use client";
 
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { FolderOpen, Plus, Search, MoreHorizontal, Edit, Trash2, FileText, Eye } from "lucide-react"
-import { useState } from "react"
-import CategoryForm from "@/components/admin/category-form"
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  FolderOpen,
+  Plus,
+  Search,
+  MoreHorizontal,
+  Edit,
+  Trash2,
+  FileText,
+  Eye,
+} from "lucide-react";
+import { useState } from "react";
+import CategoryForm from "@/components/admin/category-form";
 
 // Mock data
 const categories = [
@@ -78,25 +98,25 @@ const categories = [
     isActive: false,
     createdAt: "2024-01-05",
   },
-]
+];
 
 const stats = [
   { title: "Tổng danh mục", value: "8", color: "from-blue-500 to-blue-600" },
   { title: "Đang hoạt động", value: "6", color: "from-green-500 to-green-600" },
   { title: "Tạm dừng", value: "2", color: "from-yellow-500 to-yellow-600" },
   { title: "Bài viết", value: "65", color: "from-purple-500 to-purple-600" },
-]
+];
 
 export default function AdminCategories() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
-  const [editingCategory, setEditingCategory] = useState<any>(null)
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [editingCategory, setEditingCategory] = useState<any>(null);
 
   const filteredCategories = categories.filter(
     (category) =>
       category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      category.description.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+      category.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="space-y-6">
@@ -107,7 +127,9 @@ export default function AdminCategories() {
             <FolderOpen className="w-6 h-6" />
             Quản lý danh mục
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">Tạo và quản lý danh mục cho bài viết của bạn</p>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
+            Tạo và quản lý danh mục cho bài viết của bạn
+          </p>
         </div>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
@@ -116,7 +138,7 @@ export default function AdminCategories() {
               Tạo danh mục mới
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-2xl ">
             <DialogHeader>
               <DialogTitle>Tạo danh mục mới</DialogTitle>
             </DialogHeader>
@@ -132,10 +154,16 @@ export default function AdminCategories() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{stat.title}</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{stat.value}</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    {stat.title}
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                    {stat.value}
+                  </p>
                 </div>
-                <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${stat.color} opacity-20`}></div>
+                <div
+                  className={`w-12 h-12 rounded-lg bg-gradient-to-r ${stat.color} opacity-20`}
+                ></div>
               </div>
             </CardContent>
           </Card>
@@ -160,7 +188,10 @@ export default function AdminCategories() {
       {/* Categories Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCategories.map((category) => (
-          <Card key={category.id} className="hover:shadow-lg transition-shadow duration-200">
+          <Card
+            key={category.id}
+            className="hover:shadow-lg transition-shadow duration-200"
+          >
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
@@ -171,7 +202,9 @@ export default function AdminCategories() {
                     {category.icon}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-gray-100">{category.name}</h3>
+                    <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                      {category.name}
+                    </h3>
                     <p className="text-sm text-gray-500">/{category.slug}</p>
                   </div>
                 </div>
@@ -186,7 +219,9 @@ export default function AdminCategories() {
                       <Eye className="mr-2 h-4 w-4" />
                       Xem bài viết
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setEditingCategory(category)}>
+                    <DropdownMenuItem
+                      onClick={() => setEditingCategory(category)}
+                    >
                       <Edit className="mr-2 h-4 w-4" />
                       Chỉnh sửa
                     </DropdownMenuItem>
@@ -198,7 +233,9 @@ export default function AdminCategories() {
                 </DropdownMenu>
               </div>
 
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">{category.description}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+                {category.description}
+              </p>
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -219,7 +256,9 @@ export default function AdminCategories() {
               </div>
 
               <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                <p className="text-xs text-gray-500">Tạo ngày: {category.createdAt}</p>
+                <p className="text-xs text-gray-500">
+                  Tạo ngày: {category.createdAt}
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -227,12 +266,20 @@ export default function AdminCategories() {
       </div>
 
       {/* Edit Dialog */}
-      <Dialog open={!!editingCategory} onOpenChange={() => setEditingCategory(null)}>
+      <Dialog
+        open={!!editingCategory}
+        onOpenChange={() => setEditingCategory(null)}
+      >
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Chỉnh sửa danh mục</DialogTitle>
           </DialogHeader>
-          {editingCategory && <CategoryForm category={editingCategory} onClose={() => setEditingCategory(null)} />}
+          {editingCategory && (
+            <CategoryForm
+              category={editingCategory}
+              onClose={() => setEditingCategory(null)}
+            />
+          )}
         </DialogContent>
       </Dialog>
 
@@ -240,12 +287,18 @@ export default function AdminCategories() {
         <Card>
           <CardContent className="p-8 text-center">
             <FolderOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">Không tìm thấy danh mục</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">Thử thay đổi từ khóa tìm kiếm</p>
-            <Button onClick={() => setIsCreateDialogOpen(true)}>Tạo danh mục đầu tiên</Button>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
+              Không tìm thấy danh mục
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+              Thử thay đổi từ khóa tìm kiếm
+            </p>
+            <Button onClick={() => setIsCreateDialogOpen(true)}>
+              Tạo danh mục đầu tiên
+            </Button>
           </CardContent>
         </Card>
       )}
     </div>
-  )
+  );
 }

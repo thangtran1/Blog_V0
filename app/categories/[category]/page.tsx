@@ -131,8 +131,8 @@ export default function CategoryPage({
   }
 
   return (
-    <div className="container py-8">
-      <div className={`${maxWidth} mx-auto `}>
+    <div className="p-4">
+      <div className={`${maxWidth} mx-auto`}>
         <div className="mb-8">
           <Button variant="ghost" asChild>
             <Link href="/">
