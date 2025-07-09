@@ -41,7 +41,6 @@ import {
   bgDefault,
   bgDefault2,
   buttonDefault,
-  buttonDefault,
   maxWidth,
 } from "@/styles/classNames";
 
