@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Code, Github, Linkedin, Mail, Heart, Divide } from "lucide-react";
-import { maxWidth, titleName } from "@/styles/classNames";
+import { buttonDefault, maxWidth, titleName } from "@/styles/classNames";
 export default function Footer() {
   return (
     <footer className="bg-muted/30 w-full border-t">
@@ -138,7 +138,9 @@ export default function Footer() {
                 placeholder="Email của bạn"
                 className="w-full px-3 py-2 text-sm border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
-              <button className="w-full bg-green-500 hover:bg-green-600 text-white text-sm py-2 px-4 rounded-md transition-colors font-medium">
+              <button
+                className={`w-full ${buttonDefault} text-white text-sm py-2 px-4 rounded-md transition-colors font-medium`}
+              >
                 Đăng ký
               </button>
             </div>
@@ -148,7 +150,7 @@ export default function Footer() {
         {/* Bottom section */}
         <div className="border-t mt-5"></div>
         <div
-          className={`${maxWidth} mx-auto mt-2 pt-6 px-4 sm:px-0 flex flex-col space-y-4 md:flex-row md:justify-between md:items-center md:space-y-0`}
+          className={`${maxWidth} mx-auto mt-2 pt-4 sm:px-0 flex flex-col space-y-4 md:flex-row md:justify-between md:items-center md:space-y-0`}
         >
           <p className="text-muted-foreground text-sm text-center md:text-left">
             © 2025 {titleName}. Tất cả quyền được bảo lưu.

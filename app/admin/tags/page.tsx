@@ -1,12 +1,30 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Dialog,
   DialogContent,
@@ -14,9 +32,19 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Plus, Search, Filter, MoreHorizontal, Edit, Trash2, Tag, TrendingUp } from "lucide-react"
-import TagForm from "@/components/admin/tag-form"
+} from "@/components/ui/dialog";
+import {
+  Plus,
+  Search,
+  Filter,
+  MoreHorizontal,
+  Edit,
+  Trash2,
+  Tag,
+  TrendingUp,
+} from "lucide-react";
+import TagForm from "@/components/admin/tag-form";
+import { buttonDefault } from "@/styles/classNames";
 
 const tags = [
   {
@@ -64,14 +92,16 @@ const tags = [
     postCount: 10,
     createdAt: "2025-01-02",
   },
-]
+];
 
 export default function AdminTagsPage() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
-  const [editingTag, setEditingTag] = useState<any>(null)
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [editingTag, setEditingTag] = useState<any>(null);
 
-  const filteredTags = tags.filter((tag) => tag.name.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredTags = tags.filter((tag) =>
+    tag.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="space-y-6 animate-fade-in-up">
@@ -79,11 +109,13 @@ export default function AdminTagsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Quản lý Tags</h1>
-          <p className="text-muted-foreground mt-2">Tạo, chỉnh sửa và quản lý tags bài viết</p>
+          <p className="text-muted-foreground mt-2">
+            Tạo, chỉnh sửa và quản lý tags bài viết
+          </p>
         </div>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-green-500 hover:bg-green-600">
+            <Button className={buttonDefault}>
               <Plus className="w-4 h-4 mr-2" />
               Tạo tag mới
             </Button>
@@ -116,7 +148,9 @@ export default function AdminTagsPage() {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{tags.filter((t) => t.postCount > 15).length}</div>
+            <div className="text-2xl font-bold">
+              {tags.filter((t) => t.postCount > 15).length}
+            </div>
             <p className="text-xs text-muted-foreground">Trên 15 bài viết</p>
           </CardContent>
         </Card>
@@ -126,7 +160,9 @@ export default function AdminTagsPage() {
             <Tag className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{tags.reduce((sum, t) => sum + t.postCount, 0)}</div>
+            <div className="text-2xl font-bold">
+              {tags.reduce((sum, t) => sum + t.postCount, 0)}
+            </div>
             <p className="text-xs text-muted-foreground">Có sử dụng tags</p>
           </CardContent>
         </Card>
@@ -179,20 +215,29 @@ export default function AdminTagsPage() {
                 <TableRow key={tag.id} className="hover:bg-muted/50">
                   <TableCell>
                     <div className="flex items-center gap-3">
-                      <div className="w-4 h-4 rounded-full" style={{ backgroundColor: tag.color }}></div>
+                      <div
+                        className="w-4 h-4 rounded-full"
+                        style={{ backgroundColor: tag.color }}
+                      ></div>
                       <span className="font-medium">{tag.name}</span>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <code className="bg-muted px-2 py-1 rounded text-sm">{tag.slug}</code>
+                    <code className="bg-muted px-2 py-1 rounded text-sm">
+                      {tag.slug}
+                    </code>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm text-muted-foreground">{tag.description}</span>
+                    <span className="text-sm text-muted-foreground">
+                      {tag.description}
+                    </span>
                   </TableCell>
                   <TableCell>
                     <Badge variant="secondary">{tag.postCount} bài viết</Badge>
                   </TableCell>
-                  <TableCell>{new Date(tag.createdAt).toLocaleDateString("vi-VN")}</TableCell>
+                  <TableCell>
+                    {new Date(tag.createdAt).toLocaleDateString("vi-VN")}
+                  </TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -232,5 +277,5 @@ export default function AdminTagsPage() {
         </Dialog>
       )}
     </div>
-  )
+  );
 }

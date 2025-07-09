@@ -23,6 +23,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Save, X, Hash } from "lucide-react";
+import { buttonDefault } from "@/styles/classNames";
 
 interface CategoryFormProps {
   category?: any;
@@ -331,11 +332,7 @@ export default function CategoryForm({ category, onClose }: CategoryFormProps) {
           <X className="w-4 h-4 mr-2" />
           Hủy
         </Button>
-        <Button
-          type="submit"
-          disabled={isLoading}
-          className="bg-green-500 hover:bg-green-600"
-        >
+        <Button type="submit" disabled={isLoading} className={buttonDefault}>
           {isLoading ? (
             <div className="loading-spinner w-4 h-4 mr-2"></div>
           ) : (

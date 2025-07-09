@@ -1,20 +1,38 @@
-"use client"
+"use client";
 
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { FileText, Plus, Search, Filter, MoreHorizontal, Edit, Trash2, Eye, Calendar, User } from "lucide-react"
-import Link from "next/link"
-import { useState } from "react"
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  FileText,
+  Plus,
+  Search,
+  Filter,
+  MoreHorizontal,
+  Edit,
+  Trash2,
+  Eye,
+  Calendar,
+  User,
+} from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { bgDefault2 } from "@/styles/classNames";
 
 // Mock data
 const posts = [
   {
     id: 1,
     title: "Hướng dẫn React Hooks cơ bản",
-    excerpt: "Tìm hiểu về useState, useEffect và các hooks cơ bản trong React...",
+    excerpt:
+      "Tìm hiểu về useState, useEffect và các hooks cơ bản trong React...",
     category: "React",
     author: "Admin",
     status: "published",
@@ -83,47 +101,52 @@ const posts = [
     date: "2024-01-11",
     image: "/placeholder.svg?height=100&width=150",
   },
-]
+];
 
 const stats = [
   { title: "Tổng bài viết", value: "24", color: "from-blue-500 to-blue-600" },
   { title: "Đã xuất bản", value: "18", color: "from-green-500 to-green-600" },
   { title: "Bản nháp", value: "4", color: "from-yellow-500 to-yellow-600" },
   { title: "Đã lên lịch", value: "2", color: "from-purple-500 to-purple-600" },
-]
+];
 
 export default function AdminPosts() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [filterStatus, setFilterStatus] = useState("all")
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "published":
         return (
-          <Badge className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">Đã xuất bản</Badge>
-        )
+          <Badge className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
+            Đã xuất bản
+          </Badge>
+        );
       case "draft":
         return (
-          <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400">Bản nháp</Badge>
-        )
+          <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400">
+            Bản nháp
+          </Badge>
+        );
       case "scheduled":
         return (
           <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400">
             Đã lên lịch
           </Badge>
-        )
+        );
       default:
-        return <Badge variant="secondary">{status}</Badge>
+        return <Badge variant="secondary">{status}</Badge>;
     }
-  }
+  };
 
   const filteredPosts = posts.filter((post) => {
     const matchesSearch =
       post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.category.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesFilter = filterStatus === "all" || post.status === filterStatus
-    return matchesSearch && matchesFilter
-  })
+      post.category.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter =
+      filterStatus === "all" || post.status === filterStatus;
+    return matchesSearch && matchesFilter;
+  });
 
   return (
     <div className="space-y-6">
@@ -134,9 +157,11 @@ export default function AdminPosts() {
             <FileText className="w-6 h-6" />
             Quản lý bài viết
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">Tạo, chỉnh sửa và quản lý tất cả bài viết của bạn</p>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
+            Tạo, chỉnh sửa và quản lý tất cả bài viết của bạn
+          </p>
         </div>
-        <Button asChild className="bg-gradient-to-r from-green-500 to-green-600">
+        <Button asChild className={bgDefault2}>
           <Link href="/admin/posts/new">
             <Plus className="w-4 h-4 mr-2" />
             Tạo bài viết mới
@@ -151,10 +176,16 @@ export default function AdminPosts() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{stat.title}</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{stat.value}</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    {stat.title}
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                    {stat.value}
+                  </p>
                 </div>
-                <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${stat.color} opacity-20`}></div>
+                <div
+                  className={`w-12 h-12 rounded-lg bg-gradient-to-r ${stat.color} opacity-20`}
+                ></div>
               </div>
             </CardContent>
           </Card>
@@ -176,16 +207,27 @@ export default function AdminPosts() {
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="flex items-center gap-2 bg-transparent">
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2 bg-transparent"
+                >
                   <Filter className="w-4 h-4" />
                   Lọc theo trạng thái
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => setFilterStatus("all")}>Tất cả</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setFilterStatus("published")}>Đã xuất bản</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setFilterStatus("draft")}>Bản nháp</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setFilterStatus("scheduled")}>Đã lên lịch</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterStatus("all")}>
+                  Tất cả
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterStatus("published")}>
+                  Đã xuất bản
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterStatus("draft")}>
+                  Bản nháp
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilterStatus("scheduled")}>
+                  Đã lên lịch
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -195,10 +237,17 @@ export default function AdminPosts() {
       {/* Posts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {filteredPosts.map((post) => (
-          <Card key={post.id} className="hover:shadow-lg transition-shadow duration-200">
+          <Card
+            key={post.id}
+            className="hover:shadow-lg transition-shadow duration-200"
+          >
             <CardContent className="p-0">
               <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-t-lg overflow-hidden">
-                <img src={post.image || "/placeholder.svg"} alt={post.title} className="w-full h-full object-cover" />
+                <img
+                  src={post.image || "/placeholder.svg"}
+                  alt={post.title}
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -226,9 +275,13 @@ export default function AdminPosts() {
                   </DropdownMenu>
                 </div>
 
-                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2">{post.title}</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2">
+                  {post.title}
+                </h3>
 
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">{post.excerpt}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+                  {post.excerpt}
+                </p>
 
                 <div className="flex items-center justify-between text-xs text-gray-500">
                   <div className="flex items-center gap-4">
@@ -265,8 +318,12 @@ export default function AdminPosts() {
         <Card>
           <CardContent className="p-8 text-center">
             <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">Không tìm thấy bài viết</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">Thử thay đổi từ khóa tìm kiếm hoặc bộ lọc</p>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
+              Không tìm thấy bài viết
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+              Thử thay đổi từ khóa tìm kiếm hoặc bộ lọc
+            </p>
             <Button asChild>
               <Link href="/admin/posts/new">Tạo bài viết đầu tiên</Link>
             </Button>
@@ -274,5 +331,5 @@ export default function AdminPosts() {
         </Card>
       )}
     </div>
-  )
+  );
 }

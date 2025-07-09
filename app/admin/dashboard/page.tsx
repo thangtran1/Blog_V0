@@ -1,9 +1,19 @@
-"use client"
+"use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { FileText, FolderOpen, MessageSquare, Eye, TrendingUp, Users, Calendar, Plus } from "lucide-react"
-import Link from "next/link"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  FileText,
+  FolderOpen,
+  MessageSquare,
+  Eye,
+  TrendingUp,
+  Users,
+  Calendar,
+  Plus,
+} from "lucide-react";
+import Link from "next/link";
+import { bgDefault2 } from "@/styles/classNames";
 
 // Mock data
 const stats = [
@@ -39,7 +49,7 @@ const stats = [
     color: "from-orange-500 to-orange-600",
     bgColor: "bg-orange-50 dark:bg-orange-900/20",
   },
-]
+];
 
 const recentPosts = [
   {
@@ -66,19 +76,25 @@ const recentPosts = [
     views: 2341,
     date: "2024-01-13",
   },
-]
+];
 
 export default function AdminDashboard() {
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl p-6 text-white">
+      <div className={`${bgDefault2} rounded-2xl p-6 text-white`}>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold mb-2">Chào mừng trở lại! 👋</h1>
-            <p className="text-green-100">Quản lý blog của bạn một cách hiệu quả</p>
+            <h1 className="text-2xl font-bold mb-2">Chào mừng trsở lại! 👋</h1>
+            <p className="text-green-100">
+              Quản lý blog của bạn một cách hiệu quả
+            </p>
           </div>
-          <Button asChild variant="secondary" className="bg-white text-green-600 hover:bg-gray-100">
+          <Button
+            asChild
+            variant="secondary"
+            className="bg-white text-green-600 hover:bg-gray-100"
+          >
             <Link href="/admin/posts/new">
               <Plus className="w-4 h-4 mr-2" />
               Tạo bài viết mới
@@ -90,16 +106,27 @@ export default function AdminDashboard() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
-          <Card key={index} className="hover:shadow-lg transition-shadow duration-200">
+          <Card
+            key={index}
+            className="hover:shadow-lg transition-shadow duration-200"
+          >
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{stat.title}</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{stat.value}</p>
-                  <p className="text-sm text-green-600 font-medium">{stat.change}</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    {stat.title}
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                    {stat.value}
+                  </p>
+                  <p className="text-sm text-green-600 font-medium">
+                    {stat.change}
+                  </p>
                 </div>
                 <div className={`p-3 rounded-xl ${stat.bgColor}`}>
-                  <stat.icon className={`w-6 h-6 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`} />
+                  <stat.icon
+                    className={`w-6 h-6 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}
+                  />
                 </div>
               </div>
             </CardContent>
@@ -127,9 +154,13 @@ export default function AdminDashboard() {
                   className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                 >
                   <div className="flex-1">
-                    <h4 className="font-medium text-gray-900 dark:text-gray-100">{post.title}</h4>
+                    <h4 className="font-medium text-gray-900 dark:text-gray-100">
+                      {post.title}
+                    </h4>
                     <div className="flex items-center gap-4 mt-1">
-                      <span className="text-sm text-gray-500">{post.category}</span>
+                      <span className="text-sm text-gray-500">
+                        {post.category}
+                      </span>
                       <span
                         className={`text-xs px-2 py-1 rounded-full ${
                           post.status === "published"
@@ -137,7 +168,9 @@ export default function AdminDashboard() {
                             : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400"
                         }`}
                       >
-                        {post.status === "published" ? "Đã xuất bản" : "Bản nháp"}
+                        {post.status === "published"
+                          ? "Đã xuất bản"
+                          : "Bản nháp"}
                       </span>
                     </div>
                   </div>
@@ -171,7 +204,9 @@ export default function AdminDashboard() {
                   </div>
                   <div>
                     <p className="font-medium">Bài viết tuần này</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">5 bài viết mới</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      5 bài viết mới
+                    </p>
                   </div>
                 </div>
                 <span className="text-2xl font-bold text-blue-600">5</span>
@@ -184,7 +219,9 @@ export default function AdminDashboard() {
                   </div>
                   <div>
                     <p className="font-medium">Người đọc mới</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Tăng 23% so với tuần trước</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Tăng 23% so với tuần trước
+                    </p>
                   </div>
                 </div>
                 <span className="text-2xl font-bold text-green-600">+23%</span>
@@ -197,7 +234,9 @@ export default function AdminDashboard() {
                   </div>
                   <div>
                     <p className="font-medium">Comments chờ duyệt</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Cần xem xét</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      Cần xem xét
+                    </p>
                   </div>
                 </div>
                 <span className="text-2xl font-bold text-purple-600">12</span>
@@ -207,5 +246,5 @@ export default function AdminDashboard() {
         </Card>
       </div>
     </div>
-  )
+  );
 }

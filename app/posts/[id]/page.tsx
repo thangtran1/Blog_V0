@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, ArrowLeft, Share2 } from "lucide-react";
-import { maxWidth } from "@/styles/classNames";
+import { buttonDefault, maxWidth, textDefault } from "@/styles/classNames";
 
 const posts = {
   1: {
@@ -145,7 +145,7 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
             <article className="prose prose-gray max-w-none dark:prose-invert prose-lg">
               <div className="mb-8">
                 <div className="flex items-center gap-2 mb-4">
-                  <Badge className="bg-green-500 hover:bg-green-600 text-white">
+                  <Badge className={`${buttonDefault} text-white`}>
                     {post.category}
                   </Badge>
                 </div>
@@ -184,7 +184,9 @@ export default function PostDetailPage({ params }: { params: { id: string } }) {
             <div className="sticky top-20">
               <Card className="border-green-200 dark:border-green-800 bg-card/50 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-lg text-green-600 dark:text-green-400 flex items-center gap-2">
+                  <CardTitle
+                    className={`text-lg ${textDefault} flex items-center gap-2`}
+                  >
                     📋 Trong bài này
                   </CardTitle>
                 </CardHeader>

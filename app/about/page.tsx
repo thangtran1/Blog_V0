@@ -20,7 +20,7 @@ import {
   Camera,
   Gamepad2,
 } from "lucide-react";
-import { maxWidth, titleName } from "@/styles/classNames";
+import { maxWidth, textDefault, titleName } from "@/styles/classNames";
 
 const skills = [
   {
@@ -289,7 +289,9 @@ export default function AboutPage() {
                             {skill.icon}
                           </div>
                           <div className="flex-1">
-                            <h3 className="font-bold text-lg text-green-600 dark:text-green-400 group-hover:text-green-500 transition-colors">
+                            <h3
+                              className={`font-bold text-lg ${textDefault} group-hover:text-green-500 transition-colors`}
+                            >
                               {skill.name}
                             </h3>
                             <Badge
@@ -396,7 +398,7 @@ export default function AboutPage() {
                       <h3 className="font-bold text-xl text-foreground">
                         {exp.title}
                       </h3>
-                      <p className="text-green-600 dark:text-green-400 font-semibold text-lg">
+                      <p className={`${textDefault} font-semibold text-lg`}>
                         {exp.company}
                       </p>
                       <p className="text-sm text-muted-foreground font-medium">

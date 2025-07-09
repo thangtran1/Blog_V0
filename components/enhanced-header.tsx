@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useEffect, useState } from "react";
-import { titleName } from "@/styles/classNames";
+import { textDefault, titleName } from "@/styles/classNames";
 export default function EnhancedHeader() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -89,7 +89,7 @@ export default function EnhancedHeader() {
                 index + 1
               } ${
                 isActive(item.href)
-                  ? "text-green-600 dark:text-green-400"
+                  ? { textDefault }
                   : "text-muted-foreground hover:text-green-600 dark:hover:text-green-400"
               }`}
             >
@@ -182,7 +182,7 @@ export default function EnhancedHeader() {
                       index + 1
                     } ${
                       isActive(item.href)
-                        ? "text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950"
+                        ? `${textDefault} bg-green-50 dark:bg-green-950`
                         : "text-muted-foreground hover:text-green-600 dark:hover:text-green-400"
                     }`}
                   >

@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useEffect, useState } from "react";
-import { titleName } from "@/styles/classNames";
+import { textDefault, titleName } from "@/styles/classNames";
 export default function Header() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -70,7 +70,7 @@ export default function Header() {
               href={item.href}
               className={`text-sm font-medium transition-all duration-300 relative group ${
                 isActive(item.href)
-                  ? "text-green-600 dark:text-green-400"
+                  ? `${textDefault}`
                   : "text-muted-foreground hover:text-green-600 dark:hover:text-green-400"
               }`}
             >
@@ -129,7 +129,7 @@ export default function Header() {
                     href={item.href}
                     className={`text-lg font-medium transition-colors ${
                       isActive(item.href)
-                        ? "text-green-600 dark:text-green-400"
+                        ? `${textDefault}`
                         : "text-muted-foreground hover:text-green-600 dark:hover:text-green-400"
                     }`}
                   >

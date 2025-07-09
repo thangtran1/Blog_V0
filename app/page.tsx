@@ -14,7 +14,13 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, ArrowRight, Code, Sparkles } from "lucide-react";
 import TrendingCarousel from "@/components/trending-carousel";
-import { titleName, maxWidth } from "../styles/classNames";
+import {
+  titleName,
+  maxWidth,
+  textDefault,
+  bgWelcome,
+  buttonDefault,
+} from "../styles/classNames";
 const featuredPosts = [
   {
     id: 1,
@@ -122,11 +128,11 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col px-4 min-h-screen">
       {/* Hero Section */}
       <section
         id="hero"
-        className="relative bg-gradient-to-br from-green-500 via-green-600 to-green-700 dark:from-green-600 dark:via-green-700 dark:to-green-800 text-white py-20 lg:py-32 overflow-hidden"
+        className={`relative px-2 rounded-lg ${bgWelcome} text-white py-20 lg:py-32 overflow-hidden`}
       >
         <div className="absolute inset-0 bg-black/10"></div>
         {/* Animated decorative elements */}
@@ -137,7 +143,7 @@ export default function HomePage() {
               : "opacity-0 translate-y-10"
           }`}
         >
-          <div className={`${maxWidth} px-4 mx-auto text-center`}>
+          <div className={`${maxWidth} mx-auto text-center`}>
             <div className="flex justify-center mb-8">
               <div className="relative animate-bounce-in-down">
                 <div className="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30 shadow-2xl">
@@ -164,7 +170,7 @@ export default function HomePage() {
               <Button
                 asChild
                 size="lg"
-                className="bg-white text-green-600 hover:bg-green-50 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+                className=" hover:bg-green-50 px-8 py-4 rounded-full font-medium text-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 <Link href="/posts">📚 Khám phá bài viết</Link>
               </Button>
@@ -186,7 +192,7 @@ export default function HomePage() {
 
       {/* Categories Section */}
       <section id="categories" className="py-20 bg-muted/50">
-        <div className="px-4">
+        <div className="">
           <div className={`${maxWidth} mx-auto`}>
             <div
               className={`text-center mb-16 transition-all duration-1000 ${
@@ -195,7 +201,7 @@ export default function HomePage() {
                   : "opacity-0 translate-y-10"
               }`}
             >
-              <h2 className="text-4xl font-bold mb-4 text-green-600 dark:text-green-400">
+              <h2 className={`text-4xl ${textDefault} font-bold mb-4 `}>
                 Danh mục bài viết
               </h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
@@ -267,7 +273,7 @@ export default function HomePage() {
 
       {/* Latest Posts Section */}
       <section id="latest" className="py-16 bg-background">
-        <div className="px-4">
+        <div className="">
           <div className={`${maxWidth} mx-auto `}>
             <div
               className={`text-center mb-12 transition-all duration-1000 ${
@@ -276,7 +282,7 @@ export default function HomePage() {
                   : "opacity-0 translate-y-10"
               }`}
             >
-              <h2 className="text-3xl font-bold mb-4 text-green-600 dark:text-green-400">
+              <h2 className={`text-3xl font-bold mb-4 ${textDefault}`}>
                 Bài viết mới nhất
               </h2>
               <p className="text-muted-foreground text-lg">
@@ -307,9 +313,7 @@ export default function HomePage() {
                         className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute top-4 left-4">
-                        <Badge className="bg-green-500 hover:bg-green-600">
-                          {post.category}
-                        </Badge>
+                        <Badge className={buttonDefault}>{post.category}</Badge>
                       </div>
                     </div>
                     <CardHeader>

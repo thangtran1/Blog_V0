@@ -18,7 +18,7 @@ import {
   User,
 } from "lucide-react";
 import { useState } from "react";
-import { titleName } from "@/styles/classNames";
+import { bgDefault2, titleName } from "@/styles/classNames";
 export default function AdminSettings() {
   const [settings, setSettings] = useState({
     siteName: `${titleName} Blog`,
@@ -52,10 +52,7 @@ export default function AdminSettings() {
             Quản lý cấu hình và tùy chỉnh blog của bạn
           </p>
         </div>
-        <Button
-          onClick={handleSave}
-          className="bg-gradient-to-r from-green-500 to-green-600"
-        >
+        <Button onClick={handleSave} className={bgDefault2}>
           Lưu thay đổi
         </Button>
       </div>
@@ -210,7 +207,9 @@ export default function AdminSettings() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="p-4 border rounded-lg cursor-pointer hover:border-green-500 transition-colors">
-                  <div className="w-full h-20 bg-gradient-to-r from-green-500 to-green-600 rounded mb-2"></div>
+                  <div
+                    className={`w-full h-20  rounded mb-2 ${bgDefault2}`}
+                  ></div>
                   <p className="text-sm font-medium">Green Theme</p>
                   <p className="text-xs text-gray-500">Theme mặc định</p>
                 </div>

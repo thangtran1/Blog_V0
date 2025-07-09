@@ -1,17 +1,18 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Save, X, Hash } from "lucide-react"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Save, X, Hash } from "lucide-react";
+import { buttonDefault } from "@/styles/classNames";
 
 interface TagFormProps {
-  tag?: any
-  onClose: () => void
+  tag?: any;
+  onClose: () => void;
 }
 
 const colorOptions = [
@@ -25,7 +26,7 @@ const colorOptions = [
   "#14B8A6",
   "#F97316",
   "#84CC16",
-]
+];
 
 export default function TagForm({ tag, onClose }: TagFormProps) {
   const [formData, setFormData] = useState({
@@ -33,15 +34,15 @@ export default function TagForm({ tag, onClose }: TagFormProps) {
     slug: tag?.slug || "",
     description: tag?.description || "",
     color: tag?.color || "#3B82F6",
-  })
+  });
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
-    }))
+    }));
 
     // Auto-generate slug from name
     if (field === "name" && !tag) {
@@ -50,26 +51,26 @@ export default function TagForm({ tag, onClose }: TagFormProps) {
         .replace(/[^a-z0-9\s-]/g, "")
         .replace(/\s+/g, "-")
         .replace(/-+/g, "-")
-        .trim()
-      setFormData((prev) => ({ ...prev, slug }))
+        .trim();
+      setFormData((prev) => ({ ...prev, slug }));
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      console.log("Tag data:", formData)
-      alert(tag ? "Cập nhật tag thành công!" : "Tạo tag thành công!")
-      onClose()
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log("Tag data:", formData);
+      alert(tag ? "Cập nhật tag thành công!" : "Tạo tag thành công!");
+      onClose();
     } catch (error) {
-      alert("Có lỗi xảy ra!")
+      alert("Có lỗi xảy ra!");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -131,7 +132,10 @@ export default function TagForm({ tag, onClose }: TagFormProps) {
       <div className="space-y-2">
         <Label>Xem trước</Label>
         <div className="flex items-center gap-2 p-2 border rounded">
-          <div className="w-4 h-4 rounded-full" style={{ backgroundColor: formData.color }}></div>
+          <div
+            className="w-4 h-4 rounded-full"
+            style={{ backgroundColor: formData.color }}
+          ></div>
           <span className="font-medium">{formData.name || "Tên tag"}</span>
         </div>
       </div>
@@ -141,11 +145,15 @@ export default function TagForm({ tag, onClose }: TagFormProps) {
           <X className="w-4 h-4 mr-2" />
           Hủy
         </Button>
-        <Button type="submit" disabled={isLoading} className="bg-green-500 hover:bg-green-600">
-          {isLoading ? <div className="loading-spinner w-4 h-4 mr-2"></div> : <Save className="w-4 h-4 mr-2" />}
+        <Button type="submit" disabled={isLoading} className={buttonDefault}>
+          {isLoading ? (
+            <div className="loading-spinner w-4 h-4 mr-2"></div>
+          ) : (
+            <Save className="w-4 h-4 mr-2" />
+          )}
           {tag ? "Cập nhật" : "Tạo tag"}
         </Button>
       </div>
     </form>
-  )
+  );
 }

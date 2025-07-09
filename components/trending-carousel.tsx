@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight, Calendar, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { maxWidth } from "@/styles/classNames";
+import { bgWelcome, maxWidth, textDefault } from "@/styles/classNames";
 
 const trendingPosts = [
   {
@@ -122,7 +122,7 @@ export default function TrendingCarousel() {
 
   return (
     <section id="trending-section" className="py-20 bg-background">
-      <div className="px-4">
+      <div className="">
         <div className={`${maxWidth} mx-auto `}>
           <div
             className={`text-center mb-12 transition-all duration-1000 ${
@@ -131,7 +131,7 @@ export default function TrendingCarousel() {
                 : "opacity-0 translate-y-10"
             }`}
           >
-            <h2 className="text-4xl font-bold mb-4 text-green-600 dark:text-green-400">
+            <h2 className={`text-4xl font-bold mb-4 ${textDefault}`}>
               Bài viết nổi bật
             </h2>
             <p className="text-muted-foreground text-lg">
@@ -148,7 +148,7 @@ export default function TrendingCarousel() {
           >
             {/* Main Carousel */}
             <div
-              className="relative bg-gradient-to-br from-green-600 via-green-700 to-green-800 rounded-3xl p-8 md:p-12 text-white overflow-hidden border-2 border-green-500/20 shadow-2xl"
+              className={`relative ${bgWelcome} rounded-3xl p-8 md:p-12 text-white overflow-hidden border-2 border-green-500/20 shadow-2xl`}
               onMouseEnter={() => setIsPaused(true)}
               onMouseLeave={() => setIsPaused(false)}
             >
@@ -188,7 +188,7 @@ export default function TrendingCarousel() {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-white text-green-700 hover:bg-green-50 font-semibold"
+                  className=" hover:bg-green-50 font-semibold"
                 >
                   <Link href={`/posts/${currentPost.id}`}>Đọc ngay →</Link>
                 </Button>

@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Calendar, Clock, Search, Filter } from "lucide-react";
-import { maxWidth } from "@/styles/classNames";
+import { buttonDefault, maxWidth, textDefault } from "@/styles/classNames";
 
 const allPosts = [
   {
@@ -90,7 +90,7 @@ export default function PostsPage() {
       <div className={`${maxWidth} mx-auto `}>
         {/* Header */}
         <div className="text-center  mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-green-600 dark:text-green-400">
+          <h1 className={`text-4xl font-bold mb-4 ${textDefault}`}>
             Tất cả bài viết
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
@@ -128,7 +128,7 @@ export default function PostsPage() {
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-3 px-4">
+          <div className="lg:col-span-3">
             {/* Search and Filter */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <div className="relative flex-1">
@@ -167,9 +167,7 @@ export default function PostsPage() {
                       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-4 left-4">
-                      <Badge className="bg-green-500 hover:bg-green-600">
-                        {post.category}
-                      </Badge>
+                      <Badge className={buttonDefault}>{post.category}</Badge>
                     </div>
                   </div>
                   <CardHeader>

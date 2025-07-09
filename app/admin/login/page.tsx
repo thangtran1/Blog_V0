@@ -17,7 +17,7 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Eye, EyeOff, Lock, Mail, Shield } from "lucide-react";
 import { useAdminAuth } from "@/lib/admin-auth";
-import { titleName } from "@/styles/classNames";
+import { bgDefault, bgDefault2, titleName } from "@/styles/classNames";
 export default function AdminLoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -51,10 +51,14 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-lg">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl">
+          <div
+            className={`w-20 h-20 ${bgDefault2} rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl`}
+          >
             <Shield className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent mb-2">
+          <h1
+            className={`text-3xl font-bold  ${bgDefault} bg-clip-text text-transparent mb-2`}
+          >
             Admin Panel
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
@@ -128,7 +132,7 @@ export default function AdminLoginPage() {
 
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 shadow-lg"
+                className={`w-full ${bgDefault2} hover:from-green-600 hover:to-green-700 shadow-lg`}
                 disabled={isLoading}
               >
                 {isLoading ? (

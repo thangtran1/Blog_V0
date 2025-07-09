@@ -7,12 +7,14 @@ import { useRouter, usePathname } from "next/navigation";
 import { AdminAuthProvider, useAdminAuth } from "@/lib/admin-auth";
 import AdminSidebar from "@/components/admin/admin-sidebar";
 import AdminHeader from "@/components/admin/admin-header";
+import { maxWidth } from "@/styles/classNames";
 
 function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAdminAuth();
   const router = useRouter();
   const pathname = usePathname();
-  const [sidebarWidth, setSidebarWidth] = useState(256); // 64 * 4 = 256px (w-64)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated && pathname !== "/admin/login") {
@@ -20,24 +22,21 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
     }
   }, [isAuthenticated, isLoading, pathname, router]);
 
-  // Listen for sidebar width changes
+  // Close sidebar on route change (mobile)
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
+
+  // Handle responsive behavior
   useEffect(() => {
     const handleResize = () => {
-      const sidebar = document.querySelector("[data-sidebar]");
-      if (sidebar) {
-        setSidebarWidth(sidebar.getBoundingClientRect().width);
+      if (window.innerWidth >= 1024) {
+        setSidebarOpen(false); // Close mobile sidebar on desktop
       }
     };
 
-    // Initial check
-    handleResize();
-
-    // Listen for transitions
-    const sidebar = document.querySelector("[data-sidebar]");
-    if (sidebar) {
-      sidebar.addEventListener("transitionend", handleResize);
-      return () => sidebar.removeEventListener("transitionend", handleResize);
-    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Show login page
@@ -63,16 +62,16 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   if (isAuthenticated) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div data-sidebar>
-          <AdminSidebar />
-        </div>
-        <div
-          className="transition-all duration-300"
-          style={{ marginLeft: `${sidebarWidth}px` }}
-        >
-          <AdminHeader />
-          <main className="p-6">
-            <div className="max-w-9xl mx-auto">{children}</div>
+        <AdminSidebar
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
+
+        {/* Main Content */}
+        <div className="lg:ml-64 transition-all duration-300">
+          <AdminHeader onMenuClick={() => setSidebarOpen(true)} />
+          <main className="p-4 lg:p-6">
+            <div className={`${maxWidth} mx-auto`}>{children}</div>
           </main>
         </div>
       </div>

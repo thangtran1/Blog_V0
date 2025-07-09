@@ -10,7 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { maxWidth } from "@/styles/classNames";
+import { buttonDefault, maxWidth, textDefault } from "@/styles/classNames";
 
 const categoryData = {
   frontend: {
@@ -144,7 +144,7 @@ export default function CategoryPage({
 
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-green-600 dark:text-green-400">
+          <h1 className={`text-4xl font-bold mb-4 ${textDefault}`}>
             {category.name}
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
@@ -173,9 +173,7 @@ export default function CategoryPage({
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute top-4 left-4">
-                  <Badge className="bg-green-500 hover:bg-green-600">
-                    {category.name}
-                  </Badge>
+                  <Badge className={buttonDefault}>{category.name}</Badge>
                 </div>
               </div>
               <CardHeader>

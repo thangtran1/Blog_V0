@@ -9,7 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpen } from "lucide-react";
-import { maxWidth } from "@/styles/classNames";
+import { bgWelcome, maxWidth, textDefault } from "@/styles/classNames";
 
 const categories = [
   {
@@ -102,9 +102,11 @@ export default function CategoriesPage() {
   const totalPosts = categories.reduce((sum, cat) => sum + cat.count, 0);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen px-4 round bg-background">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-green-500 via-green-600 to-green-700 dark:from-green-600 dark:via-green-700 dark:to-green-800 text-white py-20 overflow-hidden">
+      <section
+        className={`relative rounded-lg ${bgWelcome} text-white py-20 overflow-hidden`}
+      >
         <div className="absolute inset-0 bg-black/10"></div>
         {/* Animated background elements */}
         <div className="absolute top-10 left-10 w-20 h-20 bg-white/10 rounded-full blur-xl animate-pulse"></div>
@@ -140,13 +142,13 @@ export default function CategoriesPage() {
 
       {/* Categories Grid */}
       <section className="py-20">
-        <div className="px-4  ">
+        <div className="">
           <div className={`${maxWidth} mx-auto`}>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {categories.map((category, index) => (
                 <div
                   key={index}
-                  className="group animate-fade-in-up"
+                  className="group animate-fade-in-up  border border-gray-200 rounded-md"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <Card className="h-full hover:shadow-2xl transition-all duration-500 border-2 border-transparent hover:border-green-200 dark:hover:border-green-800 bg-gradient-to-br from-card to-muted/50 hover:scale-105 transform">
@@ -213,21 +215,19 @@ export default function CategoriesPage() {
           <div className={`${maxWidth} mx-auto `}>
             <div className="grid md:grid-cols-3 gap-8 text-center">
               <div className="space-y-2">
-                <div className="text-4xl font-bold text-green-600 dark:text-green-400">
+                <div className={`text-4xl font-bold ${textDefault}`}>
                   {categories.length}
                 </div>
                 <div className="text-muted-foreground">Danh mục</div>
               </div>
               <div className="space-y-2">
-                <div className="text-4xl font-bold text-green-600 dark:text-green-400">
+                <div className={`text-4xl font-bold ${textDefault}`}>
                   {totalPosts}
                 </div>
                 <div className="text-muted-foreground">Bài viết</div>
               </div>
               <div className="space-y-2">
-                <div className="text-4xl font-bold text-green-600 dark:text-green-400">
-                  5+
-                </div>
+                <div className={`text-4xl font-bold ${textDefault}`}>5+</div>
                 <div className="text-muted-foreground">Năm kinh nghiệm</div>
               </div>
             </div>

@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import CategoryForm from "@/components/admin/category-form";
+import { bgDefault2 } from "@/styles/classNames";
 
 // Mock data
 const categories = [
@@ -133,7 +134,7 @@ export default function AdminCategories() {
         </div>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-gradient-to-r from-green-500 to-green-600">
+            <Button className={bgDefault2}>
               <Plus className="w-4 h-4 mr-2" />
               Tạo danh mục mới
             </Button>
