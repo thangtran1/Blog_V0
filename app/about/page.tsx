@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardContent,
@@ -21,6 +22,8 @@ import {
   Gamepad2,
 } from "lucide-react";
 import { maxWidth, textDefault, titleName } from "@/styles/classNames";
+import { callFetchCategories } from "@/lib/api-services";
+import { useEffect } from "react";
 
 const skills = [
   {
@@ -191,30 +194,47 @@ const lifestyle = [
 ];
 
 export default function AboutPage() {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await callFetchCategories();
+        console.log("Dữ liệu categories:", res.data); // log ra console
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <div className="min-h-screen bg-background">
       <div className="py-12 px-4">
+        <div>taat ca danh muc </div>
         <div className={`${maxWidth} mx-auto `}>
           {/* Hero Section */}
           <div className="text-center mb-16">
-            <div className="relative inline-block mb-8">
-              <div className="w-40 h-40 bg-gradient-to-br from-green-500 to-green-600 rounded-full mx-auto flex items-center justify-center shadow-2xl relative overflow-hidden">
-                <span className="text-5xl font-bold text-white">CE</span>
-                {/* Animated border */}
-                <div className="absolute inset-0 rounded-full border-4 border-green-400/30 animate-pulse"></div>
-                <div className="absolute inset-2 rounded-full border-2 border-green-300/20 animate-ping"></div>
+            <div className="flex flex-col md:flex-row justify-center items-center">
+              <div className="relative inline-block mb-8 md:mb-0">
+                <div className="w-40 h-40 bg-gradient-to-br from-green-500 to-green-600 rounded-full mx-auto flex items-center justify-center shadow-2xl relative overflow-hidden">
+                  <span className="text-5xl font-bold text-white">CE</span>
+                  {/* Animated border */}
+                  <div className="absolute inset-0 rounded-full border-4 border-green-400/30 animate-pulse"></div>
+                  <div className="absolute inset-2 rounded-full border-2 border-green-300/20 animate-ping"></div>
+                </div>
+                <div className="absolute -top-2 -right-2 w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg animate-bounce">
+                  <span className="text-lg">✨</span>
+                </div>
               </div>
-              <div className="absolute -top-2 -right-2 w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg animate-bounce">
-                <span className="text-lg">✨</span>
+              <div className="flex flex-col md:ml-10 justify-center text-center md:text-left">
+                <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-600 to-green-400 bg-clip-text text-transparent">
+                  Chào mừng đến với {titleName}!
+                </h1>
+                <p className="text-xl text-muted-foreground max-w-2xl mx-auto md:mx-0">
+                  Xin chào, tôi là một developer đam mê chia sẻ kiến thức và
+                  khám phá công nghệ
+                </p>
               </div>
             </div>
-            <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-600 to-green-400 bg-clip-text text-transparent">
-              Chào mừng đến với {titleName}!
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Xin chào, tôi là một developer đam mê chia sẻ kiến thức và khám
-              phá công nghệ
-            </p>
           </div>
 
           {/* About Section */}
