@@ -21,11 +21,11 @@ import { bgDefault, bgDefault2, titleName } from "@/styles/classNames";
 const navigation = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   { name: "Bài viết", href: "/admin/posts", icon: FileText },
-  { name: "Danh mục", href: "/admin/categories", icon: FolderOpen },
   { name: "Tags", href: "/admin/tags", icon: Tags },
   { name: "Comments", href: "/admin/comments", icon: MessageSquare },
   { name: "Cài đặt", href: "/admin/settings", icon: Settings },
   { name: "Thông tin admin", href: "/admin/profile", icon: UserCircle },
+  { name: "Danh mục", href: "/admin/categories", icon: FolderOpen },
 ];
 
 interface AdminSidebarProps {

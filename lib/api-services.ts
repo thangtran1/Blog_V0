@@ -107,6 +107,7 @@ export interface ICategory {
   image: string;
   description: string;
   content: string;
+  totalPost: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -352,41 +353,6 @@ export const callIncrementPostView = (postId: string) => {
 export const callTogglePostLike = (postId: string) => {
   return apiClient.patch<IBackendRes<{ likes: number; isLiked: boolean }>>(
     `/api/v1/posts/${postId}/like`
-  );
-};
-
-// ====================================================================
-// CATEGORIES API SERVICES - Trang danh mục
-// ====================================================================
-
-// Lấy tất cả danh mục - Trang danh mục (/categories)
-export const callFetchCategories = () => {
-  return apiClient.get<IBackendRes<ICategory[]>>("/categories");
-};
-
-// Lấy danh mục theo ID - Trang danh mục chi tiết (/categories/[id])
-export const callFetchCategoryById = (id: string) => {
-  return apiClient.get<IBackendRes<ICategory>>(`/categories/${id}`);
-};
-
-// Lấy danh mục theo slug - Trang danh mục chi tiết (/categories/[slug])
-export const callFetchCategoryBySlug = (slug: string) => {
-  return apiClient.get<IBackendRes<ICategory>>(
-    `/api/v1/categories/slug/${slug}`
-  );
-};
-
-// Lấy bài viết theo danh mục - Trang danh mục chi tiết (/categories/[slug])
-export const callFetchPostsByCategory = (categoryId: string, query: string) => {
-  return apiClient.get<IBackendRes<IModelPaginate<IPost>>>(
-    `/api/v1/categories/${categoryId}/posts?${query}`
-  );
-};
-
-// Lấy danh mục phổ biến - Sidebar, Footer
-export const callFetchPopularCategories = (limit = 10) => {
-  return apiClient.get<IBackendRes<ICategory[]>>(
-    `/api/v1/categories/popular?limit=${limit}`
   );
 };
 
@@ -727,71 +693,52 @@ export const callSendNewsletter = (newsletterData: {
 // USERS API SERVICES - Trang tác giả, profile
 // ====================================================================
 
-// Lấy thông tin tác giả - Trang về tác giả
+// API ABOUT ME
+
 export const callFetchAboutAuthor = () => {
   return apiClient.get<IAboutMe>(`/about-me`);
 };
-
-export const callFetchSkillsAuthor = () => {
-  return apiClient.get<ISkillMe[]>(`/skills`);
-};
-
-export const callFetchLifeAuthor = () => {
-  return apiClient.get<ILifesMe[]>(`/life`);
-};
-
-export const callFetchExpensiveAuthor = () => {
-  return apiClient.get<IExpensiveMe[]>(`/expensive`);
-};
-
-export const callFetchConnectAuthor = () => {
-  return apiClient.get<IConnectMe[]>(`/connect`);
-};
-
-// Update thông tin tác giả - Trang về tác giả
-export const callUpdateSkill = (skill: ISkillMe) => {
-  return apiClient.put<ISkillMe>(`/skills/${skill._id}`, skill);
-};
-
-// tạo thông tin tác giả - Trang về tác giả
-export const callCreateSkill = (data: ISkillMe) => {
-  return apiClient.post("/skills", data);
-};
-
-export const callCreateLife = (data: ILifesMe) => {
-  return apiClient.post("/life", data);
-};
-
-// xoa about me
 export const callDeleteAboutAuthor = () => {
   return apiClient.delete<IBackendRes<string>>(`/about-me`);
 };
-
-// Tạo danh mục mới - Admin panel
 export const callCreateAboutAuthor = (aboutMeData: Partial<IAboutMe>) => {
   return apiClient.post<IAboutMe>("/about-me", aboutMeData);
 };
-
-export const callCreateConnect = (data: Partial<IConnectMe>) => {
-  return apiClient.post<IConnectMe>("/connect", data);
-};
-
-export const callCreateExpensive = (data: Partial<IExpensiveMe>) => {
-  return apiClient.post<IExpensiveMe>("/expensive", data);
-};
-
-// Cập nhật danh mục - Admin panel
 export const callUpdateAboutAuthor = (aboutMeData: Partial<IAboutMe>) => {
   return apiClient.patch<IAboutMe>(`/about-me`, aboutMeData);
 };
 
-export const callUpdateConnect = (id: string, data: Partial<IConnectMe>) => {
-  return apiClient.put<IConnectMe>(`/connect/${id}`, data);
+// API SKILLS
+
+export const callFetchSkillsAuthor = () => {
+  return apiClient.get<ISkillMe[]>(`/skills`);
+};
+export const callUpdateSkill = (skill: ISkillMe) => {
+  return apiClient.put<ISkillMe>(`/skills/${skill._id}`, skill);
+};
+export const callCreateSkill = (data: ISkillMe) => {
+  return apiClient.post("/skills", data);
+};
+export const callDeleteSkill = (id: string) => {
+  return apiClient.delete(`/skills/${id}`);
 };
 
+// API LIFE
+
+export const callFetchLifeAuthor = () => {
+  return apiClient.get<ILifesMe[]>(`/life`);
+};
+export const callCreateLife = (data: ILifesMe) => {
+  return apiClient.post("/life", data);
+};
 export const callUpdateLife = (id: string, data: Partial<ILifesMe>) => {
   return apiClient.put<ILifesMe>(`/life/${id}`, data);
 };
+export const callDeleteLife = (id: string) => {
+  return apiClient.delete(`/life/${id}`);
+};
+
+// API EXPENSIVE
 
 export const callUpdateExpensive = (
   id: string,
@@ -799,23 +746,65 @@ export const callUpdateExpensive = (
 ) => {
   return apiClient.put<IExpensiveMe>(`/expensive/${id}`, data);
 };
+export const callDeleteExpensive = (id: string) => {
+  return apiClient.delete(`/expensive/${id}`);
+};
+export const callCreateExpensive = (data: Partial<IExpensiveMe>) => {
+  return apiClient.post<IExpensiveMe>("/expensive", data);
+};
+export const callFetchExpensiveAuthor = () => {
+  return apiClient.get<IExpensiveMe[]>(`/expensive`);
+};
 
+// API CONNECT
+
+export const callFetchConnectAuthor = () => {
+  return apiClient.get<IConnectMe[]>(`/connect`);
+};
+export const callCreateConnect = (data: Partial<IConnectMe>) => {
+  return apiClient.post<IConnectMe>("/connect", data);
+};
+export const callUpdateConnect = (id: string, data: Partial<IConnectMe>) => {
+  return apiClient.put<IConnectMe>(`/connect/${id}`, data);
+};
 export const callDeleteConnect = (id: string) => {
   return apiClient.delete(`/connect/${id}`);
 };
 
-export const callDeleteExpensive = (id: string) => {
-  return apiClient.delete(`/expensive/${id}`);
+// ====================================================================
+// CATEGORIES API SERVICES - Trang danh mục
+// ====================================================================
+
+// Lấy tất cả danh mục - Trang danh mục (/categories)
+export const callFetchCategories = () => {
+  return apiClient.get<ICategory[]>("/categories");
 };
 
-export const callDeleteLife = (id: string) => {
-  return apiClient.delete(`/life/${id}`);
+// Lấy danh mục theo ID - Trang danh mục chi tiết (/categories/[id])
+export const callFetchCategoryById = (id: string) => {
+  return apiClient.get<IBackendRes<ICategory>>(`/categories/${id}`);
 };
 
-export const callDeleteSkill = (id: string) => {
-  return apiClient.delete(`/skills/${id}`);
+// Lấy danh mục theo slug - Trang danh mục chi tiết (/categories/[slug])
+export const callFetchCategoryBySlug = (slug: string) => {
+  return apiClient.get<IBackendRes<ICategory>>(
+    `/api/v1/categories/slug/${slug}`
+  );
 };
 
+// Lấy bài viết theo danh mục - Trang danh mục chi tiết (/categories/[slug])
+export const callFetchPostsByCategory = (categoryId: string, query: string) => {
+  return apiClient.get<IBackendRes<IModelPaginate<IPost>>>(
+    `/api/v1/categories/${categoryId}/posts?${query}`
+  );
+};
+
+// Lấy danh mục phổ biến - Sidebar, Footer
+export const callFetchPopularCategories = (limit = 10) => {
+  return apiClient.get<IBackendRes<ICategory[]>>(
+    `/api/v1/categories/popular?limit=${limit}`
+  );
+};
 export const API = {
   // Auth
   auth: {
@@ -868,27 +857,6 @@ export const API = {
     updateComment: callUpdateComment,
     deleteComment: callDeleteComment,
     toggleLike: callToggleCommentLike,
-  },
-
-  // Users
-  users: {
-    fetchAboutAuthor: callFetchAboutAuthor,
-    fetchSkillAuthor: callFetchSkillsAuthor,
-    fetchLifeAuthor: callFetchLifeAuthor,
-    fetchExpensiveAuthor: callFetchExpensiveAuthor,
-    fetchConnectAuthor: callFetchConnectAuthor,
-
-    callCreateSkill: callCreateSkill,
-
-    callCreateConnect: callCreateConnect,
-    callUpdateConnect: callUpdateConnect,
-    callDeleteConnect: callDeleteConnect,
-    callDeleteExpensive: callDeleteExpensive,
-    callDeleteLife: callDeleteLife,
-
-    deteleAboutAuthor: callDeleteAboutAuthor,
-    updateAboutAuthor: callUpdateAboutAuthor,
-    createAboutAuthor: callCreateAboutAuthor,
   },
 
   // Newsletter

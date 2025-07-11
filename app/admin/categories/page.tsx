@@ -27,80 +27,21 @@ import {
   FileText,
   Eye,
 } from "lucide-react";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import CategoryForm from "@/components/admin/category-form";
 import { bgDefault2 } from "@/styles/classNames";
+import { callFetchCategories } from "@/lib/api-services";
 
 // Mock data
-const categories = [
-  {
-    id: 1,
-    name: "React",
-    slug: "react",
-    description: "Thư viện JavaScript để xây dựng giao diện người dùng",
-    color: "#61DAFB",
-    icon: "⚛️",
-    postCount: 12,
-    isActive: true,
-    createdAt: "2024-01-10",
-  },
-  {
-    id: 2,
-    name: "Next.js",
-    slug: "nextjs",
-    description: "Framework React cho production",
-    color: "#000000",
-    icon: "▲",
-    postCount: 8,
-    isActive: true,
-    createdAt: "2024-01-09",
-  },
-  {
-    id: 3,
-    name: "TypeScript",
-    slug: "typescript",
-    description: "JavaScript với type safety",
-    color: "#3178C6",
-    icon: "📘",
-    postCount: 15,
-    isActive: true,
-    createdAt: "2024-01-08",
-  },
-  {
-    id: 4,
-    name: "CSS",
-    slug: "css",
-    description: "Styling và layout cho web",
-    color: "#1572B6",
-    icon: "🎨",
-    postCount: 6,
-    isActive: true,
-    createdAt: "2024-01-07",
-  },
-  {
-    id: 5,
-    name: "JavaScript",
-    slug: "javascript",
-    description: "Ngôn ngữ lập trình web",
-    color: "#F7DF1E",
-    icon: "🟨",
-    postCount: 20,
-    isActive: true,
-    createdAt: "2024-01-06",
-  },
-  {
-    id: 6,
-    name: "Node.js",
-    slug: "nodejs",
-    description: "JavaScript runtime cho backend",
-    color: "#339933",
-    icon: "🟢",
-    postCount: 4,
-    isActive: false,
-    createdAt: "2024-01-05",
-  },
-];
 
+const COLORS = [
+  "from-green-400 to-blue-500",
+  "from-pink-500 to-yellow-500",
+  "from-purple-500 to-indigo-500",
+  "from-yellow-400 to-red-500",
+  "from-teal-400 to-cyan-500",
+  "from-orange-500 to-pink-500",
+];
 const stats = [
   { title: "Tổng danh mục", value: "8", color: "from-blue-500 to-blue-600" },
   { title: "Đang hoạt động", value: "6", color: "from-green-500 to-green-600" },
@@ -110,15 +51,46 @@ const stats = [
 
 export default function AdminCategories() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [categoriess, setCategories] = useState<any[]>([]);
+
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<any>(null);
 
-  const filteredCategories = categories.filter(
-    (category) =>
-      category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      category.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredCategories = categories.filter(
+  //   (category) =>
+  //     category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     category.description.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await callFetchCategories();
+
+        // Gán trạng thái fake: index chẵn -> hoạt động, lẻ -> tạm dừng
+        const withStatus = res.data.map((cat: any, index: number) => ({
+          ...cat,
+          status: index % 2 === 0 ? "Hoạt động" : "Tạm dừng",
+        }));
+
+        setCategories(withStatus);
+      } catch (err) {
+        console.error("Lỗi fetch categories:", err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+  const totalActive = categoriess.filter(
+    (c) => c.status === "Hoạt động"
+  ).length;
+  const totalInactive = categoriess.filter(
+    (c) => c.status === "Tạm dừng"
+  ).length;
+  const totalPosts = categoriess.reduce(
+    (sum, cat) => sum + (cat.totalPost || 0),
+    0
+  );
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -149,26 +121,33 @@ export default function AdminCategories() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat, index) => (
-          <Card key={index}>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    {stat.title}
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                    {stat.value}
-                  </p>
-                </div>
-                <div
-                  className={`w-12 h-12 rounded-lg bg-gradient-to-r ${stat.color} opacity-20`}
-                ></div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-sm text-gray-500">Tổng danh mục</p>
+            <p className="text-2xl font-bold">{categoriess.length}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-sm text-gray-500">Hoạt động</p>
+            <p className="text-2xl font-bold text-green-600">{totalActive}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-sm text-gray-500">Tạm dừng</p>
+            <p className="text-2xl font-bold text-yellow-500">
+              {totalInactive}
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-sm text-gray-500">Tổng số bài viết</p>
+            <p className="text-2xl font-bold text-blue-600">{totalPosts}</p>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Search */}
@@ -187,7 +166,7 @@ export default function AdminCategories() {
       </Card>
 
       {/* Categories Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCategories.map((category) => (
           <Card
             key={category.id}
@@ -264,7 +243,7 @@ export default function AdminCategories() {
             </CardContent>
           </Card>
         ))}
-      </div>
+      </div> */}
 
       {/* Edit Dialog */}
       <Dialog
@@ -284,7 +263,7 @@ export default function AdminCategories() {
         </DialogContent>
       </Dialog>
 
-      {filteredCategories.length === 0 && (
+      {/* {filteredCategories.length === 0 && (
         <Card>
           <CardContent className="p-8 text-center">
             <FolderOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
@@ -299,7 +278,7 @@ export default function AdminCategories() {
             </Button>
           </CardContent>
         </Card>
-      )}
+      )} */}
     </div>
   );
 }
