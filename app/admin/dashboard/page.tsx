@@ -85,7 +85,7 @@ export default function AdminDashboard() {
       <div className={`${bgDefault2} rounded-2xl p-6 text-white`}>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold mb-2">Chào mừng trsở lại! 👋</h1>
+            <h1 className="text-2xl font-bold mb-2">Chào mừng trở lại! 👋</h1>
             <p className="text-green-100">
               Quản lý blog của bạn một cách hiệu quả
             </p>

@@ -25,104 +25,112 @@ import { maxWidth, textDefault, titleName } from "@/styles/classNames";
 import {
   callFetchAboutAuthor,
   callFetchCategories,
+  callFetchConnectAuthor,
+  callFetchExpensiveAuthor,
+  callFetchLifeAuthor,
+  callFetchSkillsAuthor,
   IAboutMe,
+  IConnectMe,
+  IExpensiveMe,
+  ILifesMe,
+  ISkillMe,
 } from "@/lib/api-services";
 import { useEffect, useState } from "react";
 
-const skills = [
-  {
-    name: "Frontend Development",
-    icon: "🎨",
-    techs: [
-      "React",
-      "Next.js",
-      "Vue.js",
-      "TypeScript",
-      "Tailwind CSS",
-      "Framer Motion",
-      "Three.js",
-      "WebGL",
-    ],
-    gradient: "from-blue-500 to-purple-600",
-    level: "Expert",
-  },
-  {
-    name: "Backend Development",
-    icon: "⚙️",
-    techs: [
-      "Node.js",
-      "Python",
-      "Golang",
-      "PostgreSQL",
-      "MongoDB",
-      "Redis",
-      "GraphQL",
-      "REST APIs",
-    ],
-    gradient: "from-green-500 to-teal-600",
-    level: "Expert",
-  },
-  {
-    name: "DevOps & Cloud",
-    icon: "☁️",
-    techs: [
-      "AWS",
-      "Docker",
-      "Kubernetes",
-      "CI/CD",
-      "Terraform",
-      "Monitoring",
-      "Load Balancing",
-      "Security",
-    ],
-    gradient: "from-orange-500 to-red-600",
-    level: "Advanced",
-  },
-  {
-    name: "AI & Machine Learning",
-    icon: "🤖",
-    techs: [
-      "Python",
-      "TensorFlow",
-      "PyTorch",
-      "OpenAI API",
-      "LangChain",
-      "Vector Databases",
-      "RAG Systems",
-    ],
-    gradient: "from-purple-500 to-pink-600",
-    level: "Intermediate",
-  },
-  {
-    name: "Mobile Development",
-    icon: "📱",
-    techs: [
-      "React Native",
-      "Flutter",
-      "iOS",
-      "Android",
-      "Expo",
-      "Firebase",
-      "Push Notifications",
-    ],
-    gradient: "from-indigo-500 to-blue-600",
-    level: "Intermediate",
-  },
-  {
-    name: "Database & Analytics",
-    icon: "📊",
-    techs: [
-      "PostgreSQL",
-      "MongoDB",
-      "ClickHouse",
-      "Elasticsearch",
-      "Data Modeling",
-      "Query Optimization",
-    ],
-    gradient: "from-teal-500 to-green-600",
-    level: "Advanced",
-  },
-];
+// const skills = [
+//   {
+//     name: "Frontend Development",
+//     icon: "🎨",
+//     techs: [
+//       "React",
+//       "Next.js",
+//       "Vue.js",
+//       "TypeScript",
+//       "Tailwind CSS",
+//       "Framer Motion",
+//       "Three.js",
+//       "WebGL",
+//     ],
+//     gradient: "from-blue-500 to-purple-600",
+//     level: "Expert",
+//   },
+//   {
+//     name: "Backend Development",
+//     icon: "⚙️",
+//     techs: [
+//       "Node.js",
+//       "Python",
+//       "Golang",
+//       "PostgreSQL",
+//       "MongoDB",
+//       "Redis",
+//       "GraphQL",
+//       "REST APIs",
+//     ],
+//     gradient: "from-green-500 to-teal-600",
+//     level: "Expert",
+//   },
+//   {
+//     name: "DevOps & Cloud",
+//     icon: "☁️",
+//     techs: [
+//       "AWS",
+//       "Docker",
+//       "Kubernetes",
+//       "CI/CD",
+//       "Terraform",
+//       "Monitoring",
+//       "Load Balancing",
+//       "Security",
+//     ],
+//     gradient: "from-orange-500 to-red-600",
+//     level: "Advanced",
+//   },
+//   {
+//     name: "AI & Machine Learning",
+//     icon: "🤖",
+//     techs: [
+//       "Python",
+//       "TensorFlow",
+//       "PyTorch",
+//       "OpenAI API",
+//       "LangChain",
+//       "Vector Databases",
+//       "RAG Systems",
+//     ],
+//     gradient: "from-purple-500 to-pink-600",
+//     level: "Intermediate",
+//   },
+//   {
+//     name: "Mobile Development",
+//     icon: "📱",
+//     techs: [
+//       "React Native",
+//       "Flutter",
+//       "iOS",
+//       "Android",
+//       "Expo",
+//       "Firebase",
+//       "Push Notifications",
+//     ],
+//     gradient: "from-indigo-500 to-blue-600",
+//     level: "Intermediate",
+//   },
+//   {
+//     name: "Database & Analytics",
+//     icon: "📊",
+//     techs: [
+//       "PostgreSQL",
+//       "MongoDB",
+//       "ClickHouse",
+//       "Elasticsearch",
+//       "Data Modeling",
+//       "Query Optimization",
+//     ],
+//     gradient: "from-teal-500 to-green-600",
+//     level: "Advanced",
+//   },
+// ];
 
 const experiences = [
   {
@@ -166,6 +174,13 @@ const experiences = [
   },
 ];
 
+const iconGradients = [
+  "from-amber-500 to-orange-600",
+  "from-purple-500 to-pink-600",
+  "from-blue-500 to-cyan-600",
+  "from-green-500 to-teal-600",
+  "from-yellow-400 to-yellow-600",
+];
 const lifestyle = [
   {
     title: "Đam mê công nghệ",
@@ -196,14 +211,77 @@ const lifestyle = [
     gradient: "from-green-500 to-teal-600",
   },
 ];
-
+const iconMap: { [key: string]: React.FC<React.SVGProps<SVGSVGElement>> } = {
+  GitHub: Github,
+  Linkedin: Linkedin,
+  Telegram: MessageCircle,
+  Email: Mail,
+};
 export default function AboutPage() {
   const [about, setAbout] = useState<IAboutMe | null>(null);
+  const [skills, setSkills] = useState<ISkillMe[]>([]);
+  const [lifes, setLifes] = useState<ILifesMe[]>([]);
+  const [expensive, setExpensive] = useState<IExpensiveMe[]>([]);
+  const [connect, setConnect] = useState<IConnectMe[]>([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await callFetchAboutAuthor();
-        setAbout(res);
+        setAbout(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await callFetchSkillsAuthor();
+        setSkills(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await callFetchLifeAuthor();
+        setLifes(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await callFetchExpensiveAuthor();
+        setExpensive(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await callFetchConnectAuthor();
+        console.log("🚀 ~ fetchData ~ res:", res);
+        setConnect(res.data);
       } catch (err) {
         console.error(err);
       }
@@ -277,8 +355,12 @@ export default function AboutPage() {
           {/* Skills Section */}
           <Card className="mb-12 border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-card to-muted/50 shadow-xl">
             <CardHeader>
-              <CardTitle className="flex items-center gap-3 text-2xl">
+              {/* <CardTitle className="flex items-center gap-3 text-2xl">
                 <span className="text-3xl">💻</span>
+                Kỹ năng chuyên môn
+              </CardTitle> */}
+              <CardTitle className="flex items-center gap-3 text-2xl">
+                <span className="text-3xl animate-bounce">💻</span>
                 Kỹ năng chuyên môn
               </CardTitle>
               <CardDescription className="text-base">
@@ -290,7 +372,7 @@ export default function AboutPage() {
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {skills.map((skill, index) => (
                   <div
-                    key={index}
+                    key={skill._id}
                     className="group animate-fade-in-up"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
@@ -301,15 +383,20 @@ export default function AboutPage() {
                       <CardHeader className="pb-3">
                         <div className="flex items-center gap-3 mb-2">
                           <div
-                            className={`w-12 h-12 rounded-xl bg-gradient-to-br ${skill.gradient} flex items-center justify-center text-xl shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-300`}
+                            className={`w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-xl shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-300`}
                           >
-                            {skill.icon}
+                            🚀 {/* Hoặc thay bằng icon nào đó tạm */}
+                            {/* <img
+    src={skill.icon} // skill.icon là URL ảnh
+    alt={skill.title}
+    className="w-6 h-6 object-contain"
+  /> */}
                           </div>
                           <div className="flex-1">
                             <h3
                               className={`font-bold text-lg ${textDefault} group-hover:text-green-500 transition-colors`}
                             >
-                              {skill.name}
+                              {skill.title}
                             </h3>
                             <Badge
                               variant="secondary"
@@ -328,7 +415,7 @@ export default function AboutPage() {
                       </CardHeader>
                       <CardContent className="relative z-10">
                         <div className="flex flex-wrap gap-2">
-                          {skill.techs.map((tech, techIndex) => (
+                          {skill.specialties.map((tech, techIndex) => (
                             <Badge
                               key={techIndex}
                               variant="outline"
@@ -350,7 +437,7 @@ export default function AboutPage() {
           <Card className="mb-12 border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-card to-muted/50 shadow-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-2xl">
-                <span className="text-3xl">🌟</span>
+                <span className="text-3xl animate-bounce">🌟</span>
                 Đời sống & Sở thích
               </CardTitle>
               <CardDescription className="text-base">
@@ -359,35 +446,38 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent>
               <div className="grid md:grid-cols-2 gap-6">
-                {lifestyle.map((item, index) => (
-                  <div
-                    key={index}
-                    className="group animate-fade-in-up"
-                    style={{ animationDelay: `${index * 150}ms` }}
-                  >
-                    <Card className="h-full hover:shadow-lg transition-all duration-300 hover:scale-105 border-2 border-transparent hover:border-green-200 dark:hover:border-green-800 relative overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                {lifes.map((item, index) => {
+                  const gradient = iconGradients[index % iconGradients.length];
+                  return (
+                    <div
+                      key={item._id}
+                      className="group animate-fade-in-up"
+                      style={{ animationDelay: `${index * 150}ms` }}
+                    >
+                      <Card className="h-full hover:shadow-lg transition-all duration-300 hover:scale-105 border-2 border-transparent hover:border-green-200 dark:hover:border-green-800 relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                      <CardHeader className="pb-3">
-                        <div className="flex items-center gap-4">
-                          <div
-                            className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}
-                          >
-                            {item.icon}
+                        <CardHeader className="pb-3">
+                          <div className="flex items-center gap-4">
+                            <div
+                              className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                            >
+                              🚀
+                            </div>
+                            <h3 className="font-bold text-lg text-foreground group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
+                              {item.title}
+                            </h3>
                           </div>
-                          <h3 className="font-bold text-lg text-foreground group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
-                            {item.title}
-                          </h3>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="relative z-10">
-                        <p className="text-muted-foreground leading-relaxed">
-                          {item.description}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </div>
-                ))}
+                        </CardHeader>
+                        <CardContent className="relative z-10">
+                          <p className="text-muted-foreground leading-relaxed">
+                            {item.content}
+                          </p>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  );
+                })}
               </div>
             </CardContent>
           </Card>
@@ -396,36 +486,37 @@ export default function AboutPage() {
           <Card className="mb-12 border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-card to-muted/50 shadow-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-2xl">
-                <span className="text-3xl">💼</span>
+                <span className="text-3xl animate-bounce">💼</span>
                 Kinh nghiệm làm việc
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-8">
-                {experiences.map((exp, index) => (
+                {expensive.map((exp, index) => (
                   <div
                     key={index}
                     className="relative pl-8 border-l-4 border-green-200 dark:border-green-800 animate-fade-in-up"
                     style={{ animationDelay: `${index * 200}ms` }}
                   >
                     <div className="absolute w-8 h-8 bg-green-500 rounded-full -left-4 top-2 flex items-center justify-center text-white text-sm font-bold shadow-lg">
-                      {exp.icon}
+                      {/* {exp.icon} */}
+                      🚀
                     </div>
                     <div className="space-y-3 bg-muted/30 p-6 rounded-lg border border-green-100 dark:border-green-900">
                       <h3 className="font-bold text-xl text-foreground">
                         {exp.title}
                       </h3>
                       <p className={`${textDefault} font-semibold text-lg`}>
-                        {exp.company}
+                        {exp.subTitle}
                       </p>
                       <p className="text-sm text-muted-foreground font-medium">
-                        {exp.period}
+                        {exp.time}
                       </p>
                       <p className="text-muted-foreground leading-relaxed">
-                        {exp.description}
+                        {exp.content}
                       </p>
                       <div className="flex flex-wrap gap-2 pt-2">
-                        {exp.achievements.map((achievement, achIndex) => (
+                        {exp.skills.map((achievement, achIndex) => (
                           <Badge
                             key={achIndex}
                             variant="secondary"
@@ -446,7 +537,7 @@ export default function AboutPage() {
           <Card className="border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-card to-muted/50 shadow-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-2xl">
-                <span className="text-3xl">🤝</span>
+                <span className="text-3xl animate-bounce">🤝</span>
                 Kết nối với tôi
               </CardTitle>
               <CardDescription className="text-base">
@@ -456,31 +547,27 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {[
-                  {
-                    icon: Github,
-                    label: "GitHub",
-                    color: "text-gray-700 dark:text-gray-300",
-                  },
-                  { icon: Linkedin, label: "LinkedIn", color: "text-blue-600" },
-                  {
-                    icon: MessageCircle,
-                    label: "Telegram",
-                    color: "text-blue-500",
-                  },
-                  { icon: Mail, label: "Email", color: "text-red-500" },
-                ].map((social, index) => (
-                  <Button
-                    key={index}
-                    variant="outline"
-                    className="flex items-center gap-3 h-16 bg-transparent hover:bg-green-50 dark:hover:bg-green-950 border-2 border-green-200 dark:border-green-800 hover:border-green-400 dark:hover:border-green-600 group transition-all duration-300 hover:scale-105"
-                  >
-                    <social.icon
-                      className={`w-5 h-5 ${social.color} group-hover:text-green-600 transition-colors`}
-                    />
-                    <span className="font-medium">{social.label}</span>
-                  </Button>
-                ))}
+                {connect.map((social, index) => {
+                  const IconComp = iconMap[social.title] || Github; // default icon
+                  const gradient = iconGradients[index % iconGradients.length];
+
+                  return (
+                    <a
+                      key={social._id}
+                      href={social.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center gap-3 h-16 bg-transparent hover:bg-green-50 dark:hover:bg-green-950 border-2 border-green-200 dark:border-green-800 hover:border-green-400 dark:hover:border-green-600 group transition-all duration-300 hover:scale-105 rounded-md px-4`}
+                    >
+                      <div
+                        className={`w-8 h-8 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-transform duration-300`}
+                      >
+                        <IconComp className="w-5 h-5" />
+                      </div>
+                      <span className="font-medium">{social.title}</span>
+                    </a>
+                  );
+                })}
               </div>
             </CardContent>
           </Card>

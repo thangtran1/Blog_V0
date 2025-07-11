@@ -12,6 +12,7 @@ import {
   Code,
   ChevronLeft,
   ChevronRight,
+  UserCircle,
   X,
 } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -24,6 +25,7 @@ const navigation = [
   { name: "Tags", href: "/admin/tags", icon: Tags },
   { name: "Comments", href: "/admin/comments", icon: MessageSquare },
   { name: "Cài đặt", href: "/admin/settings", icon: Settings },
+  { name: "Thông tin admin", href: "/admin/profile", icon: UserCircle },
 ];
 
 interface AdminSidebarProps {

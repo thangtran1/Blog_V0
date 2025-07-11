@@ -172,6 +172,44 @@ export interface IAboutMe {
   updatedAt: string;
 }
 
+export interface ISkillMe {
+  _id: string;
+  title: string;
+  image: string;
+  level: string;
+  specialties: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ILifesMe {
+  _id: string;
+  title: string;
+  content: string;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface IExpensiveMe {
+  _id: string;
+  title: string;
+  subTitle: string;
+  time: string;
+  content: string;
+  skills: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IConnectMe {
+  _id: string;
+  title: string;
+  link: string;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // ====================================================================
 // AUTH API SERVICES - Trang đăng nhập/đăng ký
 // ====================================================================
@@ -689,10 +727,39 @@ export const callSendNewsletter = (newsletterData: {
 // USERS API SERVICES - Trang tác giả, profile
 // ====================================================================
 
-// Lấy thông tin tác giả - Trang về tác giả (/about)
-export const callFetchAboutAuthor = async (): Promise<IAboutMe> => {
-  const res = await axios.get("/about-me");
-  return res.data; // trả ra object trực tiếp
+// Lấy thông tin tác giả - Trang về tác giả
+export const callFetchAboutAuthor = () => {
+  return apiClient.get<IAboutMe>(`/about-me`);
+};
+
+export const callFetchSkillsAuthor = () => {
+  return apiClient.get<ISkillMe[]>(`/skills`);
+};
+
+export const callFetchLifeAuthor = () => {
+  return apiClient.get<ILifesMe[]>(`/life`);
+};
+
+export const callFetchExpensiveAuthor = () => {
+  return apiClient.get<IExpensiveMe[]>(`/expensive`);
+};
+
+export const callFetchConnectAuthor = () => {
+  return apiClient.get<IConnectMe[]>(`/connect`);
+};
+
+// Update thông tin tác giả - Trang về tác giả
+export const callUpdateSkill = (skill: ISkillMe) => {
+  return apiClient.put<ISkillMe>(`/skills/${skill._id}`, skill);
+};
+
+// tạo thông tin tác giả - Trang về tác giả
+export const callCreateSkill = (data: ISkillMe) => {
+  return apiClient.post("/skills", data);
+};
+
+export const callCreateLife = (data: ILifesMe) => {
+  return apiClient.post("/life", data);
 };
 
 // xoa about me
@@ -702,12 +769,51 @@ export const callDeleteAboutAuthor = () => {
 
 // Tạo danh mục mới - Admin panel
 export const callCreateAboutAuthor = (aboutMeData: Partial<IAboutMe>) => {
-  return apiClient.post<IBackendRes<IAboutMe>>("/about-me", aboutMeData);
+  return apiClient.post<IAboutMe>("/about-me", aboutMeData);
+};
+
+export const callCreateConnect = (data: Partial<IConnectMe>) => {
+  return apiClient.post<IConnectMe>("/connect", data);
+};
+
+export const callCreateExpensive = (data: Partial<IExpensiveMe>) => {
+  return apiClient.post<IExpensiveMe>("/expensive", data);
 };
 
 // Cập nhật danh mục - Admin panel
 export const callUpdateAboutAuthor = (aboutMeData: Partial<IAboutMe>) => {
-  return apiClient.patch<IBackendRes<IAboutMe>>(`/about-me`, aboutMeData);
+  return apiClient.patch<IAboutMe>(`/about-me`, aboutMeData);
+};
+
+export const callUpdateConnect = (id: string, data: Partial<IConnectMe>) => {
+  return apiClient.put<IConnectMe>(`/connect/${id}`, data);
+};
+
+export const callUpdateLife = (id: string, data: Partial<ILifesMe>) => {
+  return apiClient.put<ILifesMe>(`/life/${id}`, data);
+};
+
+export const callUpdateExpensive = (
+  id: string,
+  data: Partial<IExpensiveMe>
+) => {
+  return apiClient.put<IExpensiveMe>(`/expensive/${id}`, data);
+};
+
+export const callDeleteConnect = (id: string) => {
+  return apiClient.delete(`/connect/${id}`);
+};
+
+export const callDeleteExpensive = (id: string) => {
+  return apiClient.delete(`/expensive/${id}`);
+};
+
+export const callDeleteLife = (id: string) => {
+  return apiClient.delete(`/life/${id}`);
+};
+
+export const callDeleteSkill = (id: string) => {
+  return apiClient.delete(`/skills/${id}`);
 };
 
 export const API = {
@@ -767,6 +873,19 @@ export const API = {
   // Users
   users: {
     fetchAboutAuthor: callFetchAboutAuthor,
+    fetchSkillAuthor: callFetchSkillsAuthor,
+    fetchLifeAuthor: callFetchLifeAuthor,
+    fetchExpensiveAuthor: callFetchExpensiveAuthor,
+    fetchConnectAuthor: callFetchConnectAuthor,
+
+    callCreateSkill: callCreateSkill,
+
+    callCreateConnect: callCreateConnect,
+    callUpdateConnect: callUpdateConnect,
+    callDeleteConnect: callDeleteConnect,
+    callDeleteExpensive: callDeleteExpensive,
+    callDeleteLife: callDeleteLife,
+
     deteleAboutAuthor: callDeleteAboutAuthor,
     updateAboutAuthor: callUpdateAboutAuthor,
     createAboutAuthor: callCreateAboutAuthor,

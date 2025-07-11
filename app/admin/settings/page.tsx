@@ -78,7 +78,7 @@ export default function AdminSettings() {
             <Bell className="w-4 h-4" />
             Thông báo
           </TabsTrigger>
-          <TabsTrigger value="advanced" className="flex items-center gap-2">
+          <TabsTrigger value="Advanced" className="flex items-center gap-2">
             <Database className="w-4 h-4" />
             Nâng cao
           </TabsTrigger>
@@ -328,7 +328,7 @@ export default function AdminSettings() {
         </TabsContent>
 
         {/* Advanced Settings */}
-        <TabsContent value="advanced">
+        <TabsContent value="Advanced">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
