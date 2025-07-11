@@ -22,8 +22,12 @@ import {
   Gamepad2,
 } from "lucide-react";
 import { maxWidth, textDefault, titleName } from "@/styles/classNames";
-import { callFetchCategories } from "@/lib/api-services";
-import { useEffect } from "react";
+import {
+  callFetchAboutAuthor,
+  callFetchCategories,
+  IAboutMe,
+} from "@/lib/api-services";
+import { useEffect, useState } from "react";
 
 const skills = [
   {
@@ -194,11 +198,12 @@ const lifestyle = [
 ];
 
 export default function AboutPage() {
+  const [about, setAbout] = useState<IAboutMe | null>(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await callFetchCategories();
-        console.log("Dữ liệu categories:", res.data); // log ra console
+        const res = await callFetchAboutAuthor();
+        setAbout(res);
       } catch (err) {
         console.error(err);
       }
@@ -209,7 +214,6 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="py-12 px-4">
-        <div>taat ca danh muc </div>
         <div className={`${maxWidth} mx-auto `}>
           {/* Hero Section */}
           <div className="text-center mb-16">
@@ -248,30 +252,23 @@ export default function AboutPage() {
             </CardHeader>
             <CardContent className="space-y-6 relative z-10">
               <p className="text-lg leading-relaxed text-foreground">
-                Xin chào! Tôi là một Full-stack Developer với hơn 5 năm kinh
-                nghiệm trong việc phát triển các ứng dụng web và hệ thống phần
-                tán. Tôi đam mê công nghệ, luôn khao khát học hỏi những điều mới
-                và chia sẻ kiến thức với cộng đồng developer.
+                {about?.title || "Đang tải..."}
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Trong suốt hành trình của mình, tôi đã tham gia phát triển nhiều
-                dự án từ startup cho đến enterprise, từ website đơn giản đến các
-                hệ thống microservices phức tạp. Tôi tin rằng công nghệ là công
-                cụ để giải quyết vấn đề thực tế và tạo ra giá trị cho người
-                dùng.
+                {about?.content || ""}
               </p>
               <div className="flex flex-wrap gap-6 pt-4">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <MapPin className="w-5 h-5 text-green-500" />
-                  <span>Việt Nam</span>
+                  <span>{about?.location || "..."}</span>
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Calendar className="w-5 h-5 text-green-500" />
-                  <span>5+ năm kinh nghiệm</span>
+                  <span>{about?.yearsOfExperience}+ năm kinh nghiệm</span>
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Heart className="w-5 h-5 text-red-500" />
-                  <span>Đam mê công nghệ</span>
+                  <span>{about?.favorites || ""}</span>
                 </div>
               </div>
             </CardContent>

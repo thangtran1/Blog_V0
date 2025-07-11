@@ -161,6 +161,17 @@ export interface IAnalytics {
   createdAt: string;
 }
 
+export interface IAboutMe {
+  _id: string;
+  title: string;
+  content: string;
+  location: string;
+  yearsOfExperience: number;
+  favorites: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // ====================================================================
 // AUTH API SERVICES - Trang đăng nhập/đăng ký
 // ====================================================================
@@ -415,40 +426,6 @@ export const callDeleteComment = (commentId: string) => {
 export const callToggleCommentLike = (commentId: string) => {
   return apiClient.patch<IBackendRes<{ likes: number; isLiked: boolean }>>(
     `/api/v1/comments/${commentId}/like`
-  );
-};
-
-// ====================================================================
-// USERS API SERVICES - Trang tác giả, profile
-// ====================================================================
-
-// Lấy thông tin tác giả - Trang về tác giả (/about)
-export const callFetchAuthorInfo = () => {
-  return apiClient.get<IBackendRes<IUser>>("/api/v1/users/author");
-};
-
-// Lấy user theo ID - Trang profile user
-export const callFetchUserById = (id: string) => {
-  return apiClient.get<IBackendRes<IUser>>(`/api/v1/users/${id}`);
-};
-
-// Lấy bài viết của user - Trang profile user
-export const callFetchPostsByUser = (userId: string, query: string) => {
-  return apiClient.get<IBackendRes<IModelPaginate<IPost>>>(
-    `/api/v1/users/${userId}/posts?${query}`
-  );
-};
-
-// Cập nhật avatar - Trang profile
-export const callUpdateAvatar = (formData: FormData) => {
-  return apiClient.patch<IBackendRes<{ avatar: string }>>(
-    "/api/v1/users/avatar",
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }
   );
 };
 
@@ -708,6 +685,31 @@ export const callSendNewsletter = (newsletterData: {
 // EXPORT ALL API FUNCTIONS
 // ====================================================================
 
+// ====================================================================
+// USERS API SERVICES - Trang tác giả, profile
+// ====================================================================
+
+// Lấy thông tin tác giả - Trang về tác giả (/about)
+export const callFetchAboutAuthor = async (): Promise<IAboutMe> => {
+  const res = await axios.get("/about-me");
+  return res.data; // trả ra object trực tiếp
+};
+
+// xoa about me
+export const callDeleteAboutAuthor = () => {
+  return apiClient.delete<IBackendRes<string>>(`/about-me`);
+};
+
+// Tạo danh mục mới - Admin panel
+export const callCreateAboutAuthor = (aboutMeData: Partial<IAboutMe>) => {
+  return apiClient.post<IBackendRes<IAboutMe>>("/about-me", aboutMeData);
+};
+
+// Cập nhật danh mục - Admin panel
+export const callUpdateAboutAuthor = (aboutMeData: Partial<IAboutMe>) => {
+  return apiClient.patch<IBackendRes<IAboutMe>>(`/about-me`, aboutMeData);
+};
+
 export const API = {
   // Auth
   auth: {
@@ -764,10 +766,10 @@ export const API = {
 
   // Users
   users: {
-    fetchAuthorInfo: callFetchAuthorInfo,
-    fetchUserById: callFetchUserById,
-    fetchPostsByUser: callFetchPostsByUser,
-    updateAvatar: callUpdateAvatar,
+    fetchAboutAuthor: callFetchAboutAuthor,
+    deteleAboutAuthor: callDeleteAboutAuthor,
+    updateAboutAuthor: callUpdateAboutAuthor,
+    createAboutAuthor: callCreateAboutAuthor,
   },
 
   // Newsletter
