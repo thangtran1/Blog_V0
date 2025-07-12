@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -21,49 +21,50 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Save,
   Eye,
   Upload,
   X,
-  Hash,
-  Tag,
   FileText,
   ImageIcon,
   Settings,
-  Calendar,
-  Globe,
+  Filter,
 } from "lucide-react";
 import RichTextEditor from "@/components/admin/rich-text-editor";
+import { bgDefault, bgDefault2, maxWidth } from "@/styles/classNames";
 import {
-  bgDefault,
-  bgDefault2,
-  buttonDefault,
-  maxWidth,
-} from "@/styles/classNames";
+  callCreatePost,
+  callFetchCategories,
+  callFetchPostAuthor,
+  ICategory,
+} from "@/lib/api-services";
 
 export default function CreatePostPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [tags, setTags] = useState<string[]>([]);
-  const [newTag, setNewTag] = useState("");
+  const [categories, setCategories] = useState<ICategory[]>([]);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await callFetchCategories();
+        setCategories(res.data);
+      } catch (err) {
+        console.error("Lỗi fetch categories:", err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
   const [formData, setFormData] = useState({
     title: "",
-    slug: "",
-    excerpt: "",
+    introduction: "",
+    status: "active",
     content: "",
-    featuredImage: "",
-    category: "",
-    status: "draft",
-    publishedAt: "",
-    metaTitle: "",
-    metaDescription: "",
-    keywords: "",
-    allowComments: true,
-    featured: false,
+    image: "",
+    categoryId: "",
+    isFeatured: false,
   });
 
   const handleInputChange = (field: string, value: any) => {
@@ -71,56 +72,24 @@ export default function CreatePostPage() {
       ...prev,
       [field]: value,
     }));
-
-    // Auto-generate slug from title
-    if (field === "title") {
-      const slug = value
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/-+/g, "-")
-        .trim();
-      setFormData((prev) => ({ ...prev, slug }));
-    }
   };
 
-  const addTag = () => {
-    if (newTag.trim() && !tags.includes(newTag.trim())) {
-      setTags([...tags, newTag.trim()]);
-      setNewTag("");
-    }
-  };
-
-  const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove));
-  };
-
-  const handleSubmit = async (status: "draft" | "published") => {
+  const handleSubmit = async (status: "active" | "inactive") => {
     setIsLoading(true);
 
     try {
-      const postData = {
+      const payload = {
         ...formData,
         status,
-        tags,
-        publishedAt:
-          status === "published"
-            ? new Date().toISOString()
-            : formData.publishedAt,
       };
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await callCreatePost(payload);
+      console.log("Danh sách bài viết đã tạo :", response.data);
 
-      console.log("Post data:", postData);
-      alert(
-        `${
-          status === "published" ? "Xuất bản" : "Lưu nháp"
-        } bài viết thành công!`
-      );
       router.push("/admin/posts");
     } catch (error) {
       alert("Có lỗi xảy ra!");
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -133,11 +102,11 @@ export default function CreatePostPage() {
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div className="space-y-2">
-              <h1
-                className={`text-3xl lg:text-4xl font-bold ${bgDefault} bg-clip-text text-transparent`}
+              <div
+                className={`text-3xl lg:text-4xl text-green-500 font-bold ${bgDefault} bg-clip-text `}
               >
                 Tạo bài viết mới
-              </h1>
+              </div>
               <p className="text-gray-600 dark:text-gray-400 text-lg">
                 Viết và xuất bản bài viết mới cho blog của bạn
               </p>
@@ -145,20 +114,20 @@ export default function CreatePostPage() {
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <Button
                 variant="outline"
-                onClick={() => handleSubmit("draft")}
+                onClick={() => handleSubmit("active")}
                 disabled={isLoading}
                 className="flex-1 sm:flex-none border-gray-300 hover:border-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 <Save className="w-4 h-4 mr-2" />
-                Lưu nháp
+                Xuất bản ngay
               </Button>
               <Button
-                onClick={() => handleSubmit("published")}
+                onClick={() => handleSubmit("inactive")}
                 disabled={isLoading}
                 className={`flex-1 sm:flex-none ${bgDefault2} hover:from-green-600 hover:to-green-700 shadow-lg`}
               >
                 <Eye className="w-4 h-4 mr-2" />
-                Xuất bản ngay
+                Lưu tạm thời
               </Button>
             </div>
           </div>
@@ -196,37 +165,14 @@ export default function CreatePostPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="slug" className="text-sm font-medium">
-                    URL Slug *
-                  </Label>
-                  <div className="relative">
-                    <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <Input
-                      id="slug"
-                      value={formData.slug}
-                      onChange={(e) =>
-                        handleInputChange("slug", e.target.value)
-                      }
-                      placeholder="url-bai-viet"
-                      className="pl-10 h-12 border-gray-300 focus:border-green-500 focus:ring-green-500"
-                      required
-                    />
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-500">
-                    <Globe className="w-3 h-3" />
-                    <span>URL: /posts/{formData.slug || "url-bai-viet"}</span>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="excerpt" className="text-sm font-medium">
+                  <Label htmlFor="introduction" className="text-sm font-medium">
                     Tóm tắt bài viết
                   </Label>
                   <Textarea
-                    id="excerpt"
-                    value={formData.excerpt}
+                    id="introduction"
+                    value={formData.introduction}
                     onChange={(e) =>
-                      handleInputChange("excerpt", e.target.value)
+                      handleInputChange("introduction", e.target.value)
                     }
                     placeholder="Viết tóm tắt ngắn gọn và hấp dẫn về bài viết..."
                     rows={4}
@@ -238,12 +184,12 @@ export default function CreatePostPage() {
                     </span>
                     <span
                       className={`${
-                        formData.excerpt.length > 300
+                        formData.introduction.length > 300
                           ? "text-red-500"
                           : "text-gray-500"
                       }`}
                     >
-                      {formData.excerpt.length}/300
+                      {formData.introduction.length}/300
                     </span>
                   </div>
                 </div>
@@ -268,132 +214,6 @@ export default function CreatePostPage() {
                   value={formData.content}
                   onChange={(content) => handleInputChange("content", content)}
                 />
-              </CardContent>
-            </Card>
-
-            {/* SEO Settings */}
-            <Card className="shadow-sm border-gray-200 dark:border-gray-700">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-xl">
-                  <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
-                    <Globe className="w-4 h-4 text-white" />
-                  </div>
-                  Tối ưu SEO
-                </CardTitle>
-                <CardDescription>
-                  Cải thiện khả năng tìm kiếm của bài viết
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Tabs defaultValue="seo" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 mb-6">
-                    <TabsTrigger
-                      value="seo"
-                      className="flex items-center gap-2"
-                    >
-                      <Globe className="w-4 h-4" />
-                      SEO
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="social"
-                      className="flex items-center gap-2"
-                    >
-                      <Hash className="w-4 h-4" />
-                      Social Media
-                    </TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="seo" className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="metaTitle">Meta Title</Label>
-                      <Input
-                        id="metaTitle"
-                        value={formData.metaTitle}
-                        onChange={(e) =>
-                          handleInputChange("metaTitle", e.target.value)
-                        }
-                        placeholder="Tiêu đề SEO tối ưu..."
-                        maxLength={60}
-                        className="border-gray-300 focus:border-green-500 focus:ring-green-500"
-                      />
-                      <div className="flex justify-between text-xs">
-                        <span className="text-gray-500">
-                          Nên từ 50-60 ký tự
-                        </span>
-                        <span
-                          className={`${
-                            formData.metaTitle.length > 60
-                              ? "text-red-500"
-                              : "text-gray-500"
-                          }`}
-                        >
-                          {formData.metaTitle.length}/60
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="metaDescription">Meta Description</Label>
-                      <Textarea
-                        id="metaDescription"
-                        value={formData.metaDescription}
-                        onChange={(e) =>
-                          handleInputChange("metaDescription", e.target.value)
-                        }
-                        placeholder="Mô tả ngắn gọn về bài viết cho search engine..."
-                        rows={3}
-                        maxLength={160}
-                        className="border-gray-300 focus:border-green-500 focus:ring-green-500 resize-none"
-                      />
-                      <div className="flex justify-between text-xs">
-                        <span className="text-gray-500">
-                          Nên từ 150-160 ký tự
-                        </span>
-                        <span
-                          className={`${
-                            formData.metaDescription.length > 160
-                              ? "text-red-500"
-                              : "text-gray-500"
-                          }`}
-                        >
-                          {formData.metaDescription.length}/160
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="keywords">Keywords</Label>
-                      <Input
-                        id="keywords"
-                        value={formData.keywords}
-                        onChange={(e) =>
-                          handleInputChange("keywords", e.target.value)
-                        }
-                        placeholder="javascript, react, nextjs, tutorial"
-                        className="border-gray-300 focus:border-green-500 focus:ring-green-500"
-                      />
-                      <p className="text-xs text-gray-500">
-                        Phân cách bằng dấu phẩy, tối đa 10 keywords
-                      </p>
-                    </div>
-                  </TabsContent>
-                  <TabsContent value="social" className="space-y-4">
-                    <div className="space-y-2">
-                      <Label>Open Graph Title</Label>
-                      <Input
-                        placeholder="Tiêu đề khi chia sẻ trên Facebook, Twitter..."
-                        className="border-gray-300 focus:border-green-500 focus:ring-green-500"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Open Graph Description</Label>
-                      <Textarea
-                        placeholder="Mô tả khi chia sẻ trên mạng xã hội..."
-                        rows={3}
-                        className="border-gray-300 focus:border-green-500 focus:ring-green-500 resize-none"
-                      />
-                    </div>
-                  </TabsContent>
-                </Tabs>
               </CardContent>
             </Card>
           </div>
@@ -425,68 +245,43 @@ export default function CreatePostPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="draft">
+                      <SelectItem value="active">
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                          Bản nháp
+                          Hoạt động
                         </div>
                       </SelectItem>
-                      <SelectItem value="published">
+                      <SelectItem value="inactive">
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          Đã xuất bản
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="scheduled">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                          Lên lịch
+                          Tạm dừng
                         </div>
                       </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-
                 <div className="space-y-2">
                   <Label className="text-sm font-medium">Danh mục</Label>
                   <Select
-                    value={formData.category}
+                    value={formData.categoryId}
                     onValueChange={(value) =>
-                      handleInputChange("category", value)
+                      handleInputChange("categoryId", value)
                     }
                   >
                     <SelectTrigger className="border-gray-300 focus:border-green-500 focus:ring-green-500">
                       <SelectValue placeholder="Chọn danh mục" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="frontend">🎨 Frontend</SelectItem>
-                      <SelectItem value="backend">⚙️ Backend</SelectItem>
-                      <SelectItem value="devops">🚀 DevOps</SelectItem>
-                      <SelectItem value="ai">🤖 AI & Automation</SelectItem>
+                      {categories
+                        .filter((cat) => cat.isActive)
+                        .map((cat) => (
+                          <SelectItem key={cat._id} value={cat._id}>
+                            {cat.name}
+                          </SelectItem>
+                        ))}
                     </SelectContent>
                   </Select>
                 </div>
-
-                {formData.status === "scheduled" && (
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="publishedAt"
-                      className="text-sm font-medium flex items-center gap-2"
-                    >
-                      <Calendar className="w-4 h-4" />
-                      Thời gian xuất bản
-                    </Label>
-                    <Input
-                      id="publishedAt"
-                      type="datetime-local"
-                      value={formData.publishedAt}
-                      onChange={(e) =>
-                        handleInputChange("publishedAt", e.target.value)
-                      }
-                      className="border-gray-300 focus:border-green-500 focus:ring-green-500"
-                    />
-                  </div>
-                )}
 
                 <div className="space-y-4 pt-2">
                   <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
@@ -499,26 +294,9 @@ export default function CreatePostPage() {
                       </p>
                     </div>
                     <Switch
-                      checked={formData.featured}
+                      checked={formData.isFeatured}
                       onCheckedChange={(checked) =>
-                        handleInputChange("featured", checked)
-                      }
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <div className="space-y-0.5">
-                      <Label className="text-sm font-medium">
-                        Cho phép bình luận
-                      </Label>
-                      <p className="text-xs text-gray-500">
-                        Người dùng có thể comment
-                      </p>
-                    </div>
-                    <Switch
-                      checked={formData.allowComments}
-                      onCheckedChange={(checked) =>
-                        handleInputChange("allowComments", checked)
+                        handleInputChange("isFeatured", checked)
                       }
                     />
                   </div>
@@ -526,7 +304,7 @@ export default function CreatePostPage() {
               </CardContent>
             </Card>
 
-            {/* Featured Image */}
+            {/* isFeatured Image */}
             <Card className="shadow-sm border-gray-200 dark:border-gray-700">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg">
@@ -538,11 +316,11 @@ export default function CreatePostPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {formData.featuredImage ? (
+                  {formData.image ? (
                     <div className="relative group">
                       <img
                         src={
-                          formData.featuredImage ||
+                          formData.image ||
                           "/placeholder.svg?height=200&width=400"
                         }
                         alt="Featured"
@@ -552,7 +330,7 @@ export default function CreatePostPage() {
                         <Button
                           variant="destructive"
                           size="sm"
-                          onClick={() => handleInputChange("featuredImage", "")}
+                          onClick={() => handleInputChange("image", "")}
                           className="bg-red-500 hover:bg-red-600"
                         >
                           <X className="w-4 h-4 mr-2" />
@@ -568,80 +346,28 @@ export default function CreatePostPage() {
                         </div>
                         <div>
                           <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
-                            Tải ảnh lên
+                            Dán link ảnh PNG, JPG, GIF - tối đa 5MB
                           </p>
                           <p className="text-xs text-gray-500">
-                            PNG, JPG, GIF tối đa 5MB
+                            Ảnh sẽ hiển thị khi nhập đúng đường dẫn
                           </p>
                         </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="border-gray-300 hover:border-green-400 bg-transparent"
-                        >
-                          Chọn ảnh
-                        </Button>
+
+                        {/* Input để nhập link ảnh */}
+                        <input
+                          type="text"
+                          placeholder="Dán link ảnh vào đây..."
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-green-500"
+                          onBlur={(e) => {
+                            const url = e.target.value.trim();
+                            if (url && url.startsWith("http")) {
+                              handleInputChange("image", url);
+                            }
+                          }}
+                        />
                       </div>
                     </div>
                   )}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Tags */}
-            <Card className="shadow-sm border-gray-200 dark:border-gray-700">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <div className="w-7 h-7 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                    <Tag className="w-3.5 h-3.5 text-white" />
-                  </div>
-                  Tags
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex gap-2">
-                  <Input
-                    value={newTag}
-                    onChange={(e) => setNewTag(e.target.value)}
-                    placeholder="Thêm tag..."
-                    className="flex-1 border-gray-300 focus:border-green-500 focus:ring-green-500"
-                    onKeyPress={(e) =>
-                      e.key === "Enter" && (e.preventDefault(), addTag())
-                    }
-                  />
-                  <Button onClick={addTag} size="sm" className={buttonDefault}>
-                    Thêm
-                  </Button>
-                </div>
-
-                {tags.length > 0 && (
-                  <div className="space-y-2">
-                    <Label className="text-sm font-medium">Tags đã thêm:</Label>
-                    <div className="flex flex-wrap gap-2">
-                      {tags.map((tag) => (
-                        <Badge
-                          key={tag}
-                          variant="secondary"
-                          className="flex items-center gap-1 bg-green-100 text-green-800 hover:bg-green-200"
-                        >
-                          {tag}
-                          <button
-                            onClick={() => removeTag(tag)}
-                            className="ml-1 hover:text-red-600 transition-colors"
-                          >
-                            <X className="w-3 h-3" />
-                          </button>
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <div className="text-xs text-gray-500 bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
-                  <p className="font-medium mb-1">💡 Gợi ý tags:</p>
-                  <p>
-                    javascript, react, nextjs, tutorial, frontend, backend, tips
-                  </p>
                 </div>
               </CardContent>
             </Card>

@@ -115,6 +115,7 @@ export interface ICategory {
 export interface IAllPost {
   _id: string;
   title: string;
+  image?: string;
   status: string;
   introduction: string;
   content?: string;
@@ -131,6 +132,7 @@ export interface IPostByCategory {
   status: string;
   introduction?: string;
   content?: string;
+  image?: string;
   category: ICategory;
   readingTime?: number;
   createdAt: string;
@@ -617,11 +619,6 @@ export const callFetchRSSFeed = () => {
 // ADMIN API SERVICES - Trang quản trị (nếu có)
 // ====================================================================
 
-// Tạo bài viết mới - Admin panel
-export const callCreatePost = (postData: Partial<IPost>) => {
-  return apiClient.post<IBackendRes<IPost>>("/api/v1/admin/posts", postData);
-};
-
 // Cập nhật bài viết - Admin panel
 export const callUpdatePost = (postId: string, postData: Partial<IPost>) => {
   return apiClient.patch<IBackendRes<IPost>>(
@@ -756,6 +753,10 @@ export const callCreateCategories = (categoryData: Partial<ICategory>) => {
 
 export const callFetchPostAuthor = () => {
   return apiClient.get<IAllPost[]>(`/posts`);
+};
+
+export const callCreatePost = (categoryData: Partial<IPostByCategory>) => {
+  return apiClient.post<ICategory>("/posts", categoryData);
 };
 
 export const callFetchPostBySlugCategory = (slug: string) => {

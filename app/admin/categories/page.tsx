@@ -195,7 +195,7 @@ export default function AdminCategories() {
             <CardContent className="p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white line-clamp-1">
+                  <h3 className="text-lg min-h-[1.5rem] w-28 text-blue-600 font-bold line-clamp-1">
                     {category.name}
                   </h3>
                 </div>
@@ -211,13 +211,15 @@ export default function AdminCategories() {
                 </Badge>
               </div>
 
-              <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+              <p className="text-sm text-gray-600 min-h-[2.5rem] dark:text-gray-400 line-clamp-2">
                 {category.description}
               </p>
 
               <div>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                  <span className="font-medium">Bài nổi bật:</span>{" "}
+                <p className="text-xs min-h-[2rem] line-clamp-2 text-gray-500 dark:text-gray-400 mb-1">
+                  <span className="font-medium text-blue-600">
+                    Bài nổi bật:
+                  </span>{" "}
                   {category.content || "Chưa có nội dung nổi bật"}
                 </p>
               </div>

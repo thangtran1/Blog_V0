@@ -290,7 +290,7 @@ export default function HomePage() {
                         {post.title}
                       </CardTitle>
 
-                      <CardDescription className="text-sm text-muted-foreground line-clamp-2 overflow-hidden">
+                      <CardDescription className="text-sm text-muted-foreground min-h-[2.5rem] line-clamp-2 overflow-hidden">
                         {post.introduction}
                       </CardDescription>
                     </CardHeader>

@@ -120,10 +120,10 @@ export default function CategoryPage({
                 </div>
               </div>
               <CardHeader>
-                <CardTitle className="line-clamp-2 group-hover:text-green-600 transition-colors">
+                <CardTitle className="line-clamp-1 min-h-[1rem] capitalize  group-hover:text-green-600 transition-colors">
                   <Link href={`/posts/${post._id}`}>{post.title}</Link>
                 </CardTitle>
-                <CardDescription className="line-clamp-3">
+                <CardDescription className="line-clamp-2 min-h-[2.5rem] ">
                   {post.introduction}
                 </CardDescription>
               </CardHeader>
