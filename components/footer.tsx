@@ -1,7 +1,22 @@
+"use client";
 import Link from "next/link";
 import { Code, Github, Linkedin, Mail, Heart, Divide } from "lucide-react";
 import { buttonDefault, maxWidth, titleName } from "@/styles/classNames";
+import { ICategory, callFetchCategories } from "@/lib/api-services";
+import { useState, useEffect } from "react";
 export default function Footer() {
+  const [categories, setCategories] = useState<ICategory[]>([]);
+
+  useEffect(() => {
+    callFetchCategories()
+      .then((res) => {
+        setCategories(res.data.slice(0, 5));
+      })
+      .catch((err) => {
+        console.error(err);
+        setCategories([]);
+      });
+  }, []);
   return (
     <footer className="bg-muted/30 w-full border-t">
       <div className="p-4 md:py-8">
@@ -89,38 +104,16 @@ export default function Footer() {
               Danh mục
             </h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  href="/categories/frontend"
-                  className="text-muted-foreground hover:text-green-500 transition-colors block py-1"
-                >
-                  Frontend
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/categories/backend"
-                  className="text-muted-foreground hover:text-green-500 transition-colors block py-1"
-                >
-                  Backend
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/categories/devops"
-                  className="text-muted-foreground hover:text-green-500 transition-colors block py-1"
-                >
-                  DevOps
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/categories/ai"
-                  className="text-muted-foreground hover:text-green-500 transition-colors block py-1"
-                >
-                  AI & Automation
-                </Link>
-              </li>
+              {categories.map((cat) => (
+                <li key={cat._id}>
+                  <Link
+                    href={`/categories/${cat.slug}`}
+                    className="text-muted-foreground hover:text-green-500 transition-colors block py-1"
+                  >
+                    {cat.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

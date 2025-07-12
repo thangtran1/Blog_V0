@@ -21,77 +21,19 @@ import {
   bgWelcome,
   buttonDefault,
 } from "../styles/classNames";
-const featuredPosts = [
-  {
-    id: 1,
-    title: "Elasticsearch Toàn Tập: Search Engine Hiện Đại Cho Ứng Dụng Web",
-    excerpt:
-      "Tìm hiểu về Elasticsearch, một trong những search engine mạnh mẽ nhất hiện nay...",
-    date: "23 tháng 6, 2025",
-    readTime: "24 phút đọc",
-    category: "Backend",
-    image: "/placeholder.svg?height=200&width=400",
-  },
-  {
-    id: 2,
-    title: "API Gateway với Kong - Giải pháp toàn diện cho Microservices",
-    excerpt:
-      "Khám phá Kong API Gateway và cách triển khai trong kiến trúc microservices...",
-    date: "21 tháng 6, 2025",
-    readTime: "18 phút đọc",
-    category: "DevOps",
-    image: "/placeholder.svg?height=200&width=400",
-  },
-  {
-    id: 3,
-    title: "Micro Frontend Architecture - Hướng dẫn toàn diện",
-    excerpt:
-      "Tìm hiểu về kiến trúc Micro Frontend và cách triển khai trong dự án thực tế...",
-    date: "19 tháng 6, 2025",
-    readTime: "22 phút đọc",
-    category: "Frontend",
-    image: "/placeholder.svg?height=200&width=400",
-  },
-];
-
-const categories = [
-  {
-    name: "Frontend",
-    icon: "🎨",
-    description: "React, JavaScript, HTML, CSS và các công nghệ frontend khác",
-    count: "8 bài viết",
-    href: "/categories/frontend",
-    gradient: "from-blue-500 to-purple-600",
-  },
-  {
-    name: "Backend",
-    icon: "⚙️",
-    description:
-      "Node.js, Express.js, API development và server-side programming",
-    count: "5 bài viết",
-    href: "/categories/backend",
-    gradient: "from-green-500 to-teal-600",
-  },
-  {
-    name: "DevOps",
-    icon: "🚀",
-    description: "Docker, CI/CD, cloud deployment và infrastructure",
-    count: "4 bài viết",
-    href: "/categories/devops",
-    gradient: "from-orange-500 to-red-600",
-  },
-  {
-    name: "AI & Automation",
-    icon: "🤖",
-    description: "AI Automation, n8n, AI Agent và các công nghệ AI",
-    count: "3 bài viết",
-    href: "/categories/ai",
-    gradient: "from-purple-500 to-pink-600",
-  },
-];
+import {
+  callFetchCategories,
+  callFetchRecentPosts,
+  ICategory,
+  IPost,
+} from "@/lib/api-services";
+import { formatDateVN } from "@/lib/utils";
 
 export default function HomePage() {
-  // Thêm state cho animations:
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [recentPosts, setRecentPosts] = useState<IPost[]>([]);
+  const [loadingRecent, setLoadingRecent] = useState(true);
+
   const [sectionsVisible, setSectionsVisible] = useState({
     hero: false,
     trending: false,
@@ -117,7 +59,6 @@ export default function HomePage() {
       });
     }, observerOptions);
 
-    // Observe sections
     const sections = ["hero", "trending", "categories", "latest"];
     sections.forEach((sectionId) => {
       const element = document.getElementById(sectionId);
@@ -127,6 +68,35 @@ export default function HomePage() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await callFetchCategories();
+        const sortedByPostCount = res.data
+          .sort((a, b) => (b.totalPost || 0) - (a.totalPost || 0))
+          .slice(0, 4);
+
+        setCategories(sortedByPostCount);
+      } catch (err) {
+        console.error("Lỗi fetch categories:", err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    setLoadingRecent(true);
+    callFetchRecentPosts()
+      .then((res) => {
+        setRecentPosts(res.data.slice(0, 3));
+      })
+      .catch(() => {
+        setRecentPosts([]);
+      })
+      .finally(() => setLoadingRecent(false));
+  }, []);
+
   return (
     <div className="flex flex-col px-4 min-h-screen">
       {/* Hero Section */}
@@ -134,7 +104,7 @@ export default function HomePage() {
         id="hero"
         className={`relative px-2 rounded-lg ${bgWelcome} text-white py-20 lg:py-32 overflow-hidden`}
       >
-        <div className="absolute inset-0 bg-black/10"></div>
+        {/* <div className="absolute inset-0 bg-black/10"></div> */}
         {/* Animated decorative elements */}
         <div
           className={`relative z-10 transition-all duration-1000 ${
@@ -213,44 +183,44 @@ export default function HomePage() {
               {categories.map((category, index) => (
                 <div
                   key={index}
-                  className={`transition-all duration-700 ${
-                    sectionsVisible.categories
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-10"
-                  }`}
-                  style={{ transitionDelay: `${index * 150}ms` }}
+                  className="group animate-fade-in-up rounded-md bg-gradient-to-br from-card to-muted/50 border border-gray-200 dark:border-gray-700 hover:scale-105 transform transition duration-500 hover:shadow-xl dark:hover:shadow-green-900"
+                  style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <Link href={category.href}>
-                    <Card className="group card-hover-lift border-2 border-transparent hover:border-green-200 dark:hover:border-green-800 bg-gradient-to-br from-card to-muted/50 h-full relative overflow-hidden animate-glow-border">
-                      {/* Animated border */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 via-transparent to-green-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                      <CardHeader className="pb-4 relative z-10">
-                        <div className="flex items-center gap-4">
-                          <div
-                            className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${category.gradient} flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-300`}
-                          >
-                            {category.icon}
-                          </div>
-                          <div>
-                            <CardTitle className="text-xl group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
-                              {category.name}
-                            </CardTitle>
-                            <div className="flex items-center gap-2 mt-1">
-                              <Badge variant="secondary" className="text-xs">
-                                {category.count}
-                              </Badge>
-                            </div>
+                  <Card className="flex flex-col h-full border border-gray-300 dark:border-gray-600 hover:border-green-400 dark:hover:border-green-600 transition-colors duration-300">
+                    <CardHeader className="pb-4">
+                      <div className="flex items-start gap-4">
+                        <img
+                          src={category.image}
+                          alt={category.name}
+                          className="w-24 h-24 border border-gray-300 dark:border-gray-600 rounded-2xl object-cover shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-300"
+                        />
+                        <div className="flex-1">
+                          <CardTitle className="text-xl group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors mb-2">
+                            {category.name}
+                          </CardTitle>
+                          <div className="flex items-center gap-2">
+                            <Badge variant="secondary" className="text-xs">
+                              {category.posts ? category.posts.length : 0} bài
+                              viết
+                            </Badge>
                           </div>
                         </div>
-                      </CardHeader>
-                      <CardContent className="relative z-10">
-                        <p className="text-muted-foreground leading-relaxed text-sm">
-                          {category.description}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </Link>
+                      </div>
+                    </CardHeader>
+
+                    <CardContent className="flex flex-col flex-grow space-y-4 p-5">
+                      <CardDescription className="leading-relaxed text-sm line-clamp-3 min-h-[4rem]">
+                        {category.description}
+                      </CardDescription>
+
+                      <Button asChild className="w-full group mt-auto">
+                        <Link href={`/categories/${category.slug}`}>
+                          Khám phá {category.name}
+                          <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
                 </div>
               ))}
             </div>
@@ -290,9 +260,9 @@ export default function HomePage() {
               </p>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredPosts.map((post, index) => (
+              {recentPosts.map((post, index) => (
                 <div
-                  key={post.id}
+                  key={post._id}
                   className={`transition-all duration-700 ${
                     sectionsVisible.latest
                       ? "opacity-100 translate-y-0 scale-100"
@@ -301,27 +271,27 @@ export default function HomePage() {
                   style={{ transitionDelay: `${index * 200}ms` }}
                 >
                   <Card className="group card-hover-lift border-green-100 dark:border-green-900 relative overflow-hidden">
-                    {/* Animated border effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse"></div>
-
                     <div className="relative overflow-hidden rounded-t-lg">
                       <Image
-                        src={post.image || "/placeholder.svg"}
+                        src={post.category.image || "/placeholder.svg"}
                         alt={post.title}
                         width={400}
                         height={200}
                         className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute top-4 left-4">
-                        <Badge className={buttonDefault}>{post.category}</Badge>
+                        <Badge className={buttonDefault}>
+                          {post.category.name}
+                        </Badge>
                       </div>
                     </div>
                     <CardHeader>
-                      <CardTitle className="line-clamp-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
+                      <CardTitle className="line-clamp-1 min-h-[1.5rem] group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors capitalize">
                         {post.title}
                       </CardTitle>
-                      <CardDescription className="line-clamp-3">
-                        {post.excerpt}
+
+                      <CardDescription className="text-sm text-muted-foreground line-clamp-2 overflow-hidden">
+                        {post.introduction}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -329,16 +299,16 @@ export default function HomePage() {
                         <div className="flex items-center gap-4">
                           <div className="flex items-center gap-1">
                             <Calendar className="w-4 h-4" />
-                            {post.date}
+                            {formatDateVN(post.createdAt)}
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock className="w-4 h-4" />
-                            {post.readTime}
+                            {post.readingTime} phút đọc
                           </div>
                         </div>
                       </div>
                       <Button asChild className="w-full group">
-                        <Link href={`/posts/${post.id}`}>
+                        <Link href={`/posts/${post._id}`}>
                           Đọc tiếp
                           <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                         </Link>

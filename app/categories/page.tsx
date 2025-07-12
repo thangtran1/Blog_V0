@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import {
   Card,
@@ -10,99 +11,33 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpen } from "lucide-react";
 import { bgWelcome, maxWidth, textDefault } from "@/styles/classNames";
-
-const categories = [
-  {
-    name: "Frontend",
-    icon: "🎨",
-    description:
-      "React, JavaScript, HTML, CSS và các công nghệ frontend khác. Tìm hiểu về UI/UX, responsive design và performance optimization.",
-    count: 8,
-    href: "/categories/frontend",
-    gradient: "from-blue-500 to-purple-600",
-    posts: [
-      "Micro Frontend Architecture - Hướng dẫn toàn diện",
-      "React Performance Optimization",
-      "Next.js 15 - Những tính năng mới",
-    ],
-  },
-  {
-    name: "Backend",
-    icon: "⚙️",
-    description:
-      "Node.js, Express.js, API development và server-side programming. Khám phá kiến trúc microservices và database design.",
-    count: 5,
-    href: "/categories/backend",
-    gradient: "from-green-500 to-teal-600",
-    posts: [
-      "Elasticsearch Toàn Tập: Search Engine Hiện Đại",
-      "SQL vs NoSQL - So Sánh Chi Tiết",
-      "RESTful API Design Best Practices",
-    ],
-  },
-  {
-    name: "DevOps",
-    icon: "🚀",
-    description:
-      "Docker, CI/CD, cloud deployment và infrastructure. Tự động hóa quy trình phát triển và triển khai ứng dụng.",
-    count: 4,
-    href: "/categories/devops",
-    gradient: "from-orange-500 to-red-600",
-    posts: [
-      "API Gateway với Kong",
-      "Kubernetes cho người mới bắt đầu",
-      "CI/CD Pipeline với GitHub Actions",
-    ],
-  },
-  {
-    name: "AI & Automation",
-    icon: "🤖",
-    description:
-      "AI Automation, n8n, AI Agent và các công nghệ AI. Khám phá machine learning và automation workflows.",
-    count: 3,
-    href: "/categories/ai",
-    gradient: "from-purple-500 to-pink-600",
-    posts: [
-      "NocoBase - Nền Tảng Low-Code",
-      "AI Automation với N8N",
-      "RAG Systems với LangChain",
-    ],
-  },
-  {
-    name: "Database",
-    icon: "🗄️",
-    description:
-      "SQLLLLLL, NoSQL, MongoDB, PostgreSQL và database design. Tối ưu hóa truy vấn và thiết kế schema hiệu quả.",
-    count: 6,
-    href: "/categories/database",
-    gradient: "from-indigo-500 to-blue-600",
-    posts: [
-      "PostgreSQL Advanced Techniques",
-      "MongoDB Aggregation Pipeline",
-      "Database Indexing Strategies",
-    ],
-  },
-  {
-    name: "Tools & OpenSource",
-    icon: "🛠️",
-    description:
-      "OpenSource tools, development tools, productivity và utilities. Công cụ hỗ trợ phát triển và tăng năng suất.",
-    count: 7,
-    href: "/categories/tools",
-    gradient: "from-teal-500 to-green-600",
-    posts: [
-      "VS Code Extensions Must-Have",
-      "Git Workflow Best Practices",
-      "Docker Development Environment",
-    ],
-  },
-];
+import { callFetchCategories, ICategory } from "@/lib/api-services";
+import { useEffect, useState } from "react";
 
 export default function CategoriesPage() {
-  const totalPosts = categories.reduce((sum, cat) => sum + cat.count, 0);
+  const [categories, setCategories] = useState<ICategory[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await callFetchCategories();
+        console.log("🚀 ~ fetchCategories ~ res:", res);
+        setCategories(res.data);
+      } catch (err) {
+        console.error("Lỗi fetch categories:", err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const totalPosts = categories.reduce(
+    (sum, cat) => sum + (cat.posts ? cat.posts.length : 0),
+    0
+  );
 
   return (
-    <div className="min-h-screen px-4 round bg-background">
+    <div className="min-h-screen   px-4 round bg-background">
       {/* Hero Section */}
       <section
         className={`relative rounded-lg ${bgWelcome} text-white py-20 overflow-hidden`}
@@ -141,70 +76,76 @@ export default function CategoriesPage() {
       </section>
 
       {/* Categories Grid */}
-      <section className="py-20">
-        <div className="">
-          <div className={`${maxWidth} mx-auto`}>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {categories.map((category, index) => (
-                <div
-                  key={index}
-                  className="group animate-fade-in-up  border border-gray-200 rounded-md"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <Card className="h-full hover:shadow-2xl transition-all duration-500 border-2 border-transparent hover:border-green-200 dark:hover:border-green-800 bg-gradient-to-br from-card to-muted/50 hover:scale-105 transform">
-                    <CardHeader className="pb-4">
-                      <div className="flex items-start gap-4">
-                        <div
-                          className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${category.gradient} flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-300`}
-                        >
-                          {category.icon}
-                        </div>
-                        <div className="flex-1">
-                          <CardTitle className="text-xl group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors mb-2">
-                            {category.name}
-                          </CardTitle>
-                          <div className="flex items-center gap-2">
-                            <Badge variant="secondary" className="text-xs">
-                              {category.count} bài viết
-                            </Badge>
-                          </div>
+      <section className={`py-20 mx-auto ${maxWidth} `}>
+        <div className="px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {categories.map((category, index) => (
+              <div
+                key={index}
+                className="group animate-fade-in-up rounded-md bg-gradient-to-br from-card to-muted/50 border border-gray-200 dark:border-gray-700 hover:scale-105 transform transition duration-500 hover:shadow-xl dark:hover:shadow-green-900"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <Card className="flex flex-col h-full border border-gray-300 dark:border-gray-600 hover:border-green-400 dark:hover:border-green-600 transition-colors duration-300">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start gap-4">
+                      <img
+                        src={category.image}
+                        alt={category.name}
+                        className="w-24 h-24 border border-gray-300 dark:border-gray-600 rounded-2xl object-cover shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-300"
+                      />
+                      <div className="flex-1">
+                        <CardTitle className="text-xl capitalize group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors mb-2">
+                          {category.name}
+                        </CardTitle>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="secondary" className="text-xs">
+                            {category.posts ? category.posts.length : 0} bài
+                            viết
+                          </Badge>
                         </div>
                       </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <CardDescription className="leading-relaxed text-sm">
-                        {category.description}
-                      </CardDescription>
+                    </div>
+                  </CardHeader>
 
-                      {/* Popular posts preview */}
-                      <div className="space-y-2">
-                        <h4 className="font-semibold text-sm text-muted-foreground">
-                          Bài viết nổi bật:
-                        </h4>
-                        <ul className="space-y-1">
-                          {category.posts.slice(0, 2).map((post, postIndex) => (
+                  <CardContent className="flex flex-col flex-grow space-y-4 p-5">
+                    <CardDescription className="leading-relaxed text-sm flex-shrink-0">
+                      {category.description}
+                    </CardDescription>
+
+                    <div className="space-y-2 flex-grow overflow-auto max-h-24">
+                      <h4 className="font-semibold text-sm text-muted-foreground">
+                        Bài viết nổi bật:
+                      </h4>
+                      <ul className="space-y-1">
+                        {Array.isArray(category.posts) &&
+                        category.posts.length > 0 ? (
+                          category.posts.slice(0, 2).map((post, postIndex) => (
                             <li
                               key={postIndex}
                               className="text-xs text-muted-foreground flex items-center gap-2"
                             >
                               <div className="w-1 h-1 bg-green-500 rounded-full"></div>
-                              {post}
+                              {post.title}
                             </li>
-                          ))}
-                        </ul>
-                      </div>
+                          ))
+                        ) : (
+                          <li className="text-xs text-muted-foreground italic">
+                            Chưa có bài viết nào
+                          </li>
+                        )}
+                      </ul>
+                    </div>
 
-                      <Button asChild className="w-full group mt-4">
-                        <Link href={category.href}>
-                          Khám phá {category.name}
-                          <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
-            </div>
+                    <Button asChild className="w-full group mt-auto">
+                      <Link href={`/categories/${category.slug}`}>
+                        Khám phá {category.name}
+                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            ))}
           </div>
         </div>
       </section>

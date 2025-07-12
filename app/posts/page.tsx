@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -19,76 +20,76 @@ import {
 } from "@/components/ui/select";
 import { Calendar, Clock, Search, Filter } from "lucide-react";
 import { buttonDefault, maxWidth, textDefault } from "@/styles/classNames";
-
-const allPosts = [
-  {
-    id: 1,
-    title: "Elasticsearch Toàn Tập: Search Engine Hiện Đại Cho Ứng Dụng Web",
-    excerpt:
-      "Tìm hiểu về Elasticsearch, một trong những search engine mạnh mẽ nhất hiện nay, từ những khái niệm cơ bản về search engine, kiến trúc phân tán, so sánh với các công nghệ khác...",
-    date: "23 tháng 6, 2025",
-    readTime: "24 phút đọc",
-    category: "Backend",
-    image: "/placeholder.svg?height=200&width=400",
-  },
-  {
-    id: 2,
-    title: "API Gateway với Kong - Giải pháp toàn diện cho Microservices",
-    excerpt:
-      "Tìm hiểu về API Gateway, Kong và cách triển khai trong kiến trúc microservices. Plugin, lợi ích và hướng dẫn triển khai chi tiết...",
-    date: "21 tháng 6, 2025",
-    readTime: "28 phút đọc",
-    category: "DevOps",
-    image: "/placeholder.svg?height=200&width=400",
-  },
-  {
-    id: 3,
-    title:
-      "Micro Frontend Architecture - Hướng dẫn toàn diện về kiến trúc Frontend hiện đại 2025",
-    excerpt:
-      "Tìm hiểu chi tiết về Micro Frontend Architecture - từ khái niệm cơ bản, các kỹ thuật triển khai, cho đến hướng dẫn triển khai thực tế trong dự án...",
-    date: "19 tháng 6, 2025",
-    readTime: "43 phút đọc",
-    category: "Frontend",
-    image: "/placeholder.svg?height=200&width=400",
-  },
-  {
-    id: 4,
-    title: "SQL vs NoSQL - So Sánh Chi Tiết Các Loại Database Hiện Đại",
-    excerpt:
-      "So sánh chi tiết giữa SQL và NoSQL database, ưu nhược điểm của từng loại và khi nào nên sử dụng MySQL, PostgreSQL, MongoDB và các...",
-    date: "17 tháng 6, 2025",
-    readTime: "25 phút đọc",
-    category: "Backend",
-    image: "/placeholder.svg?height=200&width=400",
-  },
-  {
-    id: 5,
-    title: "NocoBase - Nền Tảng Low-Code Cho Doanh Nghiệp Hiện Đại",
-    excerpt:
-      "Khám phá NocoBase, một nền tảng low-code mạnh mẽ giúp xây dựng ứng dụng doanh nghiệp nhanh chóng và hiệu quả...",
-    date: "15 tháng 6, 2025",
-    readTime: "20 phút đọc",
-    category: "AI",
-    image: "/placeholder.svg?height=200&width=400",
-  },
-  {
-    id: 6,
-    title: "AI Automation với N8N và hướng dẫn cài đặt chi tiết",
-    excerpt:
-      "Hướng dẫn chi tiết về N8N - công cụ automation mạnh mẽ, cách cài đặt và tạo workflow tự động hóa công việc...",
-    date: "13 tháng 6, 2025",
-    readTime: "32 phút đọc",
-    category: "AI",
-    image: "/placeholder.svg?height=200&width=400",
-  },
-];
+import {
+  callFetchCategories,
+  callFetchPostAuthor,
+  callFetchRecentPosts,
+  IAllPost,
+  ICategory,
+  IPost,
+} from "@/lib/api-services";
+import { useEffect, useState } from "react";
+import { formatDateVN } from "@/lib/utils";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
 
 export default function PostsPage() {
+  const [recentPosts, setRecentPosts] = useState<IPost[]>([]);
+  const [loadingRecent, setLoadingRecent] = useState(true);
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [allPosts, setAllPosts] = useState<IAllPost[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<IAllPost[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
+  useEffect(() => {
+    setLoadingRecent(true);
+    callFetchRecentPosts()
+      .then((res) => {
+        setRecentPosts(res.data);
+      })
+      .catch(() => {
+        setRecentPosts([]);
+      })
+      .finally(() => setLoadingRecent(false));
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const [postRes, catRes] = await Promise.all([
+        callFetchPostAuthor(),
+        callFetchCategories(),
+      ]);
+      setAllPosts(postRes.data);
+      setFilteredPosts(postRes.data);
+      setCategories(catRes.data);
+    };
+
+    fetchData().catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    let filtered = allPosts;
+
+    if (selectedCategory !== "all") {
+      filtered = filtered.filter(
+        (post) => post.category?._id === selectedCategory
+      );
+    }
+
+    if (searchTerm.trim() !== "") {
+      filtered = filtered.filter((post) =>
+        post.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    setFilteredPosts(filtered);
+  }, [allPosts, selectedCategory, searchTerm]);
+  const pathname = usePathname();
+  const currentId = pathname?.split("/").pop();
   return (
     <div className="px-4 py-8">
       <div className={`${maxWidth} mx-auto `}>
-        {/* Header */}
         <div className="text-center  mb-12">
           <h1 className={`text-4xl font-bold mb-4 ${textDefault}`}>
             Tất cả bài viết
@@ -99,29 +100,60 @@ export default function PostsPage() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-8">
-          {/* Sidebar */}
+        <div className="grid lg:grid-cols-4 gap-6">
           <div className="lg:col-span-1">
             <div className="sticky top-20 space-y-6">
-              <Card>
+              <Card className="border-green-200 dark:border-green-800 bg-card/50 backdrop-blur-sm shadow-sm">
                 <CardHeader>
-                  <CardTitle className="text-lg">Bài viết gần đây</CardTitle>
+                  <CardTitle className="text-xl font-semibold flex items-center gap-2">
+                    📚 Bài viết gần đây
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  {allPosts.slice(0, 5).map((post) => (
-                    <Link
-                      key={post.id}
-                      href={`/posts/${post.id}`}
-                      className="block group"
-                    >
-                      <h4 className="font-medium text-sm line-clamp-2 group-hover:text-green-600 transition-colors">
-                        {post.title}
-                      </h4>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {post.date}
-                      </p>
-                    </Link>
-                  ))}
+                <CardContent className="p-0">
+                  {loadingRecent && (
+                    <div className="p-4 text-sm text-muted-foreground">
+                      Đang tải bài viết gần đây...
+                    </div>
+                  )}
+
+                  {!loadingRecent &&
+                    recentPosts.map((recentPost) => {
+                      const isActive = recentPost._id === currentId;
+                      return (
+                        <Link
+                          key={recentPost._id}
+                          href={`/posts/${recentPost._id}`}
+                          className={clsx(
+                            "block transition-all",
+                            isActive
+                              ? "bg-muted/80 border-l-4 border-green-500"
+                              : "hover:bg-muted/50 border-l-4 border-transparent"
+                          )}
+                        >
+                          <div className="px-5 py-4 border-b">
+                            <p
+                              className={clsx(
+                                "font-semibold uppercase md:text-[14px] line-clamp-2 mb-1 transition-colors",
+                                isActive
+                                  ? "text-green-600 dark:text-green-400"
+                                  : "group-hover:text-green-600 dark:group-hover:text-green-400"
+                              )}
+                            >
+                              {recentPost.title}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {formatDateVN(recentPost.createdAt)}
+                            </p>
+                          </div>
+                        </Link>
+                      );
+                    })}
+
+                  {!loadingRecent && recentPosts.length === 0 && (
+                    <div className="p-4 text-sm text-muted-foreground">
+                      Chưa có bài viết gần đây
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
@@ -133,49 +165,70 @@ export default function PostsPage() {
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                <Input placeholder="Tìm kiếm bài viết..." className="pl-10" />
+                <Input
+                  placeholder="Tìm kiếm bài viết..."
+                  className="pl-10"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
               </div>
-              <Select defaultValue="all">
+              <Select
+                value={selectedCategory}
+                onValueChange={setSelectedCategory}
+              >
                 <SelectTrigger className="w-full sm:w-48">
                   <Filter className="w-4 h-4 mr-2" />
                   <SelectValue placeholder="Tất cả danh mục" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Tất cả danh mục</SelectItem>
-                  <SelectItem value="frontend">Frontend</SelectItem>
-                  <SelectItem value="backend">Backend</SelectItem>
-                  <SelectItem value="devops">DevOps</SelectItem>
-                  <SelectItem value="ai">AI & Automation</SelectItem>
+                  {categories
+                    .filter((cat) => cat.isActive)
+                    .map((cat) => (
+                      <SelectItem key={cat._id} value={cat._id}>
+                        {cat.name}
+                      </SelectItem>
+                    ))}
                 </SelectContent>
               </Select>
-              <Button variant="outline">Reset</Button>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setSelectedCategory("all");
+                  setSearchTerm("");
+                }}
+              >
+                Reset
+              </Button>
             </div>
 
             {/* Posts Grid */}
             <div className="grid md:grid-cols-2 gap-6">
-              {allPosts.map((post) => (
+              {filteredPosts.map((post) => (
                 <Card
-                  key={post.id}
+                  key={post._id}
                   className="group hover:shadow-xl transition-all duration-300 border-green-100 dark:border-green-900"
                 >
                   <div className="relative overflow-hidden rounded-t-lg">
                     <Image
-                      src={post.image || "/placeholder.svg"}
+                      src={post.category.image || "/placeholder.svg"}
                       alt={post.title}
                       width={400}
                       height={200}
                       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-4 left-4">
-                      <Badge className={buttonDefault}>{post.category}</Badge>
+                      <Badge className="bg-green-600 text-white">
+                        {post.category.name}
+                      </Badge>
                     </div>
                   </div>
                   <CardHeader>
-                    <CardTitle className="line-clamp-2 group-hover:text-green-600 transition-colors">
-                      <Link href={`/posts/${post.id}`}>{post.title}</Link>
+                    <CardTitle className="line-clamp-2 capitalize  group-hover:text-green-600 transition-colors">
+                      <Link href={`/posts/${post._id}`}>{post.title}</Link>
                     </CardTitle>
                     <CardDescription className="line-clamp-3">
-                      {post.excerpt}
+                      {post.introduction}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -183,11 +236,11 @@ export default function PostsPage() {
                       <div className="flex items-center gap-4">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
-                          {post.date}
+                          {new Date(post.createdAt).toLocaleDateString()}
                         </div>
                         <div className="flex items-center gap-1">
                           <Clock className="w-4 h-4" />
-                          {post.readTime}
+                          {post.readingTime} phút đọc
                         </div>
                       </div>
                     </div>

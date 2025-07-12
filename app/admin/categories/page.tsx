@@ -12,15 +12,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-  Edit,
-  Eye,
   FileText,
   FolderOpen,
-  MoreHorizontal,
   Pencil,
   Plus,
   Search,
-  Trash,
   Trash2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -31,39 +27,8 @@ import {
   callFetchCategories,
   ICategory,
 } from "@/lib/api-services";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@radix-ui/react-dropdown-menu";
 import { Popconfirm, Select } from "antd";
-
-const COLORS = [
-  "from-green-400 to-blue-500",
-  "from-pink-500 to-yellow-500",
-  "from-purple-500 to-indigo-500",
-  "from-yellow-400 to-red-500",
-  "from-teal-400 to-cyan-500",
-  "from-orange-500 to-pink-500",
-];
-
-const iconToImageUrl: Record<string, string> = {
-  "📁": "https://cdn-icons-png.flaticon.com/512/715/715676.png",
-  "🔥": "https://cdn-icons-png.flaticon.com/512/482/482541.png",
-  "🚀": "https://cdn-icons-png.flaticon.com/512/3210/3210033.png",
-  "🎨": "https://cdn-icons-png.flaticon.com/512/1828/1828884.png",
-  "⚙️": "https://cdn-icons-png.flaticon.com/512/3524/3524659.png",
-  "🤖": "https://cdn-icons-png.flaticon.com/512/4712/4712034.png",
-  "📱": "https://cdn-icons-png.flaticon.com/512/545/545682.png",
-  "💻": "https://cdn-icons-png.flaticon.com/512/739/739231.png",
-  "🔧": "https://cdn-icons-png.flaticon.com/512/1828/1828919.png",
-  "📊": "https://cdn-icons-png.flaticon.com/512/1828/1828935.png",
-  "🌐": "https://cdn-icons-png.flaticon.com/512/591/591788.png",
-  "🔒": "https://cdn-icons-png.flaticon.com/512/565/565547.png",
-  "📝": "https://cdn-icons-png.flaticon.com/512/1828/1828911.png",
-  "🎯": "https://cdn-icons-png.flaticon.com/512/1828/1828885.png",
-};
+const { Option } = Select;
 
 export default function AdminCategories() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -93,7 +58,6 @@ export default function AdminCategories() {
   );
 
   const filteredCategories = categories.filter((item) => {
-    // filter theo name
     const matchesName = item.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
@@ -111,7 +75,6 @@ export default function AdminCategories() {
   };
 
   const handleDelete = async (id: string) => {
-    console.log("🚀 ~ handleDelete ~ id:", id);
     try {
       await callDeleteCategory(id);
       setCategories((prev) => prev.filter((exp) => exp._id !== id));
@@ -138,7 +101,7 @@ export default function AdminCategories() {
               Tạo danh mục mới
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl ">
+          <DialogContent className="w-full  rounded-lg md:max-w-2xl max-h-[90vh] max-w-[90%] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Tạo danh mục mới</DialogTitle>
             </DialogHeader>
@@ -182,9 +145,9 @@ export default function AdminCategories() {
             onChange={(value) => setIsActiveFilter(value)}
             style={{ width: 160 }}
           >
-            <option value="all">Tất cả</option>
-            <option value="true">Hoạt động</option>
-            <option value="false">Không hoạt động</option>
+            <Option value="all">Tất cả</Option>
+            <Option value="true">Hoạt động</Option>
+            <Option value="false">Không hoạt động</Option>
           </Select>
         </CardContent>
       </Card>
@@ -195,41 +158,39 @@ export default function AdminCategories() {
             key={category._id}
             className="overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300"
           >
-            {category.image && (
-              <div className="relative">
-                {/* <img
-                  src={}
-                  alt={category.name}
-                  className="w-full h-40 object-cover"
-                /> */}
+            <div className="relative w-full h-40 bg-gray-100 rounded overflow-hidden">
+              {category.image ? (
                 <img
-                  src={iconToImageUrl[category.image] || category.image}
+                  src={category?.image}
                   alt={category.name}
-                  className="w-full h-40 object-cover"
+                  className="w-full h-full object-contain"
                 />
-
-                {/* ICON EDIT + DELETE */}
-                <div className="absolute top-2 right-2 flex space-x-2 z-10">
-                  <button
-                    onClick={() => onEdit(category)}
-                    className="bg-white p-1.5 rounded-full shadow hover:bg-gray-100"
-                  >
-                    <Pencil className="w-4 h-4 text-gray-600" />
-                  </button>
-                  <Popconfirm
-                    title="Xoá kết nối"
-                    description="Bạn có chắc chắn muốn xoá kết nối này không?"
-                    onConfirm={() => handleDelete(category._id)}
-                    okText="Xoá"
-                    cancelText="Huỷ"
-                  >
-                    <Button size="sm" variant="outline">
-                      <Trash2 className="w-3 h-3" />
-                    </Button>
-                  </Popconfirm>
+              ) : (
+                <div className="flex items-center justify-center w-full h-full text-gray-400 text-sm">
+                  Không có ảnh
                 </div>
+              )}
+
+              <div className="absolute top-2 right-2 flex space-x-2 z-10">
+                <button
+                  onClick={() => onEdit(category)}
+                  className="bg-white p-1.5 rounded-full shadow hover:bg-gray-100"
+                >
+                  <Pencil className="w-4 h-4 text-gray-600" />
+                </button>
+                <Popconfirm
+                  title="Xoá kết nối"
+                  description="Bạn có chắc chắn muốn xoá kết nối này không?"
+                  onConfirm={() => handleDelete(category._id)}
+                  okText="Xoá"
+                  cancelText="Huỷ"
+                >
+                  <Button size="sm" variant="outline">
+                    <Trash2 className="w-3 h-3" />
+                  </Button>
+                </Popconfirm>
               </div>
-            )}
+            </div>
 
             <CardContent className="p-4 space-y-3">
               <div className="flex items-center justify-between">
@@ -279,7 +240,7 @@ export default function AdminCategories() {
         open={!!editingCategory}
         onOpenChange={() => setEditingCategory(null)}
       >
-        <DialogContent className="max-w-2xl">
+        <DialogContent className=" w-full max-w-full  sm:max-w-xl  md:max-w-2xl  max-h-[90vh] overflow-aut p-4 mx-auto rounded-lg">
           <DialogHeader>
             <DialogTitle>Chỉnh sửa danh mục</DialogTitle>
           </DialogHeader>

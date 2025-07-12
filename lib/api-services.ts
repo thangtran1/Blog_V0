@@ -80,25 +80,22 @@ export interface IUser {
 export interface IPost {
   _id: string;
   title: string;
-  slug: string;
+  status: string;
+  introduction: string;
   content: string;
-  excerpt: string;
-  featuredImage?: string;
-  author: IUser | string;
-  category: ICategory | string;
-  tags: ITag[];
-  status: "draft" | "published" | "archived";
+  category: ICategory;
+  readingTime: number;
   views: number;
   likes: number;
-  readTime: number;
-  seo: {
-    metaTitle?: string;
-    metaDescription?: string;
-    keywords?: string[];
-  };
   createdAt: string;
   updatedAt: string;
-  publishedAt?: string;
+  __v: number;
+}
+
+export interface ISubCategory {
+  _id: string;
+  title: string;
+  category: string | ICategory;
 }
 
 export interface ICategory {
@@ -108,9 +105,37 @@ export interface ICategory {
   image: string;
   description: string;
   content: string;
+  slug?: string;
+  posts?: ISubCategory[];
   totalPost: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface IAllPost {
+  _id: string;
+  title: string;
+  status: string;
+  introduction: string;
+  content?: string;
+  readingTime?: number;
+  category: ICategory;
+  createdAt: string;
+  updatedAt: string;
+  isFeatured?: boolean;
+}
+
+export interface IPostByCategory {
+  _id: string;
+  title: string;
+  status: string;
+  introduction?: string;
+  content?: string;
+  category: ICategory;
+  readingTime?: number;
+  createdAt: string;
+  updatedAt?: string;
+  __v?: number;
 }
 
 export interface ITag {
@@ -271,16 +296,6 @@ export const callUpdateProfile = (userData: Partial<IUser>) => {
 // ====================================================================
 
 // Lấy danh sách bài viết - Trang "Tất cả bài viết" (/posts)
-export const callFetchPosts = (query: string) => {
-  return apiClient.get<IBackendRes<IModelPaginate<IPost>>>(
-    `/api/v1/posts?${query}`
-  );
-};
-
-// Lấy bài viết theo ID - Trang chi tiết bài viết (/posts/[id])
-export const callFetchPostById = (id: string) => {
-  return apiClient.get<IBackendRes<IPost>>(`/api/v1/posts/${id}`);
-};
 
 // Lấy bài viết theo slug - Trang chi tiết bài viết (/posts/[slug])
 export const callFetchPostBySlug = (slug: string) => {
@@ -616,9 +631,6 @@ export const callUpdatePost = (postId: string, postData: Partial<IPost>) => {
 };
 
 // Xóa bài viết - Admin panel
-export const callDeletePost = (postId: string) => {
-  return apiClient.delete<IBackendRes<string>>(`/api/v1/admin/posts/${postId}`);
-};
 
 // Tạo danh mục mới - Admin panel
 export const callCreateCategory = (categoryData: Partial<ICategory>) => {
@@ -638,13 +650,6 @@ export const callUpdateCategory = (
     categoryData
   );
 };
-
-// Xóa danh mục - Admin panel
-// export const callDeleteCategory = (categoryId: string) => {
-//   return apiClient.delete<IBackendRes<string>>(
-//     `/api/v1/admin/categories/${categoryId}`
-//   );
-// };
 
 // Quản lý comments - Admin panel
 export const callFetchAllComments = (query: string) => {
@@ -744,11 +749,25 @@ export const callDeleteCategory = (id: string) => {
 export const callUpdateCategories = (id: string, data: Partial<ICategory>) => {
   return apiClient.patch<ICategory>(`/categories/${id}`, data);
 };
-// export const callCreateCategories = (data: ICategory) => {
-//   return apiClient.post("/categories", data);
-// };
+
 export const callCreateCategories = (categoryData: Partial<ICategory>) => {
   return apiClient.post<ICategory>("/categories", categoryData);
+};
+
+export const callFetchPostAuthor = () => {
+  return apiClient.get<IAllPost[]>(`/posts`);
+};
+
+export const callFetchPostBySlugCategory = (slug: string) => {
+  return apiClient.get<IPostByCategory[]>(`/posts/by-category/${slug}`);
+};
+
+export const callFetchPostById = (id: string) => {
+  return apiClient.get<IPost>(`/posts/${id}`);
+};
+
+export const callFetchRecentPosts = (limit = 5) => {
+  return apiClient.get<IPost[]>(`/posts/recent?limit=${limit}`);
 };
 
 // API EXPENSIVE
@@ -818,6 +837,10 @@ export const callFetchPopularCategories = (limit = 10) => {
     `/api/v1/categories/popular?limit=${limit}`
   );
 };
+
+export const callDeletePost = (postId: string) => {
+  return apiClient.delete<string>(`/posts/${postId}`);
+};
 export const API = {
   // Auth
   auth: {
@@ -833,7 +856,6 @@ export const API = {
 
   // Posts
   posts: {
-    fetchPosts: callFetchPosts,
     fetchPostById: callFetchPostById,
     fetchPostBySlug: callFetchPostBySlug,
     fetchRelatedPosts: callFetchRelatedPosts,

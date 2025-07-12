@@ -1,6 +1,6 @@
 export const titleName = "NoBugKai";
 
-export const maxWidth = "max-w-5xl";
+export const maxWidth = "max-w-8xl";
 
 // default old
 // export const bgDefault = "bg-gradient-to-r from-green-600 to-green-500";

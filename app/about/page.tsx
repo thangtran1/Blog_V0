@@ -7,7 +7,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Github,
   Linkedin,
@@ -16,15 +15,10 @@ import {
   Calendar,
   MessageCircle,
   Heart,
-  Coffee,
-  Music,
-  Camera,
-  Gamepad2,
 } from "lucide-react";
 import { maxWidth, textDefault, titleName } from "@/styles/classNames";
 import {
   callFetchAboutAuthor,
-  callFetchCategories,
   callFetchConnectAuthor,
   callFetchExpensiveAuthor,
   callFetchLifeAuthor,
@@ -44,36 +38,7 @@ const iconGradients = [
   "from-green-500 to-teal-600",
   "from-yellow-400 to-yellow-600",
 ];
-const lifestyle = [
-  {
-    title: "Đam mê công nghệ",
-    icon: <Coffee className="w-6 h-6" />,
-    description:
-      "Luôn cập nhật và học hỏi những công nghệ mới nhất, tham gia các conference và meetup.",
-    gradient: "from-amber-500 to-orange-600",
-  },
-  {
-    title: "Âm nhạc & Sáng tạo",
-    icon: <Music className="w-6 h-6" />,
-    description:
-      "Chơi guitar và sản xuất nhạc điện tử trong thời gian rảnh, giúp tăng khả năng sáng tạo.",
-    gradient: "from-purple-500 to-pink-600",
-  },
-  {
-    title: "Photography",
-    icon: <Camera className="w-6 h-6" />,
-    description:
-      "Đam mê chụp ảnh phong cảnh và street photography, chia sẻ góc nhìn qua ống kính.",
-    gradient: "from-blue-500 to-cyan-600",
-  },
-  {
-    title: "Gaming & Tech",
-    icon: <Gamepad2 className="w-6 h-6" />,
-    description:
-      "Yêu thích game indie và retro, thỉnh thoảng phát triển game nhỏ với Unity và Godot.",
-    gradient: "from-green-500 to-teal-600",
-  },
-];
+
 const iconMap: { [key: string]: React.FC<React.SVGProps<SVGSVGElement>> } = {
   GitHub: Github,
   Linkedin: Linkedin,
@@ -218,10 +183,6 @@ export default function AboutPage() {
           {/* Skills Section */}
           <Card className="mb-12 border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-card to-muted/50 shadow-xl">
             <CardHeader>
-              {/* <CardTitle className="flex items-center gap-3 text-2xl">
-                <span className="text-3xl">💻</span>
-                Kỹ năng chuyên môn
-              </CardTitle> */}
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <span className="text-3xl animate-bounce">💻</span>
                 Kỹ năng chuyên môn
@@ -240,24 +201,16 @@ export default function AboutPage() {
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
                     <Card className="h-full hover:shadow-lg transition-all duration-300 hover:scale-105 border-2 border-transparent hover:border-green-200 dark:hover:border-green-800 relative overflow-hidden">
-                      {/* Animated background */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
                       <CardHeader className="pb-3">
                         <div className="flex items-center gap-3 mb-2">
                           <div
                             className={`w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-xl shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-300`}
                           >
-                            🚀 {/* Hoặc thay bằng icon nào đó tạm */}
-                            {/* <img
-    src={skill.icon} // skill.icon là URL ảnh
-    alt={skill.title}
-    className="w-6 h-6 object-contain"
-  /> */}
+                            🚀
                           </div>
                           <div className="flex-1">
                             <h3
-                              className={`font-bold text-lg ${textDefault} group-hover:text-green-500 transition-colors`}
+                              className={`font-bold text-lg capitalize ${textDefault} group-hover:text-green-500 transition-colors`}
                             >
                               {skill.title}
                             </h3>
@@ -327,7 +280,7 @@ export default function AboutPage() {
                             >
                               🚀
                             </div>
-                            <h3 className="font-bold text-lg text-foreground group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
+                            <h3 className="font-bold capitalize text-lg text-foreground group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
                               {item.title}
                             </h3>
                           </div>
@@ -362,14 +315,15 @@ export default function AboutPage() {
                     style={{ animationDelay: `${index * 200}ms` }}
                   >
                     <div className="absolute w-8 h-8 bg-green-500 rounded-full -left-4 top-2 flex items-center justify-center text-white text-sm font-bold shadow-lg">
-                      {/* {exp.icon} */}
                       🚀
                     </div>
                     <div className="space-y-3 bg-muted/30 p-6 rounded-lg border border-green-100 dark:border-green-900">
-                      <h3 className="font-bold text-xl text-foreground">
+                      <h3 className="font-bold capitalize text-xl text-foreground">
                         {exp.title}
                       </h3>
-                      <p className={`${textDefault} font-semibold text-lg`}>
+                      <p
+                        className={`${textDefault} capitalize font-semibold text-lg`}
+                      >
                         {exp.subTitle}
                       </p>
                       <p className="text-sm text-muted-foreground font-medium">
@@ -427,7 +381,9 @@ export default function AboutPage() {
                       >
                         <IconComp className="w-5 h-5" />
                       </div>
-                      <span className="font-medium">{social.title}</span>
+                      <span className="font-medium capitalize">
+                        {social.title}
+                      </span>
                     </a>
                   );
                 })}

@@ -1,3 +1,6 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -8,136 +11,73 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, ArrowLeft } from "lucide-react";
+import { Calendar, Clock, ArrowLeft, Folder } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { buttonDefault, maxWidth, textDefault } from "@/styles/classNames";
-
-const categoryData = {
-  frontend: {
-    name: "Frontend",
-    description:
-      "Các bài viết về phát triển giao diện người dùng, React, Next.js và các công nghệ frontend hiện đại",
-    posts: [
-      {
-        id: 3,
-        title:
-          "Micro Frontend Architecture - Hướng dẫn toàn diện về kiến trúc Frontend hiện đại 2025",
-        excerpt:
-          "Tìm hiểu chi tiết về Micro Frontend Architecture - từ khái niệm cơ bản, các kỹ thuật triển khai...",
-        date: "19 tháng 6, 2025",
-        readTime: "43 phút đọc",
-        image: "/placeholder.svg?height=200&width=400",
-      },
-      {
-        id: 3,
-        title:
-          "Micro Frontend Architecture - Hướng dẫn toàn diện về kiến trúc Frontend hiện đại 2025",
-        excerpt:
-          "Tìm hiểu chi tiết về Micro Frontend Architecture - từ khái niệm cơ bản, các kỹ thuật triển khai...",
-        date: "19 tháng 6, 2025",
-        readTime: "43 phút đọc",
-        image: "/placeholder.svg?height=200&width=400",
-      },
-      {
-        id: 3,
-        title:
-          "Micro Frontend Architecture - Hướng dẫn toàn diện về kiến trúc Frontend hiện đại 2025",
-        excerpt:
-          "Tìm hiểu chi tiết về Micro Frontend Architecture - từ khái niệm cơ bản, các kỹ thuật triển khai...",
-        date: "19 tháng 6, 2025",
-        readTime: "43 phút đọc",
-        image: "/placeholder.svg?height=200&width=400",
-      },
-    ],
-  },
-  backend: {
-    name: "Backend",
-    description:
-      "Các bài viết về phát triển server-side, database, API và kiến trúc hệ thống",
-    posts: [
-      {
-        id: 1,
-        title:
-          "Elasticsearch Toàn Tập: Search Engine Hiện Đại Cho Ứng Dụng Web",
-        excerpt:
-          "Tìm hiểu về Elasticsearch, một trong những search engine mạnh mẽ nhất hiện nay...",
-        date: "23 tháng 6, 2025",
-        readTime: "24 phút đọc",
-        image: "/placeholder.svg?height=200&width=400",
-      },
-      {
-        id: 4,
-        title: "SQL vs NoSQL - So Sánh Chi Tiết Các Loại Database Hiện Đại",
-        excerpt:
-          "So sánh chi tiết giữa SQL và NoSQL database, ưu nhược điểm của từng loại...",
-        date: "17 tháng 6, 2025",
-        readTime: "25 phút đọc",
-        image: "/placeholder.svg?height=200&width=400",
-      },
-    ],
-  },
-  devops: {
-    name: "DevOps",
-    description:
-      "Các bài viết về CI/CD, containerization, cloud computing và vận hành hệ thống",
-    posts: [
-      {
-        id: 2,
-        title: "API Gateway với Kong - Giải pháp toàn diện cho Microservices",
-        excerpt:
-          "Tìm hiểu về API Gateway, Kong và cách triển khai trong kiến trúc microservices...",
-        date: "21 tháng 6, 2025",
-        readTime: "28 phút đọc",
-        image: "/placeholder.svg?height=200&width=400",
-      },
-    ],
-  },
-  ai: {
-    name: "AI & Automation",
-    description:
-      "Các bài viết về trí tuệ nhân tạo, machine learning và tự động hóa quy trình",
-    posts: [
-      {
-        id: 5,
-        title: "NocoBase - Nền Tảng Low-Code Cho Doanh Nghiệp Hiện Đại",
-        excerpt:
-          "Khám phá NocoBase, một nền tảng low-code mạnh mẽ giúp xây dựng ứng dụng...",
-        date: "15 tháng 6, 2025",
-        readTime: "20 phút đọc",
-        image: "/placeholder.svg?height=200&width=400",
-      },
-      {
-        id: 6,
-        title: "AI Automation với N8N và hướng dẫn cài đặt chi tiết",
-        excerpt:
-          "Hướng dẫn chi tiết về N8N - công cụ automation mạnh mẽ, cách cài đặt...",
-        date: "13 tháng 6, 2025",
-        readTime: "32 phút đọc",
-        image: "/placeholder.svg?height=200&width=400",
-      },
-    ],
-  },
-};
+import {
+  callFetchPostBySlugCategory,
+  IPostByCategory,
+} from "@/lib/api-services";
 
 export default function CategoryPage({
   params,
 }: {
-  params: { category: string };
+  params: Promise<{ category: string }>;
 }) {
-  const category = categoryData[params.category as keyof typeof categoryData];
+  const categoryParams = React.use(params);
+  const categorySlug = categoryParams.category;
 
-  if (!category) {
-    return <div>Danh mục không tồn tại</div>;
-  }
+  const [posts, setPosts] = useState<IPostByCategory[]>([]);
+  console.log("🚀 ~ posts:", posts);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+
+    callFetchPostBySlugCategory(categorySlug)
+      .then((res) => {
+        setPosts(res.data);
+      })
+      .catch(() => {
+        setError("Không tải được dữ liệu bài viết");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [categorySlug]);
+
+  if (loading) return <div>Đang tải...</div>;
+  if (error) return <div>{error}</div>;
+  if (posts.length === 0)
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center max-w-xl mx-auto">
+        <Folder className="w-16 h-16 mb-4 text-gray-400" />
+        <h2 className="text-2xl font-semibold mb-2 text-gray-700">
+          Chưa có bài viết nào trong danh mục này
+        </h2>
+        <p className="text-gray-500 mb-6">
+          Hiện tại chưa có nội dung bài viết nào thuộc danh mục{" "}
+          <strong>{categorySlug}</strong>.
+        </p>
+        <Link href="/categories">
+          <Button variant="outline">Quay lại danh mục</Button>
+        </Link>
+      </div>
+    );
+
+  // Lấy thông tin category từ bài viết đầu tiên (bài nào cũng có embedded category)
+  const category = posts[0].category;
 
   return (
     <div className="p-4">
       <div className={`${maxWidth} mx-auto`}>
         <div className="mb-8">
           <Button variant="ghost" asChild>
-            <Link href="/">
+            <Link href="/categories">
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Quay lại trang chủ
+              Quay lại danh mục
             </Link>
           </Button>
         </div>
@@ -151,22 +91,25 @@ export default function CategoryPage({
             {category.description}
           </p>
           <div className="mt-6">
-            <Badge variant="secondary" className="text-sm">
-              {category.posts.length} bài viết
+            <Badge
+              variant="secondary"
+              className="text-sm border border-green-200 px-3"
+            >
+              {posts.length} bài viết
             </Badge>
           </div>
         </div>
 
         {/* Posts Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {category.posts.map((post) => (
+          {posts.map((post) => (
             <Card
-              key={post.id}
+              key={post._id}
               className="group hover:shadow-xl transition-all duration-300 border-green-100 dark:border-green-900"
             >
               <div className="relative overflow-hidden rounded-t-lg">
                 <Image
-                  src={post.image || "/placeholder.svg"}
+                  src={category.image || "/placeholder.svg"}
                   alt={post.title}
                   width={400}
                   height={200}
@@ -178,10 +121,10 @@ export default function CategoryPage({
               </div>
               <CardHeader>
                 <CardTitle className="line-clamp-2 group-hover:text-green-600 transition-colors">
-                  <Link href={`/posts/${post.id}`}>{post.title}</Link>
+                  <Link href={`/posts/${post._id}`}>{post.title}</Link>
                 </CardTitle>
                 <CardDescription className="line-clamp-3">
-                  {post.excerpt}
+                  {post.introduction}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -189,11 +132,11 @@ export default function CategoryPage({
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      {post.date}
+                      {new Date(post.createdAt).toLocaleDateString("vi-VN")}
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="w-4 h-4" />
-                      {post.readTime}
+                      {post.readingTime} phút đọc
                     </div>
                   </div>
                 </div>

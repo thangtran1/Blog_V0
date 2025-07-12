@@ -32,32 +32,6 @@ interface CategoryFormProps {
   onSuccess?: () => void;
 }
 
-const colorOptions = [
-  { name: "Blue", value: "#3B82F6", bg: "bg-blue-500" },
-  { name: "Green", value: "#10B981", bg: "bg-green-500" },
-  { name: "Purple", value: "#8B5CF6", bg: "bg-purple-500" },
-  { name: "Orange", value: "#F59E0B", bg: "bg-orange-500" },
-  { name: "Red", value: "#EF4444", bg: "bg-red-500" },
-  { name: "Pink", value: "#EC4899", bg: "bg-pink-500" },
-  { name: "Indigo", value: "#6366F1", bg: "bg-indigo-500" },
-  { name: "Teal", value: "#14B8A6", bg: "bg-teal-500" },
-];
-
-const iconOptions = [
-  "🎨",
-  "⚙️",
-  "🚀",
-  "🤖",
-  "📱",
-  "💻",
-  "🔧",
-  "📊",
-  "🌐",
-  "🔒",
-  "📝",
-  "🎯",
-];
-
 export default function CategoryForm({
   category,
   onClose,
@@ -68,7 +42,7 @@ export default function CategoryForm({
     content: category?.content || "",
     totalPost: category?.totalPost || 0,
     description: category?.description || "",
-    image: category?.icon,
+    image: category?.image,
     color: category?.color || "#3B82F6",
     isActive: category?.isActive ?? true,
   });
@@ -81,7 +55,6 @@ export default function CategoryForm({
       [field]: value,
     }));
 
-    // Auto-generate slug from name
     if (field === "name" && !category) {
       const slug = value
         .toLowerCase()
@@ -191,53 +164,42 @@ export default function CategoryForm({
           </CardContent>
         </Card>
 
-        {/* Appearance */}
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Giao diện</CardTitle>
             <CardDescription>Tùy chỉnh Hình ảnh</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            {/* Nhập URL ảnh */}
             <div className="space-y-2">
-              <Label>Icon</Label>
-              <div className="grid grid-cols-6 gap-2">
-                {iconOptions.map((icon) => (
-                  <button
-                    key={icon}
-                    type="button"
-                    onClick={() => handleInputChange("icon", icon)}
-                    className={`w-10 h-10 rounded-lg border-2 flex items-center justify-center text-lg hover:bg-muted transition-colors ${
-                      formData.image === icon
-                        ? "border-green-500 bg-green-50 dark:bg-green-950"
-                        : "border-border"
-                    }`}
-                  >
-                    {icon}
-                  </button>
-                ))}
-              </div>
+              <Label htmlFor="image">Link ảnh</Label>
+              <Input
+                id="image"
+                type="url"
+                value={formData.image || ""}
+                onChange={(e) => handleInputChange("image", e.target.value)}
+                placeholder="Dán URL ảnh hoặc chọn ảnh từ thư viện..."
+              />
             </div>
 
-            {/* Preview */}
+            {/* Xem trước ảnh */}
             <div className="space-y-2">
               <Label>Xem trước</Label>
               <div className="p-4 border rounded-lg bg-muted/50">
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-12 h-12 rounded-lg flex items-center justify-center text-xl"
-                    style={{ backgroundColor: `${formData.color}20` }}
-                  >
-                    {formData.icon}
+                {formData.image ? (
+                  <img
+                    src={formData.image}
+                    alt="Preview"
+                    className="w-full h-40 object-cover rounded"
+                    onError={(e) => {
+                      e.currentTarget.src = "/placeholder.jpg";
+                    }}
+                  />
+                ) : (
+                  <div className="flex items-center justify-center text-gray-400 h-40">
+                    Chưa có ảnh
                   </div>
-                  <div>
-                    <h3 className="font-medium">
-                      {formData.name || "Tên danh mục"}
-                    </h3>
-                    <p className="text-sm text-muted-foreground line-clamp-1">
-                      {formData.description || "Mô tả danh mục"}
-                    </p>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           </CardContent>
@@ -266,7 +228,6 @@ export default function CategoryForm({
         </CardContent>
       </Card> */}
 
-      {/* Actions */}
       <div className="flex items-center justify-end gap-4 pt-6 border-t">
         <Button type="button" variant="outline" onClick={onClose}>
           <X className="w-4 h-4 mr-2" />
