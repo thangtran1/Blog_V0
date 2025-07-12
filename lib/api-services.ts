@@ -104,6 +104,7 @@ export interface IPost {
 export interface ICategory {
   _id: string;
   name: string;
+  isActive: boolean;
   image: string;
   description: string;
   content: string;
@@ -639,11 +640,11 @@ export const callUpdateCategory = (
 };
 
 // Xóa danh mục - Admin panel
-export const callDeleteCategory = (categoryId: string) => {
-  return apiClient.delete<IBackendRes<string>>(
-    `/api/v1/admin/categories/${categoryId}`
-  );
-};
+// export const callDeleteCategory = (categoryId: string) => {
+//   return apiClient.delete<IBackendRes<string>>(
+//     `/api/v1/admin/categories/${categoryId}`
+//   );
+// };
 
 // Quản lý comments - Admin panel
 export const callFetchAllComments = (query: string) => {
@@ -736,6 +737,18 @@ export const callUpdateLife = (id: string, data: Partial<ILifesMe>) => {
 };
 export const callDeleteLife = (id: string) => {
   return apiClient.delete(`/life/${id}`);
+};
+export const callDeleteCategory = (id: string) => {
+  return apiClient.delete(`/categories/${id}`);
+};
+export const callUpdateCategories = (id: string, data: Partial<ICategory>) => {
+  return apiClient.patch<ICategory>(`/categories/${id}`, data);
+};
+// export const callCreateCategories = (data: ICategory) => {
+//   return apiClient.post("/categories", data);
+// };
+export const callCreateCategories = (categoryData: Partial<ICategory>) => {
+  return apiClient.post<ICategory>("/categories", categoryData);
 };
 
 // API EXPENSIVE

@@ -72,7 +72,7 @@ const categories = [
     name: "Database",
     icon: "🗄️",
     description:
-      "SQL, NoSQL, MongoDB, PostgreSQL và database design. Tối ưu hóa truy vấn và thiết kế schema hiệu quả.",
+      "SQLLLLLL, NoSQL, MongoDB, PostgreSQL và database design. Tối ưu hóa truy vấn và thiết kế schema hiệu quả.",
     count: 6,
     href: "/categories/database",
     gradient: "from-indigo-500 to-blue-600",
