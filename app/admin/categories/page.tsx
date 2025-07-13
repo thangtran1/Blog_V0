@@ -242,7 +242,7 @@ export default function AdminCategories() {
         open={!!editingCategory}
         onOpenChange={() => setEditingCategory(null)}
       >
-        <DialogContent className=" w-full max-w-full  sm:max-w-xl  md:max-w-2xl  max-h-[90vh] overflow-aut p-4 mx-auto rounded-lg">
+        <DialogContent className="w-full max-w-2xl max-h-[90vh] overflow-y-auto p-4 rounded-lg">
           <DialogHeader>
             <DialogTitle>Chỉnh sửa danh mục</DialogTitle>
           </DialogHeader>

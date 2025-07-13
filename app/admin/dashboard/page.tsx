@@ -11,74 +11,89 @@ import {
   Users,
   Calendar,
   Plus,
+  LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { bgDefault2 } from "@/styles/classNames";
+import { useEffect, useState } from "react";
+import {
+  callFetchCategories,
+  callFetchPostAuthor,
+  callFetchRecentPosts,
+  IPost,
+} from "@/lib/api-services";
+import { formatDateVN } from "@/lib/utils";
 
-// Mock data
-const stats = [
-  {
-    title: "Tổng bài viết",
-    value: "24",
-    change: "+12%",
-    icon: FileText,
-    color: "from-blue-500 to-blue-600",
-    bgColor: "bg-blue-50 dark:bg-blue-900/20",
-  },
-  {
-    title: "Danh mục",
-    value: "8",
-    change: "+2",
-    icon: FolderOpen,
-    color: "from-green-500 to-green-600",
-    bgColor: "bg-green-50 dark:bg-green-900/20",
-  },
-  {
-    title: "Comments",
-    value: "156",
-    change: "+23%",
-    icon: MessageSquare,
-    color: "from-purple-500 to-purple-600",
-    bgColor: "bg-purple-50 dark:bg-purple-900/20",
-  },
-  {
-    title: "Lượt xem",
-    value: "12.5K",
-    change: "+18%",
-    icon: Eye,
-    color: "from-orange-500 to-orange-600",
-    bgColor: "bg-orange-50 dark:bg-orange-900/20",
-  },
-];
-
-const recentPosts = [
-  {
-    id: 1,
-    title: "Hướng dẫn React Hooks cơ bản",
-    category: "React",
-    status: "published",
-    views: 1234,
-    date: "2024-01-15",
-  },
-  {
-    id: 2,
-    title: "Next.js 14 - Những tính năng mới",
-    category: "Next.js",
-    status: "draft",
-    views: 856,
-    date: "2024-01-14",
-  },
-  {
-    id: 3,
-    title: "TypeScript Tips & Tricks",
-    category: "TypeScript",
-    status: "published",
-    views: 2341,
-    date: "2024-01-13",
-  },
-];
-
+interface StatItem {
+  title: string;
+  value: string;
+  change: string;
+  icon: LucideIcon;
+  color: string;
+  bgColor: string;
+}
 export default function AdminDashboard() {
+  const [recentPosts, setRecentPosts] = useState<IPost[]>([]);
+  const [stats, setStats] = useState<StatItem[]>([]);
+
+  useEffect(() => {
+    callFetchRecentPosts()
+      .then((res) => {
+        setRecentPosts(res.data.slice(0, 4));
+      })
+      .catch(() => {
+        setRecentPosts([]);
+      });
+  }, []);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const [postRes, categoryRes] = await Promise.all([
+          callFetchPostAuthor(),
+          callFetchCategories(),
+        ]);
+
+        const posts = postRes.data || [];
+        const categories = categoryRes.data || [];
+
+        const totalPosts = posts.length;
+        const totalCategories = categories.length;
+
+        setStats([
+          {
+            title: "Tổng bài viết",
+            value: totalPosts.toString(),
+            change: "+12%",
+            icon: FileText,
+            color: "from-blue-500 to-blue-600",
+            bgColor: "bg-blue-50 dark:bg-blue-900/20",
+          },
+          {
+            title: "Danh mục",
+            value: totalCategories.toString(),
+            change: "+2",
+            icon: FolderOpen,
+            color: "from-green-500 to-green-600",
+            bgColor: "bg-green-50 dark:bg-green-900/20",
+          },
+          {
+            title: "Lượt xem",
+            value: "12.5K",
+            change: "+18%",
+            icon: Eye,
+            color: "from-orange-500 to-orange-600",
+            bgColor: "bg-orange-50 dark:bg-orange-900/20",
+          },
+        ]);
+      } catch (error) {
+        console.error("Lỗi khi fetch thống kê:", error);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
@@ -150,7 +165,7 @@ export default function AdminDashboard() {
             <div className="space-y-4">
               {recentPosts.map((post) => (
                 <div
-                  key={post.id}
+                  key={post._id}
                   className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                 >
                   <div className="flex-1">
@@ -158,28 +173,29 @@ export default function AdminDashboard() {
                       {post.title}
                     </h4>
                     <div className="flex items-center gap-4 mt-1">
-                      <span className="text-sm text-gray-500">
-                        {post.category}
+                      <span className="text-sm border border-green-400 rounded-lg px-2 text-gray-500">
+                        {post.category.name}
                       </span>
                       <span
                         className={`text-xs px-2 py-1 rounded-full ${
-                          post.status === "published"
+                          post.status === "active"
                             ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400"
                             : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400"
                         }`}
                       >
                         {post.status === "published"
                           ? "Đã xuất bản"
-                          : "Bản nháp"}
+                          : "Tạm ngừng"}
                       </span>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="flex items-center gap-1 text-sm text-gray-500">
-                      <Eye className="w-4 h-4" />
-                      {post.views}
+                    <div className="flex items-center gap-1 border-b text-sm text-green-500">
+                      Ngày xuất bản
                     </div>
-                    <p className="text-xs text-gray-400">{post.date}</p>
+                    <p className="text-xs text-gray-400">
+                      {formatDateVN(post.createdAt)} {}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -225,21 +241,6 @@ export default function AdminDashboard() {
                   </div>
                 </div>
                 <span className="text-2xl font-bold text-green-600">+23%</span>
-              </div>
-
-              <div className="flex items-center justify-between p-3 rounded-lg bg-purple-50 dark:bg-purple-900/20">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
-                    <MessageSquare className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <p className="font-medium">Comments chờ duyệt</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Cần xem xét
-                    </p>
-                  </div>
-                </div>
-                <span className="text-2xl font-bold text-purple-600">12</span>
               </div>
             </div>
           </CardContent>

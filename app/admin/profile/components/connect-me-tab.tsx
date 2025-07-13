@@ -74,8 +74,8 @@ export default function ConnectTab() {
         );
         message.success("Thành công!");
       } else {
-        // Tạo mới
-        const res = await callCreateConnect(editingItem);
+        const { _id, ...createData } = editingItem;
+        const res = await callCreateConnect(createData);
         setConnectData((prev) => [...prev, res.data]);
       }
 
@@ -117,7 +117,7 @@ export default function ConnectTab() {
         {connectData.map((connection) => (
           <Card
             key={connection._id}
-            className="p-4 shadow-md transition-all hover:shadow-lg hover:border-primary"
+            className="shadow-md transition-all hover:shadow-lg hover:border-primary"
           >
             <CardHeader>
               <div className="flex items-start justify-between">
@@ -141,7 +141,7 @@ export default function ConnectTab() {
                       href={connection.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-blue-600 dark:text-blue-400 hover:underline block truncate max-w-[200px]"
+                      className="text-sm text-blue-600 dark:text-blue-400 hover:underline block truncate max-w-[150px]"
                     >
                       {connection.link}
                     </a>

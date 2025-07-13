@@ -28,7 +28,6 @@ export default function CategoryPage({
   const categorySlug = categoryParams.category;
 
   const [posts, setPosts] = useState<IPostByCategory[]>([]);
-  console.log("🚀 ~ posts:", posts);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -109,11 +108,14 @@ export default function CategoryPage({
             >
               <div className="relative overflow-hidden rounded-t-lg">
                 <Image
-                  src={category.image || "/placeholder.svg"}
+                  src={
+                    post.image ||
+                    "/placeholder.svg?height=400&width=600?height=400&width=600"
+                  }
                   alt={post.title}
                   width={400}
                   height={200}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-48 object-contain group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute top-4 left-4">
                   <Badge className={buttonDefault}>{category.name}</Badge>

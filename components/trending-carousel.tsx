@@ -58,7 +58,6 @@ export default function TrendingCarousel() {
       observer.observe(element);
     }
 
-    console.log("🚀 ~ TrendingCarousel ~ currentPost:", currentPost);
     return () => {
       if (element) {
         observer.unobserve(element);

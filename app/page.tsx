@@ -273,7 +273,10 @@ export default function HomePage() {
                   <Card className="group card-hover-lift border-green-100 dark:border-green-900 relative overflow-hidden">
                     <div className="relative overflow-hidden rounded-t-lg">
                       <Image
-                        src={post.category.image || "/placeholder.svg"}
+                        src={
+                          post.category.image ||
+                          "/placeholder.svg?height=400&width=600"
+                        }
                         alt={post.title}
                         width={400}
                         height={200}

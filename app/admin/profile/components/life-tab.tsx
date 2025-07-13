@@ -152,7 +152,7 @@ export default function LifeTab() {
               </p>
               {event.image && (
                 <img
-                  src={event.image || "/placeholder.svg"}
+                  src={event.image || "/placeholder.svg?height=400&width=600"}
                   alt={event.title}
                   className="w-full h-40 object-cover rounded-lg border border-muted"
                 />

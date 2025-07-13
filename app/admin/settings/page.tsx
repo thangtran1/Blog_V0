@@ -314,10 +314,7 @@ export default function AdminSettings() {
                   <span>Comment mới</span>
                   <Switch defaultChecked />
                 </div>
-                <div className="flex items-center justify-between">
-                  <span>Người dùng đăng ký newsletter</span>
-                  <Switch />
-                </div>
+
                 <div className="flex items-center justify-between">
                   <span>Báo cáo hàng tuần</span>
                   <Switch defaultChecked />
@@ -340,20 +337,6 @@ export default function AdminSettings() {
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label>SEO tối ưu</Label>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Tự động tối ưu SEO
-                    </p>
-                  </div>
-                  <Switch
-                    checked={settings.seoEnabled}
-                    onCheckedChange={(checked) =>
-                      setSettings({ ...settings, seoEnabled: checked })
-                    }
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
                     <Label>Comments</Label>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                       Cho phép bình luận
@@ -363,20 +346,6 @@ export default function AdminSettings() {
                     checked={settings.enableComments}
                     onCheckedChange={(checked) =>
                       setSettings({ ...settings, enableComments: checked })
-                    }
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label>Newsletter</Label>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Đăng ký nhận tin
-                    </p>
-                  </div>
-                  <Switch
-                    checked={settings.enableNewsletter}
-                    onCheckedChange={(checked) =>
-                      setSettings({ ...settings, enableNewsletter: checked })
                     }
                   />
                 </div>

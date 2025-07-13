@@ -211,11 +211,14 @@ export default function PostsPage() {
                 >
                   <div className="relative overflow-hidden rounded-t-lg">
                     <Image
-                      src={post.category.image || "/placeholder.svg"}
-                      alt={post.title}
+                      src={
+                        post.image ||
+                        "/placeholder.svg?height=400&width=600?height=400&width=600"
+                      }
+                      alt="Ảnh đẹp"
                       width={400}
                       height={200}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full max-h-48 h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-4 left-4">
                       <Badge className="bg-green-600 text-white">
@@ -224,7 +227,7 @@ export default function PostsPage() {
                     </div>
                   </div>
                   <CardHeader>
-                    <CardTitle className="line-clamp-2 capitalize  group-hover:text-green-600 transition-colors">
+                    <CardTitle className="line-clamp-2 min-w-[2.5rem]   capitalize  group-hover:text-green-600 transition-colors">
                       <Link href={`/posts/${post._id}`}>{post.title}</Link>
                     </CardTitle>
                     <CardDescription className="line-clamp-3">

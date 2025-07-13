@@ -420,7 +420,8 @@
     text-shadow: 0 0 5px rgba(34, 197, 94, 0.3);
   }
   50% {
-    text-shadow: 0 0 20px rgba(34, 197, 94, 0.6), 0 0 30px rgba(34, 197, 94, 0.4);
+    text-shadow: 0 0 20px rgba(34, 197, 94, 0.6),
+      0 0 30px rgba(34, 197, 94, 0.4);
   }
 }
 
@@ -539,7 +540,12 @@
 
 /* Loading States */
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
@@ -705,7 +711,12 @@
 }
 
 .dark .animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
   background-size: 200% 100%;
 }
 
@@ -757,7 +768,12 @@ html {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   transition: left 0.5s;
 }
 
@@ -852,4 +868,149 @@ html {
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* Code block */
+.prose pre {
+  background-color: #121212; /* nền tối rất đậm */
+  color: #e0e0ff; /* chữ sáng, màu tím nhẹ */
+  padding: 1rem 1.5rem;
+  border-radius: 0.6rem;
+  overflow-x: auto;
+  font-family: "Fira Code", monospace;
+  font-size: 1rem;
+  box-shadow: 0 0 12px rgb(130 130 255 / 0.5);
+  margin: 1.75rem 0;
+}
+
+/* Inline code */
+.prose code {
+  background-color: #c7d2fe; /* nền xanh nhẹ hơn */
+  color: #1e40af; /* chữ xanh đậm */
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.35rem;
+  font-family: "Fira Code", monospace;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 0 5px rgb(147 197 253 / 0.4);
+}
+
+/* Dark mode inline code */
+.dark .prose code {
+  background-color: #374151; /* nền xám đậm */
+  color: #a5b4fc; /* chữ tím nhạt */
+  box-shadow: 0 0 8px rgb(165 180 252 / 0.6);
+}
+
+/* Blockquote */
+.prose blockquote {
+  border-left: 5px solid #2563eb; /* xanh sáng */
+  background-color: #dbeafe;
+  padding: 1rem 1.25rem;
+  margin: 1.75rem 0;
+  font-style: italic;
+  color: #1e40af;
+  border-radius: 0 0.5rem 0.5rem 0;
+  box-shadow: 3px 3px 12px rgb(37 99 235 / 0.3);
+}
+
+/* Dark mode blockquote */
+.dark .prose blockquote {
+  background-color: #1e293b;
+  color: #a5b4fc;
+  border-left-color: #3b82f6;
+  box-shadow: 3px 3px 12px rgb(59 130 246 / 0.6);
+}
+
+/* Tables */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.75rem 0;
+  font-size: 1rem;
+}
+
+.prose th,
+.prose td {
+  border: 1.5px solid #cbd5e1;
+  padding: 0.75rem 1.25rem;
+}
+
+.prose th {
+  background-color: #c7d2fe;
+  font-weight: 700;
+  color: #1e3a8a;
+  text-align: left;
+}
+
+/* Dark mode table */
+.dark .prose th {
+  background-color: #334155;
+  color: #c7d2fe;
+}
+
+.dark .prose td {
+  border-color: #475569;
+  color: #e0e7ff;
+}
+
+/* Headings */
+.prose h1 {
+  font-weight: 900;
+  margin-top: 2.5rem;
+  margin-bottom: 1.25rem;
+  color: #1e40af;
+  border-bottom: 4px solid #2563eb;
+  padding-bottom: 0.35rem;
+}
+
+.prose h2 {
+  font-weight: 800;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #1e3a8a;
+}
+
+.prose h3 {
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #1e40af;
+}
+
+/* Dark mode headings */
+.dark .prose h1 {
+  color: #c7d2fe;
+  border-bottom-color: #3b82f6;
+}
+
+.dark .prose h2 {
+  color: #a5b4fc;
+}
+
+.dark .prose h3 {
+  color: #93c5fd;
+}
+
+/* Links */
+.prose a {
+  color: #2563eb;
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.dark .prose a {
+  color: #60a5fa;
+}
+
+/* Lists */
+.prose ul li,
+.prose ol li {
+  margin-bottom: 0.35rem;
+  color: #1e3a8a;
+}
+
+.dark .prose ul li,
+.dark .prose ol li {
+  color: #c7d2fe;
 }

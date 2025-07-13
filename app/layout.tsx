@@ -10,6 +10,7 @@ import ScrollToTop from "@/components/scroll-to-top";
 import ScrollToTopNavigation from "@/components/scroll-to-top-navigation";
 import PageTransition from "@/components/page-transition";
 import { titleName } from "../styles/classNames";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

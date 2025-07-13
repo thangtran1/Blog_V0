@@ -21,7 +21,6 @@ export default function CategoriesPage() {
     const fetchCategories = async () => {
       try {
         const res = await callFetchCategories();
-        console.log("🚀 ~ fetchCategories ~ res:", res);
         setCategories(res.data);
       } catch (err) {
         console.error("Lỗi fetch categories:", err);

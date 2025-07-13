@@ -16,29 +16,8 @@ import {
 import { formatDateVN } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-
-const recentPosts = [
-  {
-    id: 2,
-    title: "API Gateway với Kong - Giải pháp toàn diện cho Microservices",
-    date: "21 tháng 6, 2025",
-  },
-  {
-    id: 3,
-    title: "Micro Frontend Architecture - Hướng dẫn toàn diện",
-    date: "19 tháng 6, 2025",
-  },
-  {
-    id: 4,
-    title: "SQL vs NoSQL - So Sánh Chi Tiết Các Loại Database Hiện Đại",
-    date: "17 tháng 6, 2025",
-  },
-  {
-    id: 5,
-    title: "NocoBase - Nền Tảng Low-Code Cho Doanh Nghiệp Hiện Đại",
-    date: "15 tháng 6, 2025",
-  },
-];
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const tableOfContents = [
   {
@@ -202,10 +181,11 @@ export default function PostDetailPage({
                 </div>
               </div>
 
-              <div
-                className="prose-lg prose-headings:text-foreground prose-p:text-foreground prose-strong:text-green-600 dark:prose-strong:text-green-400 prose-code:bg-muted prose-code:text-foreground prose-code:px-2 prose-code:py-1 prose-code:rounded prose-ul:text-foreground prose-li:text-foreground"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-              />
+              <div className="prose-lg prose-headings:text-foreground prose-p:text-foreground prose-strong:text-green-600 dark:prose-strong:text-green-400 prose-code:bg-muted prose-code:text-foreground prose-code:px-2 prose-code:py-1 prose-code:rounded prose-ul:text-foreground prose-li:text-foreground">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {post.content}
+                </ReactMarkdown>
+              </div>
             </article>
           </div>
 

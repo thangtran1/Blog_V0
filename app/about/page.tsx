@@ -108,7 +108,6 @@ export default function AboutPage() {
     const fetchData = async () => {
       try {
         const res = await callFetchConnectAuthor();
-        console.log("🚀 ~ fetchData ~ res:", res);
         setConnect(res.data);
       } catch (err) {
         console.error(err);

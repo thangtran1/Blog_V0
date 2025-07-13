@@ -15,31 +15,31 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Save, X, Hash } from "lucide-react";
+import { Save, X } from "lucide-react";
 import { buttonDefault } from "@/styles/classNames";
-import { Select } from "antd";
-import { callCreateCategories, callUpdateCategories } from "@/lib/api-services";
-const { Option } = Select;
+import RichTextEditor from "./rich-text-editor";
+import { callUpdatePosts } from "@/lib/api-services";
+import { message } from "antd";
 
-interface CategoryFormProps {
-  category?: any;
+interface PostsFormProps {
+  posts?: any;
   onClose: () => void;
   onSuccess?: () => void;
 }
 
-export default function CategoryForm({
-  category,
+export default function EditPostForm({
+  posts,
   onClose,
   onSuccess,
-}: CategoryFormProps) {
+}: PostsFormProps) {
   const [formData, setFormData] = useState({
-    name: category?.name || "",
-    content: category?.content || "",
-    totalPost: category?.totalPost || 0,
-    description: category?.description || "",
-    image: category?.image,
-    color: category?.color || "#3B82F6",
-    isActive: category?.isActive ?? true,
+    content: posts?.content || "",
+    image: posts?.image,
+    introduction: posts?.introduction || "",
+    isFeatured: posts?.isFeatured ?? true,
+    status: posts?.status || "active",
+    title: posts?.title || "",
+    categorytId: posts.category.name || "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +50,7 @@ export default function CategoryForm({
       [field]: value,
     }));
 
-    if (field === "name" && !category) {
+    if (field === "name" && !posts) {
       const slug = value
         .toLowerCase()
         .replace(/[^a-z0-9\s-]/g, "")
@@ -66,15 +66,10 @@ export default function CategoryForm({
     setIsLoading(true);
 
     try {
-      if (category) {
-        // Gọi API cập nhật
-        await callUpdateCategories(category._id, formData);
-      } else {
-        // Gọi API tạo mới
-        await callCreateCategories(formData);
-        alert("Tạo danh mục thành công!");
+      if (posts) {
+        await callUpdatePosts(posts._id, formData);
+        message.success("Cập nhật thành công!");
       }
-
       onClose();
       onSuccess?.();
     } catch (error) {
@@ -91,67 +86,63 @@ export default function CategoryForm({
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Thông tin cơ bản</CardTitle>
-            <CardDescription>Thông tin chính của danh mục</CardDescription>
+            <CardDescription>Thông tin của bài viết</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Tên danh mục *</Label>
+              <Label htmlFor="title">Tiêu đề bài viết</Label>
               <Input
-                id="name"
-                value={formData.name}
-                onChange={(e) => handleInputChange("name", e.target.value)}
+                id="title"
+                value={formData.title}
+                onChange={(e) => handleInputChange("title", e.target.value)}
                 placeholder="Ví dụ: Frontend Development"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Mô tả</Label>
+              <Label htmlFor="introduction">Tóm tắt bài viết</Label>
               <Textarea
-                id="description"
-                value={formData.description}
+                id="introduction"
+                value={formData.introduction}
                 onChange={(e) =>
-                  handleInputChange("description", e.target.value)
+                  handleInputChange("introduction", e.target.value)
                 }
-                placeholder="Mô tả ngắn về danh mục này..."
+                placeholder="Tóm tắt sơ lược về bài viết này..."
                 rows={4}
               />
             </div>
-
             <div className="space-y-2">
-              <Label htmlFor="content">Nội dung</Label>
-              <Textarea
-                id="content"
-                value={formData.content}
-                onChange={(e) => handleInputChange("content", e.target.value)}
-                placeholder="Mô tả ngắn về danh mục này..."
-                rows={4}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="totalPost">Tổng số bài viết</Label>
-              <Input
-                id="totalPost"
-                value={formData.totalPost}
-                onChange={(e) => handleInputChange("totalPost", e.target.value)}
-                placeholder="Ví dụ: 10"
-                disabled
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="isActive">Trạng thái danh mục</Label>
+              <Label htmlFor="isFeatured">Bài viết nổi bật</Label>
               <div className="flex items-center gap-2">
                 <Input
-                  id="isActive"
-                  value={formData.isActive ? "Đang hoạt động" : "Tạm dừng"}
+                  id="isFeatured"
+                  value={formData.isFeatured ? "Nổi bật" : "Không nổi bật"}
                   disabled
                 />
                 <Switch
-                  checked={formData.isActive}
+                  checked={formData.isFeatured}
                   onCheckedChange={(checked) =>
-                    handleInputChange("isActive", checked)
+                    handleInputChange("isFeatured", checked)
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="status">Trạng thái bài viết</Label>
+              <div className="flex items-center gap-2">
+                <Input
+                  id="status"
+                  value={
+                    formData.status === "active" ? "Hoạt động" : "Tạm dừng"
+                  }
+                  disabled
+                />
+                <Switch
+                  checked={formData.status === "active"}
+                  onCheckedChange={(checked) =>
+                    handleInputChange("status", checked ? "active" : "inactive")
                   }
                 />
               </div>
@@ -162,10 +153,9 @@ export default function CategoryForm({
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Giao diện</CardTitle>
-            <CardDescription>Tùy chỉnh Hình ảnh</CardDescription>
+            <CardDescription>Tùy chỉnh hình ảnh</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* Nhập URL ảnh */}
             <div className="space-y-2">
               <Label htmlFor="image">Link ảnh</Label>
               <Input
@@ -177,7 +167,6 @@ export default function CategoryForm({
               />
             </div>
 
-            {/* Xem trước ảnh */}
             <div className="space-y-2">
               <Label>Xem trước</Label>
               <div className="p-4 border rounded-lg bg-muted/50">
@@ -197,33 +186,39 @@ export default function CategoryForm({
                 )}
               </div>
             </div>
+
+            <div>
+              <Label htmlFor="categorytId">Danh mục</Label>
+              <Input
+                id="categorytId"
+                value={formData.categorytId}
+                onChange={(e) =>
+                  handleInputChange("categorytId", e.target.value)
+                }
+                disabled
+              />
+            </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* <Card>
+      <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Cài đặt</CardTitle>
+          <CardTitle className="text-lg">Nội dung bài viết</CardTitle>
+          <CardDescription>Soạn thảo nội dung chi tiết ở đây</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label>Trạng thái hoạt động</Label>
-              <p className="text-sm text-muted-foreground">
-                Danh mục có hiển thị trên website không
-              </p>
-            </div>
-            <Switch
-              checked={formData.isActive}
-              onCheckedChange={(checked) =>
-                handleInputChange("isActive", checked)
-              }
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <RichTextEditor
+              value={formData.content}
+              onChange={(content) => handleInputChange("content", content)}
             />
           </div>
         </CardContent>
-      </Card> */}
+      </Card>
 
-      <div className="flex items-center justify-end gap-4 pt-6 border-t">
+      {/* Buttons */}
+      <div className="flex items-center justify-end gap-4 border-t pt-4">
         <Button type="button" variant="outline" onClick={onClose}>
           <X className="w-4 h-4 mr-2" />
           Hủy
@@ -234,7 +229,7 @@ export default function CategoryForm({
           ) : (
             <Save className="w-4 h-4 mr-2" />
           )}
-          {category ? "Cập nhật" : "Tạo danh mục"}
+          Cập nhật
         </Button>
       </div>
     </form>

@@ -29,14 +29,12 @@ import {
   FileText,
   ImageIcon,
   Settings,
-  Filter,
 } from "lucide-react";
 import RichTextEditor from "@/components/admin/rich-text-editor";
 import { bgDefault, bgDefault2, maxWidth } from "@/styles/classNames";
 import {
   callCreatePost,
   callFetchCategories,
-  callFetchPostAuthor,
   ICategory,
 } from "@/lib/api-services";
 
@@ -272,13 +270,11 @@ export default function CreatePostPage() {
                       <SelectValue placeholder="Chọn danh mục" />
                     </SelectTrigger>
                     <SelectContent>
-                      {categories
-                        .filter((cat) => cat.isActive)
-                        .map((cat) => (
-                          <SelectItem key={cat._id} value={cat._id}>
-                            {cat.name}
-                          </SelectItem>
-                        ))}
+                      {categories.map((cat) => (
+                        <SelectItem key={cat._id} value={cat._id}>
+                          {cat.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -321,7 +317,7 @@ export default function CreatePostPage() {
                       <img
                         src={
                           formData.image ||
-                          "/placeholder.svg?height=200&width=400"
+                          "/placeholder.svg?height=400&width=600?height=200&width=400"
                         }
                         alt="Featured"
                         className="w-full h-48 object-cover rounded-lg border border-gray-200"

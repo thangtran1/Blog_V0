@@ -4,6 +4,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
+import "highlight.js/styles/github-dark.css";
 import {
   Bold,
   Italic,
@@ -39,13 +43,13 @@ export default function RichTextEditor({
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const selectedText = value.substring(start, end);
-
     const newText =
       value.substring(0, start) +
       before +
       selectedText +
       after +
       value.substring(end);
+
     onChange(newText);
 
     // Restore cursor position
@@ -121,39 +125,6 @@ export default function RichTextEditor({
     },
   ];
 
-  const renderMarkdown = (text: string) => {
-    return text
-      .replace(
-        /^## (.*$)/gm,
-        '<h2 class="text-2xl font-bold mt-6 mb-4">$1</h2>'
-      )
-      .replace(
-        /^### (.*$)/gm,
-        '<h3 class="text-xl font-bold mt-4 mb-3">$1</h3>'
-      )
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\*(.*?)\*/g, "<em>$1</em>")
-      .replace(
-        /`(.*?)`/g,
-        '<code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm font-mono">$1</code>'
-      )
-      .replace(
-        /^> (.*$)/gm,
-        '<blockquote class="border-l-4 border-green-500 pl-4 py-2 my-4 bg-gray-50 dark:bg-gray-800 italic">$1</blockquote>'
-      )
-      .replace(/^- (.*$)/gm, "<li class='ml-4'>• $1</li>")
-      .replace(/^1\. (.*$)/gm, "<li class='ml-4'>1. $1</li>")
-      .replace(
-        /\[([^\]]+)\]$$([^)]+)$$/g,
-        '<a href="$2" class="text-green-600 hover:text-green-700 underline">$1</a>'
-      )
-      .replace(
-        /!\[([^\]]*)\]$$([^)]+)$$/g,
-        '<img src="$2" alt="$1" class="max-w-full h-auto rounded-lg my-4" />'
-      )
-      .replace(/\n/g, "<br>");
-  };
-
   return (
     <div className="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden bg-white dark:bg-gray-800">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -199,17 +170,30 @@ export default function RichTextEditor({
               id="content-editor"
               value={value}
               onChange={(e) => onChange(e.target.value)}
-              placeholder="# Tiêu đề bài viết
+              placeholder={`# Tiêu đề bài viết
 
 Bắt đầu viết nội dung của bạn ở đây...
 
 ## Sử dụng Markdown:
 - **Bold text** - Text in đậm
 - *Italic text* - Text in nghiêng  
-- `Code` - Inline code
+- \`Code\` - Inline code
 - > Quote - Trích dẫn
 - [Link](url) - Liên kết
 - ![Image](url) - Hình ảnh
+
+### Code Block:
+\`\`\`javascript
+function hello() {
+  console.log("Hello World!");
+}
+\`\`\`
+
+### Bảng:
+| Cột 1 | Cột 2 | Cột 3 |
+|-------|-------|-------|
+| A     | B     | C     |
+| 1     | 2     | 3     |
 
 ### Danh sách:
 1. Item 1
@@ -217,7 +201,7 @@ Bắt đầu viết nội dung của bạn ở đây...
 3. Item 3
 
 - Bullet point 1
-- Bullet point 2"
+- Bullet point 2`}
               className="min-h-[500px] border-0 rounded-none resize-none focus-visible:ring-0 text-base leading-relaxed p-6"
             />
             <div className="absolute bottom-4 right-4 text-xs text-gray-400 bg-white dark:bg-gray-800 px-2 py-1 rounded">
@@ -227,12 +211,111 @@ Bắt đầu viết nội dung của bạn ở đây...
         </TabsContent>
 
         <TabsContent value="preview" className="m-0">
-          <div className="min-h-[500px] p-6 prose prose-lg max-w-none">
+          <div className="min-h-[500px] p-6">
             {value ? (
-              <div
-                dangerouslySetInnerHTML={{ __html: renderMarkdown(value) }}
-                className="prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-300"
-              />
+              <div className="prose prose-lg max-w-none dark:prose-invert">
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeHighlight]}
+                  components={{
+                    blockquote({ children }) {
+                      return (
+                        <blockquote className="border-l-4 border-blue-500 pl-4 py-2 my-4 bg-blue-50 dark:bg-blue-900/20 italic text-gray-700 dark:text-gray-300 rounded-r">
+                          {children}
+                        </blockquote>
+                      );
+                    },
+                    table({ children }) {
+                      return (
+                        <div className="overflow-x-auto my-6">
+                          <table className="min-w-full border-collapse border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden">
+                            {children}
+                          </table>
+                        </div>
+                      );
+                    },
+                    th({ children }) {
+                      return (
+                        <th className="border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 px-4 py-3 text-left font-semibold text-gray-900 dark:text-gray-100">
+                          {children}
+                        </th>
+                      );
+                    },
+                    td({ children }) {
+                      return (
+                        <td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-700 dark:text-gray-300">
+                          {children}
+                        </td>
+                      );
+                    },
+                    img({ src, alt }) {
+                      return (
+                        <img
+                          src={src || "/placeholder.svg?height=300&width=500"}
+                          alt={alt}
+                          className="max-w-full h-auto rounded-lg my-4 shadow-lg border border-gray-200 dark:border-gray-700"
+                        />
+                      );
+                    },
+                    a({ href, children }) {
+                      return (
+                        <a
+                          href={href}
+                          className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline transition-colors font-medium"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {children}
+                        </a>
+                      );
+                    },
+                    h1({ children }) {
+                      return (
+                        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
+                          {children}
+                        </h1>
+                      );
+                    },
+                    h2({ children }) {
+                      return (
+                        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">
+                          {children}
+                        </h2>
+                      );
+                    },
+                    h3({ children }) {
+                      return (
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-6 mb-3">
+                          {children}
+                        </h3>
+                      );
+                    },
+                    p({ children }) {
+                      return (
+                        <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                          {children}
+                        </p>
+                      );
+                    },
+                    ul({ children }) {
+                      return (
+                        <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 mb-4 space-y-1">
+                          {children}
+                        </ul>
+                      );
+                    },
+                    ol({ children }) {
+                      return (
+                        <ol className="list-decimal list-inside text-gray-700 dark:text-gray-300 mb-4 space-y-1">
+                          {children}
+                        </ol>
+                      );
+                    },
+                  }}
+                >
+                  {value}
+                </ReactMarkdown>
+              </div>
             ) : (
               <div className="flex items-center justify-center h-64 text-gray-400">
                 <div className="text-center">

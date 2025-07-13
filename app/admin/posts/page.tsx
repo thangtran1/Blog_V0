@@ -31,14 +31,15 @@ import {
   callFetchPostAuthor,
   IAllPost,
 } from "@/lib/api-services";
-import { Popconfirm } from "antd";
-
-const stats = [
-  { title: "Tổng bài viết", value: "24", color: "from-blue-500 to-blue-600" },
-  { title: "Đã xuất bản", value: "18", color: "from-green-500 to-green-600" },
-  { title: "Bản nháp", value: "4", color: "from-yellow-500 to-yellow-600" },
-  { title: "Đã lên lịch", value: "2", color: "from-purple-500 to-purple-600" },
-];
+import { Popconfirm, Select } from "antd";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import EditPostForm from "@/components/admin/edit-post-form";
+const { Option } = Select;
 
 export default function AdminPosts() {
   const [posts, setPosts] = useState<IAllPost[]>([]);
@@ -47,18 +48,45 @@ export default function AdminPosts() {
   const [filterStatus, setFilterStatus] = useState<
     "all" | "active" | "inactive"
   >("all");
+  const [editingPost, setEditingPost] = useState<IAllPost | null>(null);
 
+  const fetchPosts = async () => {
+    try {
+      const res = await callFetchPostAuthor();
+      setPosts(res.data);
+      setLoading(false);
+    } catch (err) {
+      console.error("Lỗi fetch categories:", err);
+    }
+  };
+
+  const totalPosts = posts.length;
+
+  const activePosts = posts.filter((post) => post.status === "active").length;
+
+  const inactivePosts = posts.filter(
+    (post) => post.status === "inactive"
+  ).length;
+
+  const stats = [
+    {
+      title: "Tổng bài viết",
+      value: totalPosts,
+      color: "from-blue-400 to-blue-600",
+    },
+    {
+      title: "Bài viết đang hoạt động",
+      value: activePosts,
+      color: "from-green-400 to-green-600",
+    },
+    {
+      title: "Bài viết tạm dừng",
+      value: inactivePosts,
+      color: "from-red-400 to-red-600",
+    },
+  ];
   useEffect(() => {
-    setLoading(true);
-    callFetchPostAuthor()
-      .then((res) => {
-        setPosts(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-        setPosts([]);
-      })
-      .finally(() => setLoading(false));
+    fetchPosts();
   }, []);
 
   const getStatusBadge = (status: string) => {
@@ -90,7 +118,7 @@ export default function AdminPosts() {
   });
 
   const onEdit = (postsId: IAllPost) => {
-    setPosts(postsId);
+    setEditingPost(postsId);
   };
 
   const handleDelete = async (id: string) => {
@@ -159,28 +187,17 @@ export default function AdminPosts() {
                 className="pl-10"
               />
             </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="flex items-center gap-2 bg-transparent"
-                >
-                  <Filter className="w-4 h-4" />
-                  Lọc theo trạng thái
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => setFilterStatus("all")}>
-                  Tất cả
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setFilterStatus("active")}>
-                  Hoạt động
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setFilterStatus("inactive")}>
-                  Không hoạt động
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Card>
+              <Select
+                value={filterStatus}
+                onChange={(value) => setFilterStatus(value)}
+                style={{ width: 160 }}
+              >
+                <Option value="all">Tất cả</Option>
+                <Option value="active">Hoạt động</Option>
+                <Option value="inactive">Không hoạt động</Option>
+              </Select>
+            </Card>
           </div>
         </CardContent>
       </Card>
@@ -213,7 +230,7 @@ export default function AdminPosts() {
               <CardContent className="p-0">
                 <div className="aspect-video relative bg-gray-100 dark:bg-gray-800 rounded-t-lg overflow-hidden">
                   <img
-                    src={post.category?.image || "/placeholder.svg"}
+                    src={post.image || "/placeholder.svg?height=400&width=600"}
                     alt={post.title}
                     className="w-full h-full object-cover"
                   />
@@ -302,6 +319,25 @@ export default function AdminPosts() {
           ))
         )}
       </div>
+      <Dialog open={!!editingPost} onOpenChange={() => setEditingPost(null)}>
+        <DialogContent className="w-full max-w-4xl max-h-[90vh] overflow-y-auto p-4 rounded-lg">
+          <DialogHeader>
+            <DialogTitle>Chỉnh sửa bài viết</DialogTitle>
+          </DialogHeader>
+          {editingPost && (
+            <EditPostForm
+              onSuccess={() => {
+                callFetchPostAuthor().then((res) => {
+                  setPosts(res.data);
+                });
+                setEditingPost(null);
+              }}
+              posts={editingPost}
+              onClose={() => setEditingPost(null)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
