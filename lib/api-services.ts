@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_BASE_URL = "https://blog-v0-be.onrender.com";
+console.log("🚀 ~ API_BASE_URL:", API_BASE_URL);
 
 // Axios instance configuration
 const apiClient = axios.create({
