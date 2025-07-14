@@ -13,6 +13,7 @@ import {
   ChevronLeft,
   ChevronRight,
   UserCircle,
+  Files,
   X,
 } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -20,12 +21,13 @@ import { Button } from "@/components/ui/button";
 import { bgDefault, bgDefault2, titleName } from "@/styles/classNames";
 const navigation = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
+  { name: "Danh mục", href: "/admin/categories", icon: FolderOpen },
   { name: "Bài viết", href: "/admin/posts", icon: FileText },
   { name: "Tags", href: "/admin/tags", icon: Tags },
   { name: "Comments", href: "/admin/comments", icon: MessageSquare },
   { name: "Cài đặt", href: "/admin/settings", icon: Settings },
   { name: "Thông tin admin", href: "/admin/profile", icon: UserCircle },
-  { name: "Danh mục", href: "/admin/categories", icon: FolderOpen },
+  { name: "CV", href: "/admin/cv", icon: Files },
 ];
 
 interface AdminSidebarProps {

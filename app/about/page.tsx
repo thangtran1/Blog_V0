@@ -209,22 +209,13 @@ export default function AboutPage() {
             <CardHeader>
               <CardTitle className="text-2xl">Hồ sơ cá nhân</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4 relative z-10">
-              <p className="text-lg font-semibold">{cv?.fileName}</p>
-              <p className="text-sm text-muted-foreground">
-                Cập nhật: {cv?.createdAt ? formatDateVN(cv.createdAt) : ""}
-              </p>
-              <Button
-                onClick={handleDownload}
-                variant="outlined"
-                className="mt-4"
-              >
-                <Download className="w-4 h-4 mr-2" />
+            <CardContent className="relative z-10">
+              <Button onClick={handleDownload} variant="outlined">
+                <Download className="w-4 h-4 " />
                 Tải CV xuống
               </Button>
             </CardContent>
           </Card>
-          {/* About Section */}
           <Card className="mb-12 border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-card to-muted/50 shadow-xl relative overflow-hidden">
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-2xl">
