@@ -15,21 +15,27 @@ import {
   Calendar,
   MessageCircle,
   Heart,
+  Download,
+  Trash2,
 } from "lucide-react";
 import { maxWidth, textDefault, titleName } from "@/styles/classNames";
 import {
   callFetchAboutAuthor,
   callFetchConnectAuthor,
+  callFetchCV,
   callFetchExpensiveAuthor,
   callFetchLifeAuthor,
   callFetchSkillsAuthor,
   IAboutMe,
   IConnectMe,
+  ICV,
   IExpensiveMe,
   ILifesMe,
   ISkillMe,
 } from "@/lib/api-services";
 import { useEffect, useState } from "react";
+import { Button } from "antd";
+import { formatDateVN } from "@/lib/utils";
 
 const iconGradients = [
   "from-amber-500 to-orange-600",
@@ -51,6 +57,8 @@ export default function AboutPage() {
   const [lifes, setLifes] = useState<ILifesMe[]>([]);
   const [expensive, setExpensive] = useState<IExpensiveMe[]>([]);
   const [connect, setConnect] = useState<IConnectMe[]>([]);
+  const [cv, setCv] = useState<ICV | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,6 +124,57 @@ export default function AboutPage() {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    fetchCV();
+  }, []);
+
+  const fetchCV = async () => {
+    setLoading(true);
+    try {
+      const res = await callFetchCV();
+      setCv(res.data);
+    } catch (error) {
+      console.error("Error fetching CV:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDownload = async () => {
+    if (!cv?.fileUrl) return;
+
+    try {
+      const response = await fetch(cv.fileUrl);
+      if (!response.ok) throw new Error("Không tải được file");
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+
+      link.download = cv.fileName || "file_download";
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+      alert("Tải file thành công");
+    } catch (error) {
+      console.error("Lỗi tải file:", error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <div className="py-12 px-4">
@@ -146,9 +205,27 @@ export default function AboutPage() {
             </div>
           </div>
 
+          <Card className="border-2 mb-12 border-green-200 dark:border-green-800 bg-gradient-to-br from-card to-muted/50 shadow-xl relative overflow-hidden">
+            <CardHeader>
+              <CardTitle className="text-2xl">Hồ sơ cá nhân</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 relative z-10">
+              <p className="text-lg font-semibold">{cv?.fileName}</p>
+              <p className="text-sm text-muted-foreground">
+                Cập nhật: {cv?.createdAt ? formatDateVN(cv.createdAt) : ""}
+              </p>
+              <Button
+                onClick={handleDownload}
+                variant="outlined"
+                className="mt-4"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                Tải CV xuống
+              </Button>
+            </CardContent>
+          </Card>
           {/* About Section */}
           <Card className="mb-12 border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-card to-muted/50 shadow-xl relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-transparent to-green-500/5"></div>
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <span className="text-3xl animate-bounce">🚀</span>
@@ -192,20 +269,24 @@ export default function AboutPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
                 {skills.map((skill, index) => (
                   <div
                     key={skill._id}
                     className="group animate-fade-in-up"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <Card className="h-full hover:shadow-lg transition-all duration-300 hover:scale-105 border-2 border-transparent hover:border-green-200 dark:hover:border-green-800 relative overflow-hidden">
+                    <Card className="h-full hover:shadow-lg bg-background transition-all duration-300 hover:scale-105 border-2 border-transparent hover:border-green-200 dark:hover:border-green-800 relative overflow-hidden">
                       <CardHeader className="pb-3">
                         <div className="flex items-center gap-3 mb-2">
                           <div
-                            className={`w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-xl shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-300`}
+                            className={`w-14 border border-green-400 h-14 rounded-xl overflow-hidden shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-300`}
                           >
-                            🚀
+                            <img
+                              src={skill.image}
+                              alt="Skill Image"
+                              className="w-full h-full object-cover"
+                            />
                           </div>
                           <div className="flex-1">
                             <h3
@@ -298,47 +379,51 @@ export default function AboutPage() {
           </Card>
 
           {/* Experience Section */}
-          <Card className="mb-12 border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-card to-muted/50 shadow-xl">
+          <Card className="mb-12 border border-green-200 dark:border-green-800 bg-gradient-to-br from-white via-green-50 to-white/80 dark:from-[#0f172a] dark:via-[#1e293b] dark:to-[#0f172a] shadow-2xl transition-all duration-300">
             <CardHeader>
-              <CardTitle className="flex items-center gap-3 text-2xl">
+              <CardTitle className="flex items-center gap-3 text-2xl text-foreground">
                 <span className="text-3xl animate-bounce">💼</span>
                 Kinh nghiệm làm việc
               </CardTitle>
             </CardHeader>
+
             <CardContent>
-              <div className="space-y-8">
+              <div className="space-y-10">
                 {expensive.map((exp, index) => (
                   <div
                     key={index}
-                    className="relative pl-8 border-l-4 border-green-200 dark:border-green-800 animate-fade-in-up"
+                    className="relative pl-6 border-l-[3px] border-dashed border-green-300 dark:border-green-700 animate-fade-in-up transition-all duration-500"
                     style={{ animationDelay: `${index * 200}ms` }}
                   >
-                    <div className="absolute w-8 h-8 bg-green-500 rounded-full -left-4 top-2 flex items-center justify-center text-white text-sm font-bold shadow-lg">
+                    <div className="absolute w-8 h-8 bg-gradient-to-tr from-green-400 to-green-600 text-white rounded-full -left-4 top-2 flex items-center justify-center text-sm font-bold shadow-md ring-2 ring-white dark:ring-slate-900">
                       🚀
                     </div>
-                    <div className="space-y-3 bg-muted/30 p-6 rounded-lg border border-green-100 dark:border-green-900">
+
+                    <div className="space-y-3 bg-muted/40 dark:bg-muted/20 p-4 rounded-xl border border-green-100 dark:border-green-900 shadow-inner backdrop-blur-sm transition-all duration-300">
                       <h3 className="font-bold capitalize text-xl text-foreground">
                         {exp.title}
                       </h3>
-                      <p
-                        className={`${textDefault} capitalize font-semibold text-lg`}
-                      >
+
+                      <p className="text-green-700 dark:text-green-300 capitalize font-semibold text-lg">
                         {exp.subTitle}
                       </p>
-                      <p className="text-sm text-muted-foreground font-medium">
-                        {exp.time}
+
+                      <p className="text-sm text-muted-foreground font-medium italic">
+                        📅 {exp.time}
                       </p>
+
                       <p className="text-muted-foreground leading-relaxed">
                         {exp.content}
                       </p>
+
                       <div className="flex flex-wrap gap-2 pt-2">
-                        {exp.skills.map((achievement, achIndex) => (
+                        {exp.skills.map((skill, achIndex) => (
                           <Badge
                             key={achIndex}
-                            variant="secondary"
-                            className="text-xs bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                            variant="outline"
+                            className="text-xs rounded-full border border-green-300 dark:border-green-700 px-3 py-1 hover:bg-green-50 dark:hover:bg-green-900 transition-all"
                           >
-                            {achievement}
+                            {skill}
                           </Badge>
                         ))}
                       </div>

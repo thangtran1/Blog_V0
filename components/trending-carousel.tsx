@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { bgWelcome, maxWidth, textDefault } from "@/styles/classNames";
 import { callFetchPostAuthor, IAllPost } from "@/lib/api-services";
+import { formatDateVN } from "@/lib/utils";
 
 export default function TrendingCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -102,7 +103,7 @@ export default function TrendingCarousel() {
   const currentPost = featuredPosts[currentSlide];
 
   return (
-    <section id="trending-section" className="py-20 bg-background">
+    <section id="trending-section" className="py-12 bg-background">
       <div className="">
         <div className={`${maxWidth} mx-auto `}>
           <div
@@ -129,7 +130,7 @@ export default function TrendingCarousel() {
           >
             {/* Main Carousel */}
             <div
-              className={`relative ${bgWelcome} rounded-3xl px-20 py-6  text-white overflow-hidden border-2 border-green-500/20 shadow-2xl`}
+              className={`relative ${bgWelcome} rounded-3xl px-12 py-6  text-white overflow-hidden border-2 border-green-500/20 shadow-2xl`}
               onMouseEnter={() => setIsPaused(true)}
               onMouseLeave={() => setIsPaused(false)}
             >
@@ -144,21 +145,14 @@ export default function TrendingCarousel() {
                   <>
                     <div className="flex items-start justify-between mb-6">
                       <div className="flex items-center gap-3">
-                        <Badge className="bg-white/20 text-white border-white/30">
+                        <Badge className="bg-background/10 text-white border-white/30">
                           <TrendingUp className="w-3 h-3 mr-1" />
-                          {typeof currentPost.category === "object" &&
-                          "name" in currentPost.category
-                            ? currentPost.category.name
-                            : "Không rõ"}
+                          {currentPost.category.name || "Không có"}
                         </Badge>
                         <div className="flex items-center gap-2 text-green-100">
                           <Calendar className="w-4 h-4" />
                           <span className="text-sm">
-                            {currentPost.createdAt
-                              ? new Date(
-                                  currentPost.createdAt
-                                ).toLocaleDateString()
-                              : "N/A"}
+                            {formatDateVN(currentPost.createdAt)}
                           </span>
                         </div>
                       </div>
@@ -174,8 +168,8 @@ export default function TrendingCarousel() {
 
                     <Button
                       asChild
-                      size="lg"
-                      className=" hover:bg-green-50 font-semibold"
+                      size="sm"
+                      className="border border-white text-white hover:bg-white/10 px-6 py-3 rounded-full font-semibold shadow transition duration-300"
                     >
                       <Link href={`/posts/${currentPost._id}`}>Đọc ngay →</Link>
                     </Button>
@@ -186,7 +180,7 @@ export default function TrendingCarousel() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20 w-12 h-12 transition-all duration-300 hover:scale-110"
+                className="absolute left-1 top-1/2 -translate-y-1/2 text-white hover:bg-white/20 w-12 h-12 transition-all duration-300 hover:scale-110"
                 onClick={prevSlide}
               >
                 <ChevronLeft style={{ width: "28px", height: "28px" }} />
@@ -195,7 +189,7 @@ export default function TrendingCarousel() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20 w-12 h-12 transition-all duration-300 hover:scale-110"
+                className="absolute right-1 top-1/2 -translate-y-1/2 text-white hover:bg-white/20 w-12 h-12 transition-all duration-300 hover:scale-110"
                 onClick={nextSlide}
               >
                 <ChevronRight style={{ width: "28px", height: "28px" }} />

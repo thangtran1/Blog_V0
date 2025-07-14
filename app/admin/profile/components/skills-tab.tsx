@@ -184,11 +184,13 @@ export default function SkillsTab() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>{editingItem?._id ? "Edit" : "Add"} Skill</DialogTitle>
+            <DialogTitle>
+              {editingItem?._id ? "Chỉnh sửa" : "Tạo mới"} kĩ năng
+            </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <div>
-              <Label htmlFor="title">Skill Name</Label>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="title">Tên kĩ năng</Label>
               <Input
                 id="title"
                 value={editingItem?.title || ""}
@@ -199,7 +201,7 @@ export default function SkillsTab() {
                 }
               />
             </div>
-            <div>
+            <div className="flex flex-col gap-2">
               <Label htmlFor="image">Image URL</Label>
               <Input
                 id="image"
@@ -210,9 +212,35 @@ export default function SkillsTab() {
                   )
                 }
               />
+              {editingItem?.image && (
+                <div className="relative mt-2 w-40 h-40 border rounded overflow-hidden">
+                  <img
+                    src={editingItem.image}
+                    alt="Preview"
+                    className="w-full h-full object-contain"
+                    onError={(e) => {
+                      // Ẩn ảnh nếu link không hợp lệ
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setEditingItem((prev) =>
+                        prev ? { ...prev, image: "" } : prev
+                      )
+                    }
+                    className="absolute top-1 right-1 bg-gray-200 rounded-full p-1 hover:bg-gray-300"
+                    aria-label="Xóa ảnh"
+                  >
+                    <X className="w-4 h-4 text-red-600" />
+                  </button>
+                </div>
+              )}
             </div>
-            <div>
-              <Label htmlFor="level">Level</Label>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="level">Trình độ</Label>
               <select
                 id="level"
                 value={editingItem?.level || "Beginner"}
@@ -229,8 +257,8 @@ export default function SkillsTab() {
                 <option value="Expert">Expert</option>
               </select>
             </div>
-            <div>
-              <Label>Specialties</Label>
+            <div className="flex flex-col ">
+              <Label>Chuyên môn</Label>
               <div className="space-y-2 mt-2">
                 {editingItem?.specialties?.map((spec, index) => (
                   <div key={index} className="flex items-center gap-2">

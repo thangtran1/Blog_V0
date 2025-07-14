@@ -99,13 +99,10 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col px-4 min-h-screen">
-      {/* Hero Section */}
       <section
         id="hero"
-        className={`relative px-2 rounded-lg ${bgWelcome} text-white py-20 lg:py-32 overflow-hidden`}
+        className={`relative px-2 rounded-lg ${bgWelcome} text-white py-10 lg:py-32 overflow-hidden`}
       >
-        {/* <div className="absolute inset-0 bg-black/10"></div> */}
-        {/* Animated decorative elements */}
         <div
           className={`relative z-10 transition-all duration-1000 ${
             sectionsVisible.hero
@@ -113,7 +110,7 @@ export default function HomePage() {
               : "opacity-0 translate-y-10"
           }`}
         >
-          <div className={`${maxWidth} mx-auto text-center`}>
+          <div className="mx-auto text-center">
             <div className="flex justify-center mb-8">
               <div className="relative animate-bounce-in-down">
                 <div className="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30 shadow-2xl">
@@ -139,16 +136,18 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-scale-in stagger-4">
               <Button
                 asChild
-                size="lg"
-                className=" hover:bg-green-50 px-8 py-4 rounded-full font-medium text-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+                size="sm"
+                variant="outline"
+                className="border border-border-gray-300 dark:border-gray-300 hover:bg-white/10 p-5 rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 bg-transparent"
               >
                 <Link href="/posts">📚 Khám phá bài viết</Link>
               </Button>
+
               <Button
                 asChild
-                size="lg"
+                size="sm"
                 variant="outline"
-                className="border-2 border-white text-white hover:bg-white/10 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 bg-transparent"
+                className="border border-border-gray-300 dark:border-gray-300 hover:bg-white/10 p-5 rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 bg-transparent"
               >
                 <Link href="/categories">🚀 Xem danh mục</Link>
               </Button>
@@ -157,11 +156,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Trending Carousel */}
       <TrendingCarousel />
 
-      {/* Categories Section */}
-      <section id="categories" className="py-20 bg-muted/50">
+      <section id="categories" className="py-12 bg-muted/40 rounded-lg">
         <div className="">
           <div className={`${maxWidth} mx-auto`}>
             <div
@@ -179,20 +176,20 @@ export default function HomePage() {
                 đến nâng cao
               </p>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {categories.map((category, index) => (
                 <div
                   key={index}
-                  className="group animate-fade-in-up rounded-md bg-gradient-to-br from-card to-muted/50 border border-gray-200 dark:border-gray-700 hover:scale-105 transform transition duration-500 hover:shadow-xl dark:hover:shadow-green-900"
+                  className="group animate-fade-in-up rounded-md bg-gradient-to-br from-card to-muted/50  dark:border-gray-700 hover:scale-105 transform transition duration-500 hover:shadow-xl dark:hover:shadow-green-900"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <Card className="flex flex-col h-full border border-gray-300 dark:border-gray-600 hover:border-green-400 dark:hover:border-green-600 transition-colors duration-300">
+                  <Card className="flex flex-col h-full hover:border-green-400 dark:hover:border-green-600 transition-colors duration-300">
                     <CardHeader className="pb-4">
                       <div className="flex items-start gap-4">
                         <img
                           src={category.image}
                           alt={category.name}
-                          className="w-24 h-24 border border-gray-300 dark:border-gray-600 rounded-2xl object-cover shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-300"
+                          className="w-24 h-24 border border-green-200 dark:border-green-400 rounded-2xl object-cover shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-300"
                         />
                         <div className="flex-1">
                           <CardTitle className="text-xl group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors mb-2">
@@ -209,11 +206,11 @@ export default function HomePage() {
                     </CardHeader>
 
                     <CardContent className="flex flex-col flex-grow space-y-4 p-5">
-                      <CardDescription className="leading-relaxed text-sm line-clamp-3 min-h-[4rem]">
+                      <CardDescription className="leading-relaxed text-sm line-clamp-2 min-h-[2.5rem]">
                         {category.description}
                       </CardDescription>
 
-                      <Button asChild className="w-full group mt-auto">
+                      <Button asChild className="w-full px-2 group mt-auto">
                         <Link href={`/categories/${category.slug}`}>
                           Khám phá {category.name}
                           <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -224,7 +221,7 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
-            <div className="text-center mt-12">
+            <div className="text-center mt-6">
               <Button
                 asChild
                 size="lg"
@@ -242,8 +239,10 @@ export default function HomePage() {
       </section>
 
       {/* Latest Posts Section */}
-      <section id="latest" className="py-16 bg-background">
+      <section id="latest" className="py-12 bg-background">
         <div className="">
+          {/* <div className="absolute inset-0 bg-black/10 pointer-events-none"></div> */}
+
           <div className={`${maxWidth} mx-auto `}>
             <div
               className={`text-center mb-12 transition-all duration-1000 ${
@@ -259,23 +258,23 @@ export default function HomePage() {
                 Cập nhật những kiến thức và công nghệ mới nhất
               </p>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <div className=" grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {recentPosts.map((post, index) => (
                 <div
                   key={post._id}
-                  className={`transition-all duration-700 ${
+                  className={`transition-all duration-700  ${
                     sectionsVisible.latest
                       ? "opacity-100 translate-y-0 scale-100"
                       : "opacity-0 translate-y-10 scale-95"
                   }`}
                   style={{ transitionDelay: `${index * 200}ms` }}
                 >
-                  <Card className="group card-hover-lift border-green-100 dark:border-green-900 relative overflow-hidden">
+                  <Card className="group card-hover-lift border-green-100 dark:border-green-900 hover:border-green-400 dark:hover:border-green-600 relative overflow-hidden">
                     <div className="relative overflow-hidden rounded-t-lg">
                       <Image
                         src={
-                          post.category.image ||
-                          "/placeholder.svg?height=400&width=600"
+                          post.image || "/placeholder.svg?height=400&width=600"
                         }
                         alt={post.title}
                         width={400}
@@ -321,7 +320,7 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
-            <div className="text-center mt-12">
+            <div className="text-center mt-6">
               <Button
                 asChild
                 size="lg"

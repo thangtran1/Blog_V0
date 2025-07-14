@@ -161,6 +161,9 @@ export default function PostDetailPage({
                   </Badge>
                 </div>
                 <h2>{post.title}</h2>
+                <div className="italic font-medium text-sm md:text-base my-2  text-gray-500 dark:text-gray-400 opacity-80 leading-relaxed transition-colors duration-300 ">
+                  {post.introduction}
+                </div>
                 <div className="flex items-center gap-6 text-muted-foreground mb-6 pb-6 border-b border-border">
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />

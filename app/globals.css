@@ -870,7 +870,7 @@ html {
   }
 }
 
-/* Code block */
+/* Code block cho UI markdown */
 .prose pre {
   background-color: #121212; /* nền tối rất đậm */
   color: #e0e0ff; /* chữ sáng, màu tím nhẹ */
@@ -1013,4 +1013,72 @@ html {
 .dark .prose ul li,
 .dark .prose ol li {
   color: #c7d2fe;
+}
+
+/* Code block cho UI trang chủ */
+@keyframes backgroundPan {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-bg-pan {
+  animation: backgroundPan 20s ease-in-out infinite;
+  background-size: 200% 200%;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* ui k  bị tràn ra markdown content */
+.prose pre,
+.prose table {
+  overflow-x: auto;
+  display: block; /* để scroll hiệu quả */
+  max-width: 100%;
+}
+
+/* Ảnh không vượt container */
+.prose img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Bắt buộc text dài xuống dòng, tránh tràn */
+.prose {
+  word-break: break-word;
+  overflow-wrap: break-word;
 }

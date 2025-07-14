@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Calendar, Clock, Search, Filter } from "lucide-react";
-import { buttonDefault, maxWidth, textDefault } from "@/styles/classNames";
+import { maxWidth, textDefault } from "@/styles/classNames";
 import {
   callFetchCategories,
   callFetchPostAuthor,
@@ -162,7 +162,7 @@ export default function PostsPage() {
           {/* Main Content */}
           <div className="lg:col-span-3">
             {/* Search and Filter */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <div className="flex flex-col sm:flex-row gap-4 mb-4">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <Input
@@ -203,7 +203,7 @@ export default function PostsPage() {
             </div>
 
             {/* Posts Grid */}
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-4">
               {filteredPosts.map((post) => (
                 <Card
                   key={post._id}
@@ -239,11 +239,15 @@ export default function PostsPage() {
                       <div className="flex items-center gap-4">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
-                          {new Date(post.createdAt).toLocaleDateString()}
+                          {formatDateVN(post.createdAt)}
                         </div>
                         <div className="flex items-center gap-1">
                           <Clock className="w-4 h-4" />
-                          {post.readingTime} phút đọc
+                          {post.readingTime < 60
+                            ? `${post.readingTime} phút đọc`
+                            : `${Math.floor(post.readingTime / 60)} giờ ${
+                                post.readingTime % 60
+                              } phút đọc`}
                         </div>
                       </div>
                     </div>

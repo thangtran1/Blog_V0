@@ -12,13 +12,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Edit, Save, X } from "lucide-react";
+import { Edit, Save, Trash2, X } from "lucide-react";
 import {
   callCreateAboutAuthor,
+  callDeleteAboutAuthor,
   callFetchAboutAuthor,
   callUpdateAboutAuthor,
   IAboutMe,
 } from "@/lib/api-services";
+import { Popconfirm } from "antd";
 
 export default function AboutMeTab() {
   const [aboutData, setAboutData] = useState<IAboutMe | null>(null);
@@ -45,8 +47,18 @@ export default function AboutMeTab() {
   const handleEdit = () => {
     if (aboutData) {
       setEditingItem({ ...aboutData });
-      setIsDialogOpen(true);
+    } else {
+      setEditingItem({
+        title: "",
+        content: "",
+        location: "",
+        yearsOfExperience: 0,
+        favorites: "",
+        createdAt: "",
+        updatedAt: "",
+      });
     }
+    setIsDialogOpen(true);
   };
 
   const handleSave = async () => {
@@ -55,12 +67,17 @@ export default function AboutMeTab() {
     try {
       setLoading(true);
 
-      // Giả sử nếu có _id thì update, không thì tạo mới
+      // Chuẩn bị payload, loại bỏ _id khi tạo mới
+      const payload = { ...editingItem };
+      if (!editingItem._id) {
+        delete payload._id;
+      }
+
       if (editingItem._id) {
-        const res = await callUpdateAboutAuthor(editingItem);
+        const res = await callUpdateAboutAuthor(payload);
         setAboutData(res.data);
       } else {
-        const res = await callCreateAboutAuthor(editingItem);
+        const res = await callCreateAboutAuthor(payload);
         setAboutData(res.data);
       }
 
@@ -81,14 +98,55 @@ export default function AboutMeTab() {
     );
   }
 
+  const handleDelete = async () => {
+    if (!aboutData?._id) return;
+
+    try {
+      setLoading(true);
+
+      await callDeleteAboutAuthor();
+      setAboutData(null);
+    } catch (error) {
+      console.error("Error deleting about data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">About Me</h2>
-        <Button onClick={handleEdit} disabled={!aboutData}>
-          <Edit className="w-4 h-4 mr-2" />
-          Edit
-        </Button>
+      <div className="flex justify-between">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-semibold">About Me</h2>
+        </div>
+        <div className="flex gap-4">
+          {!aboutData ? (
+            <Button onClick={handleEdit}>
+              <Edit className="w-4 h-4 mr-2" />
+              Create
+            </Button>
+          ) : (
+            <Button onClick={handleEdit}>
+              <Edit className="w-4 h-4 mr-2" />
+              Edit
+            </Button>
+          )}
+          {aboutData && (
+            <div>
+              <Popconfirm
+                title="Xoá kết nối"
+                description="Bạn có chắc chắn muốn xoá kết nối này không?"
+                onConfirm={() => handleDelete()}
+                okText="Xoá"
+                cancelText="Huỷ"
+              >
+                <Button size="sm" variant="outline">
+                  <Trash2 className="w-3 h-3" />
+                </Button>
+              </Popconfirm>
+            </div>
+          )}
+        </div>
       </div>
 
       {aboutData && (
@@ -130,84 +188,107 @@ export default function AboutMeTab() {
         </Card>
       )}
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <Dialog
+        open={isDialogOpen}
+        onOpenChange={(open) => {
+          setIsDialogOpen(open);
+          if (!open) setEditingItem(null); // Reset khi đóng modal
+        }}
+      >
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Edit About Me</DialogTitle>
+            <DialogTitle>
+              {editingItem?._id ? "Edit About Me" : "Create About Me"}
+            </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <div>
-              <Label htmlFor="title">Title</Label>
+            <div className="flex gap-2 flex-col">
+              <Label htmlFor="title">Tiêu đề</Label>
               <Input
                 id="title"
+                placeholder="Vui lòng nhập tiêu đề ... "
                 value={editingItem?.title || ""}
                 onChange={(e) =>
-                  setEditingItem(
-                    (prev) => prev && { ...prev, title: e.target.value }
+                  setEditingItem((prev) =>
+                    prev ? { ...prev, title: e.target.value } : prev
                   )
                 }
               />
             </div>
-            <div>
-              <Label htmlFor="content">Content</Label>
+            <div className="flex gap-2 flex-col">
+              <Label htmlFor="content">Nội dung</Label>
               <Textarea
                 id="content"
+                placeholder="Viết về bản thân ..."
                 value={editingItem?.content || ""}
                 onChange={(e) =>
-                  setEditingItem(
-                    (prev) => prev && { ...prev, content: e.target.value }
+                  setEditingItem((prev) =>
+                    prev ? { ...prev, content: e.target.value } : prev
                   )
                 }
-                rows={5}
+                rows={6}
               />
             </div>
-            <div>
-              <Label htmlFor="location">Location</Label>
+            <div className="flex gap-2 flex-col">
+              <Label htmlFor="location">Vị trí</Label>
               <Input
                 id="location"
+                placeholder="Bạn sống ở đâu?"
                 value={editingItem?.location || ""}
                 onChange={(e) =>
-                  setEditingItem(
-                    (prev) => prev && { ...prev, location: e.target.value }
+                  setEditingItem((prev) =>
+                    prev ? { ...prev, location: e.target.value } : prev
                   )
                 }
               />
             </div>
-            <div>
-              <Label htmlFor="experience">Years of Experience</Label>
+            <div className="flex gap-2 flex-col">
+              <Label htmlFor="experience">Số năm kinh nghiệm của bạn?</Label>
               <Input
                 id="experience"
                 type="number"
+                min={0}
+                placeholder="Nhập số năm kinh nghiệm của bạn"
                 value={editingItem?.yearsOfExperience || 0}
                 onChange={(e) =>
-                  setEditingItem(
-                    (prev) =>
-                      prev && {
-                        ...prev,
-                        yearsOfExperience: Number.parseInt(e.target.value),
-                      }
+                  setEditingItem((prev) =>
+                    prev
+                      ? {
+                          ...prev,
+                          yearsOfExperience:
+                            Number.parseInt(e.target.value) || 0,
+                        }
+                      : prev
                   )
                 }
               />
             </div>
-            <div>
-              <Label htmlFor="favorites">Favorites</Label>
+            <div className="flex gap-2 flex-col">
+              <Label htmlFor="favorites">Sở thích</Label>
               <Input
                 id="favorites"
+                placeholder="Sở thích của bạn?"
                 value={editingItem?.favorites || ""}
                 onChange={(e) =>
-                  setEditingItem(
-                    (prev) => prev && { ...prev, favorites: e.target.value }
+                  setEditingItem((prev) =>
+                    prev ? { ...prev, favorites: e.target.value } : prev
                   )
                 }
               />
             </div>
             <div className="flex gap-2 justify-end">
-              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+              <Button
+                variant="outline"
+                type="button"
+                onClick={() => {
+                  setIsDialogOpen(false);
+                  setEditingItem(null);
+                }}
+              >
                 <X className="w-4 h-4 mr-2" />
                 Cancel
               </Button>
-              <Button onClick={handleSave}>
+              <Button type="button" onClick={handleSave}>
                 <Save className="w-4 h-4 mr-2" />
                 Save
               </Button>

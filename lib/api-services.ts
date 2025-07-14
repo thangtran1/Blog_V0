@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://blog-v0-be.onrender.com";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // Axios instance configuration
 const apiClient = axios.create({
@@ -44,6 +43,7 @@ export interface IPost {
   content: string;
   category: ICategory;
   readingTime: number;
+  image: string;
   views: number;
   likes: number;
   createdAt: string;
@@ -78,7 +78,7 @@ export interface IAllPost {
   status: string;
   introduction: string;
   content?: string;
-  readingTime?: number;
+  readingTime: number;
   category: ICategory;
   createdAt: string;
   updatedAt: string;
@@ -100,7 +100,7 @@ export interface IPostByCategory {
 }
 
 export interface IAboutMe {
-  _id: string;
+  _id?: string;
   title: string;
   content: string;
   location: string;
@@ -146,6 +146,15 @@ export interface IConnectMe {
   image: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface ICV {
+  _id: string;
+  fileName: string;
+  fileUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
 // ====================================================================
@@ -276,4 +285,18 @@ export const callFetchCategoryById = (id: string) => {
 
 export const callDeletePost = (postId: string) => {
   return apiClient.delete<string>(`/posts/${postId}`);
+};
+
+// CV
+
+export const callFetchCV = () => {
+  return apiClient.get<ICV | null>(`/cv`);
+};
+export const callDeleteCV = (id: string) => {
+  return apiClient.delete<void>(`/cv/${id}`);
+};
+export const callUploadCV = (formData: FormData) => {
+  return apiClient.post<ICV>("/cv", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 };
