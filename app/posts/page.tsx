@@ -105,7 +105,7 @@ export default function PostsPage() {
             <div className="sticky top-20 space-y-6">
               <Card className="border-green-200 dark:border-green-800 bg-card/50 backdrop-blur-sm shadow-sm">
                 <CardHeader>
-                  <CardTitle className="text-xl font-semibold flex items-center gap-2">
+                  <CardTitle className="text-xl font-semibold  flex items-center gap-2">
                     📚 Bài viết gần đây
                   </CardTitle>
                 </CardHeader>
@@ -130,7 +130,7 @@ export default function PostsPage() {
                               : "hover:bg-muted/50 border-l-4 border-transparent"
                           )}
                         >
-                          <div className="px-5 py-4 border-b">
+                          <div className="px-5 py-4 border-b dark:border-green-900 border-green-200">
                             <p
                               className={clsx(
                                 "font-semibold uppercase md:text-[14px] line-clamp-2 mb-1 transition-colors",

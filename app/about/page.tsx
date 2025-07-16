@@ -146,7 +146,7 @@ export default function AboutPage() {
             <div className="flex flex-col md:flex-row justify-center items-center">
               <div className="relative inline-block mb-8 md:mb-0">
                 <div className="w-40 h-40 bg-gradient-to-br from-green-500 to-green-600 rounded-full mx-auto flex items-center justify-center shadow-2xl relative overflow-hidden">
-                  <span className="text-5xl font-bold text-white">CE</span>
+                  <span className="text-5xl font-bold text-white">TVT</span>
                   <div className="absolute inset-0 rounded-full border-4 border-green-400/30 animate-pulse"></div>
                   <div className="absolute inset-2 rounded-full border-2 border-green-300/20 animate-ping"></div>
                 </div>

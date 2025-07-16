@@ -103,7 +103,7 @@ export default function Header() {
                 <Sun className="mr-2 h-4 w-4" />
                 Light
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("system")}>
+              <DropdownMenuItem onClick={() => setTheme("dark")}>
                 <Code className="mr-2 h-4 w-4" />
                 System
               </DropdownMenuItem>

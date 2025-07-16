@@ -30,8 +30,6 @@ const tableOfContents = [
   { id: "2", title: "Elasticsearch là gì? Vì sao lại mạnh mẽ đến vậy?" },
   { id: "2.1", title: "Đặc điểm nổi bật của Elasticsearch" },
   { id: "2.2", title: "Lịch sử phát triển của Elasticsearch" },
-  { id: "2.3", title: "Elasticsearch trong hệ sinh thái Elastic Stack" },
-  { id: "3", title: "Kiến trúc cốt lõi của Elasticsearch" },
 ];
 
 export default function PostDetailPage({
@@ -119,7 +117,7 @@ export default function PostDetailPage({
                               : "hover:bg-muted/50 border-l-4 border-transparent"
                           )}
                         >
-                          <div className="px-5 py-4 border-b">
+                          <div className="px-5 py-4 border-b dark:border-green-900 border-green-200">
                             <p
                               className={clsx(
                                 "font-semibold uppercase md:text-[14px] line-clamp-2 mb-1 transition-colors",
@@ -199,12 +197,12 @@ export default function PostDetailPage({
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <nav className="space-y-2">
+                  <nav className="space-y-3">
                     {tableOfContents.map((item) => (
                       <Link
                         key={item.id}
                         href={`#${item.id}`}
-                        className="block text-sm text-muted-foreground hover:text-green-600 dark:hover:text-green-400 transition-colors py-2 px-3 rounded-md hover:bg-muted/50 border-l-2 border-transparent hover:border-green-500"
+                        className="block font-semibold uppercase border-b dark:border-green-900 border-green-200 md:text-[14px] line-clamp-2 text-muted-foreground hover:text-green-600 dark:hover:text-green-400 transition-colors py-2 px-3 rounded-md hover:bg-muted/50 border-l-2 border-transparent"
                       >
                         {item.title}
                       </Link>
