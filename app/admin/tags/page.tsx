@@ -105,7 +105,6 @@ export default function AdminTagsPage() {
 
   return (
     <div className="space-y-6 animate-fade-in-up">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Quản lý Tags</h1>
@@ -130,7 +129,6 @@ export default function AdminTagsPage() {
         </Dialog>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="animate-fade-in-up stagger-1">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -168,7 +166,6 @@ export default function AdminTagsPage() {
         </Card>
       </div>
 
-      {/* Filters */}
       <Card>
         <CardHeader>
           <CardTitle>Bộ lọc</CardTitle>
@@ -192,7 +189,6 @@ export default function AdminTagsPage() {
         </CardContent>
       </Card>
 
-      {/* Tags Table */}
       <Card>
         <CardHeader>
           <CardTitle>Danh sách tags ({filteredTags.length})</CardTitle>
@@ -264,7 +260,6 @@ export default function AdminTagsPage() {
         </CardContent>
       </Card>
 
-      {/* Edit Dialog */}
       {editingTag && (
         <Dialog open={!!editingTag} onOpenChange={() => setEditingTag(null)}>
           <DialogContent>

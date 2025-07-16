@@ -15,11 +15,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Save, X, Hash } from "lucide-react";
+import { Save, X } from "lucide-react";
 import { buttonDefault } from "@/styles/classNames";
-import { Select } from "antd";
 import { callCreateCategories, callUpdateCategories } from "@/lib/api-services";
-const { Option } = Select;
 
 interface CategoryFormProps {
   category?: any;
@@ -67,10 +65,8 @@ export default function CategoryForm({
 
     try {
       if (category) {
-        // Gọi API cập nhật
         await callUpdateCategories(category._id, formData);
       } else {
-        // Gọi API tạo mới
         await callCreateCategories(formData);
         alert("Tạo danh mục thành công!");
       }
@@ -200,28 +196,6 @@ export default function CategoryForm({
           </CardContent>
         </Card>
       </div>
-
-      {/* <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Cài đặt</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label>Trạng thái hoạt động</Label>
-              <p className="text-sm text-muted-foreground">
-                Danh mục có hiển thị trên website không
-              </p>
-            </div>
-            <Switch
-              checked={formData.isActive}
-              onCheckedChange={(checked) =>
-                handleInputChange("isActive", checked)
-              }
-            />
-          </div>
-        </CardContent>
-      </Card> */}
 
       <div className="flex items-center justify-end gap-4 pt-6 border-t">
         <Button type="button" variant="outline" onClick={onClose}>

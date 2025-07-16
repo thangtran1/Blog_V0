@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,7 +11,7 @@ import {
   callFetchPostById,
   callFetchRecentPosts,
   IPost,
-} from "@/lib/api-services"; // Hàm gọi API theo id
+} from "@/lib/api-services";
 import { formatDateVN } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
@@ -40,7 +39,6 @@ export default function PostDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  // unwrap params promise
   const { id } = React.use(params);
 
   const [post, setPost] = useState<IPost | null>(null);
@@ -92,7 +90,6 @@ export default function PostDetailPage({
         </div>
 
         <div className="grid lg:grid-cols-12 gap-8">
-          {/* Sidebar Left */}
           <div className="lg:col-span-3">
             <div className="sticky top-20 space-y-6">
               <Card className="border-green-200 dark:border-green-800 bg-card/50 backdrop-blur-sm shadow-sm">
@@ -151,7 +148,6 @@ export default function PostDetailPage({
             </div>
           </div>
 
-          {/* Main Content */}
           <div className="lg:col-span-6">
             <article className="prose prose-gray max-w-none dark:prose-invert prose-lg">
               <div className="mb-8">
@@ -192,7 +188,6 @@ export default function PostDetailPage({
             </article>
           </div>
 
-          {/* Table of Contents */}
           <div className="lg:col-span-3">
             <div className="sticky top-20">
               <Card className="border-green-200 dark:border-green-800 bg-card/50 backdrop-blur-sm">

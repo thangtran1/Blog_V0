@@ -192,7 +192,7 @@ export default function AboutMeTab() {
         open={isDialogOpen}
         onOpenChange={(open) => {
           setIsDialogOpen(open);
-          if (!open) setEditingItem(null); // Reset khi đóng modal
+          if (!open) setEditingItem(null);
         }}
       >
         <DialogContent className="max-w-md">

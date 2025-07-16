@@ -44,7 +44,7 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 1024);
       if (window.innerWidth < 1024) {
-        setIsCollapsed(false); // Always expanded on mobile when open
+        setIsCollapsed(false);
       }
     };
 
@@ -68,7 +68,6 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
 
   return (
     <>
-      {/* Mobile Overlay */}
       {isMobile && isOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
@@ -76,7 +75,6 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
         />
       )}
 
-      {/* Sidebar */}
       <div
         className={`fixed left-0 top-0 h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transition-all duration-300 z-50 ${
           isMobile
@@ -85,7 +83,6 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
         }`}
       >
         <div className="flex flex-col h-full">
-          {/* Header */}
           <div
             className={`flex items-center p-4 border-b border-gray-200 dark:border-gray-800 ${
               isCollapsed && !isMobile ? "justify-center" : "justify-between"
@@ -118,7 +115,6 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
             )}
 
             <div className="flex items-center gap-2">
-              {/* Desktop Toggle */}
               {!isMobile && (
                 <Button
                   variant="ghost"
@@ -134,7 +130,6 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                 </Button>
               )}
 
-              {/* Mobile Close */}
               {isMobile && (
                 <Button
                   variant="ghost"
@@ -148,7 +143,6 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
             </div>
           </div>
 
-          {/* Navigation */}
           <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
             {navigation.map((item) => {
               const active = isActive(item.href);
@@ -185,7 +179,6 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
             })}
           </nav>
 
-          {/* Footer */}
           {(!isCollapsed || isMobile) && (
             <div className="p-4 border-t border-gray-200 dark:border-gray-800">
               <div className="space-y-2">

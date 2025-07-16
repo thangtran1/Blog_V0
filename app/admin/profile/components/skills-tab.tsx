@@ -57,7 +57,7 @@ export default function SkillsTab() {
       title: "",
       image: "",
       level: "beginner",
-      specialties: [""], // mặc định 1 ô trống
+      specialties: [""],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     } as ISkillMe);
@@ -78,14 +78,12 @@ export default function SkillsTab() {
 
     try {
       if (editingItem._id) {
-        // Cập nhật
         const res = await callUpdateSkill(editingItem);
         setSkillsData((prev) =>
           prev.map((c) => (c._id === editingItem._id ? res.data : c))
         );
         message.success("Thành công!");
       } else {
-        // Tạo mới
         const res = await callCreateSkill(editingItem);
         setSkillsData((prev) => [...prev, res.data]);
       }
@@ -219,7 +217,6 @@ export default function SkillsTab() {
                     alt="Preview"
                     className="w-full h-full object-contain"
                     onError={(e) => {
-                      // Ẩn ảnh nếu link không hợp lệ
                       (e.target as HTMLImageElement).style.display = "none";
                     }}
                   />

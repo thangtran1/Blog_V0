@@ -66,7 +66,6 @@ export default function CategoryPage({
       </div>
     );
 
-  // Lấy thông tin category từ bài viết đầu tiên (bài nào cũng có embedded category)
   const category = posts[0].category;
 
   return (
@@ -81,7 +80,6 @@ export default function CategoryPage({
           </Button>
         </div>
 
-        {/* Header */}
         <div className="text-center mb-12">
           <h1 className={`text-4xl font-bold mb-4 ${textDefault}`}>
             {category.name}
@@ -99,7 +97,6 @@ export default function CategoryPage({
           </div>
         </div>
 
-        {/* Posts Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {posts.map((post) => (
             <Card

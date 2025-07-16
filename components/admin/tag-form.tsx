@@ -44,7 +44,6 @@ export default function TagForm({ tag, onClose }: TagFormProps) {
       [field]: value,
     }));
 
-    // Auto-generate slug from name
     if (field === "name" && !tag) {
       const slug = value
         .toLowerCase()
@@ -128,7 +127,6 @@ export default function TagForm({ tag, onClose }: TagFormProps) {
         </div>
       </div>
 
-      {/* Preview */}
       <div className="space-y-2">
         <Label>Xem trước</Label>
         <div className="flex items-center gap-2 p-2 border rounded">

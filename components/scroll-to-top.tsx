@@ -41,10 +41,8 @@ export default function ScrollToTop() {
         size="icon"
         className={`w-14 h-14 rounded-full ${bgDefault2} hover:from-green-600 hover:to-green-700 text-white shadow-2xl hover:shadow-green-500/25 transition-all duration-300 hover:scale-110 group relative overflow-hidden`}
       >
-        {/* Animated background */}
         <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full"></div>
 
-        {/* Pulse effect */}
         <div className="absolute inset-0 rounded-full bg-green-500/30 animate-ping"></div>
 
         <ArrowUp className="w-6 h-6 relative z-10 group-hover:animate-bounce" />

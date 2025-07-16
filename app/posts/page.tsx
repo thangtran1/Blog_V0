@@ -159,9 +159,7 @@ export default function PostsPage() {
             </div>
           </div>
 
-          {/* Main Content */}
           <div className="lg:col-span-3">
-            {/* Search and Filter */}
             <div className="flex flex-col sm:flex-row gap-4 mb-4">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
@@ -202,7 +200,6 @@ export default function PostsPage() {
               </Button>
             </div>
 
-            {/* Posts Grid */}
             <div className="grid md:grid-cols-2 gap-4">
               {filteredPosts.map((post) => (
                 <Card

@@ -23,8 +23,8 @@ export default function AdminSettings() {
   const [settings, setSettings] = useState({
     siteName: `${titleName} Blog`,
     siteDescription: "Blog về lập trình và công nghệ",
-    siteUrl: "https://NoBugKai.blog",
-    adminEmail: "admin@NoBugKai.blog",
+    siteUrl: "https://vanthang.io.vn",
+    adminEmail: process.env.ADMIN_EMAIL,
     enableComments: true,
     enableNewsletter: true,
     enableDarkMode: true,
@@ -35,13 +35,11 @@ export default function AdminSettings() {
   });
 
   const handleSave = () => {
-    // Handle save logic here
     console.log("Settings saved:", settings);
   };
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
@@ -84,7 +82,6 @@ export default function AdminSettings() {
           </TabsTrigger>
         </TabsList>
 
-        {/* General Settings */}
         <TabsContent value="general">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
@@ -180,7 +177,6 @@ export default function AdminSettings() {
           </div>
         </TabsContent>
 
-        {/* Appearance Settings */}
         <TabsContent value="appearance">
           <Card>
             <CardHeader>
@@ -228,7 +224,6 @@ export default function AdminSettings() {
           </Card>
         </TabsContent>
 
-        {/* Security Settings */}
         <TabsContent value="security">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
@@ -280,7 +275,6 @@ export default function AdminSettings() {
           </div>
         </TabsContent>
 
-        {/* Notifications Settings */}
         <TabsContent value="notifications">
           <Card>
             <CardHeader>
@@ -324,7 +318,6 @@ export default function AdminSettings() {
           </Card>
         </TabsContent>
 
-        {/* Advanced Settings */}
         <TabsContent value="Advanced">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>

@@ -52,7 +52,6 @@ export default function RichTextEditor({
 
     onChange(newText);
 
-    // Restore cursor position
     setTimeout(() => {
       textarea.focus();
       textarea.setSelectionRange(
@@ -170,38 +169,7 @@ export default function RichTextEditor({
               id="content-editor"
               value={value}
               onChange={(e) => onChange(e.target.value)}
-              placeholder={`# Tiêu đề bài viết
-
-Bắt đầu viết nội dung của bạn ở đây...
-
-## Sử dụng Markdown:
-- **Bold text** - Text in đậm
-- *Italic text* - Text in nghiêng  
-- \`Code\` - Inline code
-- > Quote - Trích dẫn
-- [Link](url) - Liên kết
-- ![Image](url) - Hình ảnh
-
-### Code Block:
-\`\`\`javascript
-function hello() {
-  console.log("Hello World!");
-}
-\`\`\`
-
-### Bảng:
-| Cột 1 | Cột 2 | Cột 3 |
-|-------|-------|-------|
-| A     | B     | C     |
-| 1     | 2     | 3     |
-
-### Danh sách:
-1. Item 1
-2. Item 2
-3. Item 3
-
-- Bullet point 1
-- Bullet point 2`}
+              placeholder={`Bắt đầu viết nội dung của bạn ở đây...`}
               className="min-h-[500px] border-0 rounded-none resize-none focus-visible:ring-0 text-base leading-relaxed p-6"
             />
             <div className="absolute bottom-4 right-4 text-xs text-gray-400 bg-white dark:bg-gray-800 px-2 py-1 rounded">

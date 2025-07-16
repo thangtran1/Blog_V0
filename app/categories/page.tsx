@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BookOpen } from "lucide-react";
-import { bgWelcome, maxWidth, textDefault } from "@/styles/classNames";
+import { ArrowRight } from "lucide-react";
+import { maxWidth, textDefault } from "@/styles/classNames";
 import { callFetchCategories, ICategory } from "@/lib/api-services";
 import { useEffect, useState } from "react";
 

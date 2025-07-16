@@ -79,7 +79,6 @@ export default function EnhancedHeader() {
           </span>
         </Link>
 
-        {/* Desktop Navigation with enhanced animations */}
         <nav className="hidden md:flex items-center space-x-8 flex-1 justify-center">
           {navigation.map((item, index) => (
             <Link
@@ -94,19 +93,15 @@ export default function EnhancedHeader() {
               }`}
             >
               {item.name}
-              {/* Active indicator */}
               {isActive(item.href) && (
                 <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-green-500 rounded-full animate-scale-in"></div>
               )}
-              {/* Hover indicator */}
               <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-green-500 rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-              {/* Hover glow effect */}
               <div className="absolute inset-0 bg-green-500/10 rounded-md scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></div>
             </Link>
           ))}
         </nav>
 
-        {/* Theme Toggle with enhanced animation */}
         <div className="flex items-center space-x-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -123,13 +118,6 @@ export default function EnhancedHeader() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="animate-scale-in">
               <DropdownMenuItem
-                onClick={() => setTheme("light")}
-                className="hover:bg-green-50 dark:hover:bg-green-950"
-              >
-                <Sun className="mr-2 h-4 w-4" />
-                Light
-              </DropdownMenuItem>
-              <DropdownMenuItem
                 onClick={() => setTheme("dark")}
                 className="hover:bg-green-50 dark:hover:bg-green-950"
               >
@@ -137,7 +125,15 @@ export default function EnhancedHeader() {
                 Dark
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => setTheme("system")}
+                onClick={() => setTheme("light")}
+                className="hover:bg-green-50 dark:hover:bg-green-950"
+              >
+                <Sun className="mr-2 h-4 w-4" />
+                Light
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onClick={() => setTheme("dark")}
                 className="hover:bg-green-50 dark:hover:bg-green-950"
               >
                 <Code className="mr-2 h-4 w-4" />
@@ -146,7 +142,6 @@ export default function EnhancedHeader() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* Enhanced Mobile Menu */}
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button

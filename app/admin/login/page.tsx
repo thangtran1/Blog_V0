@@ -47,12 +47,12 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4">
+    <div className="p-16 flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="w-full max-w-lg">
         {/* Header */}
         <div className="text-center mb-8">
           <div
-            className={`w-20 h-20 ${bgDefault2} rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl`}
+            className={`w-20 h-20 ${bgDefault2} animate-bounce  rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl`}
           >
             <Shield className="w-10 h-10 text-white" />
           </div>
@@ -66,7 +66,6 @@ export default function AdminLoginPage() {
           </p>
         </div>
 
-        {/* Login Form */}
         <Card className="shadow-2xl border-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
           <CardHeader className="space-y-1 pb-6">
             <CardTitle className="text-2xl text-center">Đăng nhập</CardTitle>
@@ -146,17 +145,16 @@ export default function AdminLoginPage() {
               </Button>
             </form>
 
-            {/* Demo credentials */}
             <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-dashed border-gray-200 dark:border-gray-700">
               <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-2 font-medium">
-                Demo credentials:
+                Demo đăng nhập:
               </p>
               <div className="text-xs space-y-1 text-center">
                 <p className="font-mono  dark:bg-gray-900 px-2 py-1 rounded">
-                  <strong>Email:</strong> admin@NoBugKai.com
+                  <strong>Email:</strong> còn lâu mới nói
                 </p>
                 <p className="font-mono  dark:bg-gray-900 px-2 py-1 rounded">
-                  <strong>Password:</strong> admin123
+                  <strong>Password:</strong> mật khẩu bị ẩn rùi nè
                 </p>
               </div>
             </div>

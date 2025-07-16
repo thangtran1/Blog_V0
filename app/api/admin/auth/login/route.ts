@@ -1,12 +1,11 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-// Demo admin credentials - Trong thực tế nên lưu trong database với hash password
 const ADMIN_CREDENTIALS = {
-  email: "admin@NoBugKai.com",
-  password: "admin123", // Trong thực tế cần hash
+  email: process.env.ADMIN_EMAIL,
+  password: process.env.ADMIN_PASSWORD,
   user: {
-    id: "admin-1",
-    email: "admin@NoBugKai.com",
+    id: "vanthang",
+    email: process.env.ADMIN_EMAIL,
     name: "Admin NoBugKai",
     role: "admin",
     avatar: null,
@@ -17,12 +16,10 @@ export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json();
 
-    // Validate credentials
     if (
       email === ADMIN_CREDENTIALS.email &&
       password === ADMIN_CREDENTIALS.password
     ) {
-      // Generate a simple token (trong thực tế nên dùng JWT)
       const token = `admin_token_${Date.now()}_${Math.random()
         .toString(36)
         .substr(2, 9)}`;

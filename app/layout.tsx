@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   title: `${titleName} - Nơi chia sẻ kiến thức lập trình`,
   description:
     "Blog chia sẻ kiến thức về lập trình, công nghệ và phát triển phần mềm",
+  icons: {
+    icon: "https://github.com/favicon.ico",
+  },
   generator: "v0.dev",
 };
 

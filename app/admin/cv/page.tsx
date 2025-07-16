@@ -1,13 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button, Upload, message, Modal, theme, Popconfirm } from "antd";
-import {
-  UploadOutlined,
-  FileTextOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
+import { Button, Upload, message, theme, Popconfirm } from "antd";
 import { RcFile } from "antd/es/upload";
 import {
   callDeleteCV,
@@ -15,7 +9,7 @@ import {
   callUploadCV,
   ICV,
 } from "@/lib/api-services";
-import { Eye, Trash2 } from "lucide-react";
+import { Eye, Trash2, UploadIcon } from "lucide-react";
 
 export default function AdminCVPage() {
   const [cv, setCV] = useState<ICV | null>(null);
@@ -70,7 +64,6 @@ export default function AdminCVPage() {
         {cv ? (
           <div className="space-y-4">
             <p className="text-lg font-medium">
-              <FileTextOutlined className="mr-2" />
               Tệp hiện tại:{" "}
               <span className="text-blue-600 dark:text-blue-400">
                 {cv.fileName}
@@ -79,7 +72,7 @@ export default function AdminCVPage() {
 
             <div className="flex gap-4 flex-wrap">
               <a
-                href={cv.fileUrl}
+                href={`${process.env.NEXT_PUBLIC_API_URL}/${cv.fileUrl}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md transition"
@@ -89,6 +82,7 @@ export default function AdminCVPage() {
               </a>
 
               <Popconfirm
+                className="hover:bg-red-500 hover:text-white"
                 title="Xoá CV"
                 description="Bạn có chắc chắn muốn xoá CV này không?"
                 onConfirm={async () => {
@@ -105,8 +99,8 @@ export default function AdminCVPage() {
                 cancelText="Huỷ"
               >
                 <Button
-                  size="small"
-                  className="border border-red-500 text-red-500 hover:!text-white"
+                  size="large"
+                  className="border border-red-500 text-red-500 hover:!text-red-500"
                   icon={<Trash2 className="w-4 h-4" />}
                 >
                   Xoá
@@ -126,7 +120,7 @@ export default function AdminCVPage() {
             showUploadList={false}
             accept=".pdf,.doc,.docx"
           >
-            <Button icon={<UploadOutlined />} loading={loading}>
+            <Button icon={<UploadIcon />} loading={loading}>
               Tải lên CV mới
             </Button>
           </Upload>

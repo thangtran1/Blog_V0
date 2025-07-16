@@ -132,9 +132,7 @@ export default function CreatePostPage() {
         </div>
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-          {/* Main Content */}
           <div className="xl:col-span-2 space-y-6">
-            {/* Basic Info */}
             <Card className="shadow-sm border-gray-200 dark:border-gray-700">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-xl">
@@ -194,7 +192,6 @@ export default function CreatePostPage() {
               </CardContent>
             </Card>
 
-            {/* Content Editor */}
             <Card className="shadow-sm border-gray-200 dark:border-gray-700">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-xl">
@@ -216,9 +213,7 @@ export default function CreatePostPage() {
             </Card>
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-6">
-            {/* Publish Settings */}
             <Card className="shadow-sm border-gray-200 dark:border-gray-700">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg">
@@ -300,7 +295,6 @@ export default function CreatePostPage() {
               </CardContent>
             </Card>
 
-            {/* isFeatured Image */}
             <Card className="shadow-sm border-gray-200 dark:border-gray-700">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg">
@@ -349,7 +343,6 @@ export default function CreatePostPage() {
                           </p>
                         </div>
 
-                        {/* Input để nhập link ảnh */}
                         <input
                           type="text"
                           placeholder="Dán link ảnh vào đây..."

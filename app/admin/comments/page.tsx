@@ -1,13 +1,40 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Search, MoreHorizontal, Check, X, Eye, MessageSquare, Clock, AlertCircle } from "lucide-react"
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Search,
+  MoreHorizontal,
+  Check,
+  X,
+  Eye,
+  MessageSquare,
+  Clock,
+  AlertCircle,
+} from "lucide-react";
 
 const comments = [
   {
@@ -50,54 +77,65 @@ const comments = [
     createdAt: "2025-01-05T14:45:00Z",
     likes: 0,
   },
-]
+];
 
 export default function AdminCommentsPage() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [statusFilter, setStatusFilter] = useState("all")
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   const filteredComments = comments.filter((comment) => {
     const matchesSearch =
       comment.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      comment.author.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesStatus = statusFilter === "all" || comment.status === statusFilter
-    return matchesSearch && matchesStatus
-  })
+      comment.author.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || comment.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
 
   const handleApprove = (commentId: number) => {
-    console.log("Approve comment:", commentId)
-    alert("Đã duyệt comment!")
-  }
+    console.log("Approve comment:", commentId);
+    alert("Đã duyệt comment!");
+  };
 
   const handleReject = (commentId: number) => {
-    console.log("Reject comment:", commentId)
-    alert("Đã từ chối comment!")
-  }
+    console.log("Reject comment:", commentId);
+    alert("Đã từ chối comment!");
+  };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "approved":
-        return <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Đã duyệt</Badge>
+        return (
+          <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+            Đã duyệt
+          </Badge>
+        );
       case "pending":
         return (
-          <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">Chờ duyệt</Badge>
-        )
+          <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+            Chờ duyệt
+          </Badge>
+        );
       case "rejected":
-        return <Badge className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">Từ chối</Badge>
+        return (
+          <Badge className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+            Từ chối
+          </Badge>
+        );
       default:
-        return <Badge variant="secondary">{status}</Badge>
+        return <Badge variant="secondary">{status}</Badge>;
     }
-  }
+  };
 
   return (
     <div className="space-y-6 animate-fade-in-up">
-      {/* Header */}
       <div>
         <h1 className="text-3xl font-bold">Quản lý Comments</h1>
-        <p className="text-muted-foreground mt-2">Duyệt và quản lý bình luận từ người dùng</p>
+        <p className="text-muted-foreground mt-2">
+          Duyệt và quản lý bình luận từ người dùng
+        </p>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card className="animate-fade-in-up stagger-1">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -115,7 +153,9 @@ export default function AdminCommentsPage() {
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{comments.filter((c) => c.status === "pending").length}</div>
+            <div className="text-2xl font-bold">
+              {comments.filter((c) => c.status === "pending").length}
+            </div>
             <p className="text-xs text-muted-foreground">Cần xem xét</p>
           </CardContent>
         </Card>
@@ -125,7 +165,9 @@ export default function AdminCommentsPage() {
             <Check className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{comments.filter((c) => c.status === "approved").length}</div>
+            <div className="text-2xl font-bold">
+              {comments.filter((c) => c.status === "approved").length}
+            </div>
             <p className="text-xs text-muted-foreground">Hiển thị công khai</p>
           </CardContent>
         </Card>
@@ -135,13 +177,14 @@ export default function AdminCommentsPage() {
             <AlertCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{comments.filter((c) => c.status === "rejected").length}</div>
+            <div className="text-2xl font-bold">
+              {comments.filter((c) => c.status === "rejected").length}
+            </div>
             <p className="text-xs text-muted-foreground">Spam/Vi phạm</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Filters */}
       <Card>
         <CardHeader>
           <CardTitle>Bộ lọc</CardTitle>
@@ -171,7 +214,6 @@ export default function AdminCommentsPage() {
         </CardContent>
       </Card>
 
-      {/* Comments Table */}
       <Card>
         <CardHeader>
           <CardTitle>Danh sách comments ({filteredComments.length})</CardTitle>
@@ -196,14 +238,18 @@ export default function AdminCommentsPage() {
                     <div className="max-w-md">
                       <p className="line-clamp-2 text-sm">{comment.content}</p>
                       {comment.likes > 0 && (
-                        <p className="text-xs text-muted-foreground mt-1">❤️ {comment.likes} likes</p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          ❤️ {comment.likes} likes
+                        </p>
                       )}
                     </div>
                   </TableCell>
                   <TableCell>
                     <div>
                       <p className="font-medium text-sm">{comment.author}</p>
-                      <p className="text-xs text-muted-foreground">{comment.email}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {comment.email}
+                      </p>
                     </div>
                   </TableCell>
                   <TableCell>
@@ -213,7 +259,9 @@ export default function AdminCommentsPage() {
                   </TableCell>
                   <TableCell>{getStatusBadge(comment.status)}</TableCell>
                   <TableCell>
-                    <p className="text-sm">{new Date(comment.createdAt).toLocaleDateString("vi-VN")}</p>
+                    <p className="text-sm">
+                      {new Date(comment.createdAt).toLocaleDateString("vi-VN")}
+                    </p>
                     <p className="text-xs text-muted-foreground">
                       {new Date(comment.createdAt).toLocaleTimeString("vi-VN")}
                     </p>
@@ -232,18 +280,27 @@ export default function AdminCommentsPage() {
                         </DropdownMenuItem>
                         {comment.status === "pending" && (
                           <>
-                            <DropdownMenuItem onClick={() => handleApprove(comment.id)} className="text-green-600">
+                            <DropdownMenuItem
+                              onClick={() => handleApprove(comment.id)}
+                              className="text-green-600"
+                            >
                               <Check className="w-4 h-4 mr-2" />
                               Duyệt
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleReject(comment.id)} className="text-red-600">
+                            <DropdownMenuItem
+                              onClick={() => handleReject(comment.id)}
+                              className="text-red-600"
+                            >
                               <X className="w-4 h-4 mr-2" />
                               Từ chối
                             </DropdownMenuItem>
                           </>
                         )}
                         {comment.status === "approved" && (
-                          <DropdownMenuItem onClick={() => handleReject(comment.id)} className="text-red-600">
+                          <DropdownMenuItem
+                            onClick={() => handleReject(comment.id)}
+                            className="text-red-600"
+                          >
                             <X className="w-4 h-4 mr-2" />
                             Ẩn comment
                           </DropdownMenuItem>
@@ -258,5 +315,5 @@ export default function AdminCommentsPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

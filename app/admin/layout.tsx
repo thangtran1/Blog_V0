@@ -22,16 +22,14 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
     }
   }, [isAuthenticated, isLoading, pathname, router]);
 
-  // Close sidebar on route change (mobile)
   useEffect(() => {
     setSidebarOpen(false);
   }, [pathname]);
 
-  // Handle responsive behavior
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
-        setSidebarOpen(false); // Close mobile sidebar on desktop
+        setSidebarOpen(false);
       }
     };
 
@@ -39,14 +37,12 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Show login page
   if (pathname === "/admin/login") {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">{children}</div>
     );
   }
 
-  // Show loading
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
@@ -58,7 +54,6 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
     );
   }
 
-  // Show admin panel if authenticated
   if (isAuthenticated) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -67,7 +62,6 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
           onClose={() => setSidebarOpen(false)}
         />
 
-        {/* Main Content */}
         <div className="lg:ml-64 transition-all duration-300">
           <AdminHeader onMenuClick={() => setSidebarOpen(true)} />
           <main className="p-4 lg:p-6">

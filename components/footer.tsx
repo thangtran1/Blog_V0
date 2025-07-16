@@ -23,7 +23,6 @@ export default function Footer() {
         <div
           className={`grid ${maxWidth}  mx-auto grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8`}
         >
-          {/* Brand */}
           <div className="space-y-4  sm:col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center space-x-2">
               <Code className="h-6 w-6 text-green-500" />
@@ -57,7 +56,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div className="space-y-4">
             <h3 className="font-semibold text-foreground text-base">
               Liên kết nhanh
@@ -98,7 +96,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Categories */}
           <div className="space-y-4">
             <h3 className="font-semibold text-foreground text-base">
               Danh mục
@@ -117,7 +114,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Newsletter */}
           <div className="space-y-4 sm:col-span-2 lg:col-span-1">
             <h3 className="font-semibold text-foreground text-base">
               Theo dõi blog
@@ -140,7 +136,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom section */}
         <div className="border-t mt-5"></div>
         <div
           className={`${maxWidth} mx-auto mt-2 pt-4 sm:px-0 flex flex-col space-y-4 md:flex-row md:justify-between md:items-center md:space-y-0`}

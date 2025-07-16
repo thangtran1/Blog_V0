@@ -67,7 +67,6 @@ export default function ConnectTab() {
 
     try {
       if (editingItem._id) {
-        // Cập nhật
         const res = await callUpdateConnect(editingItem._id, editingItem);
         setConnectData((prev) =>
           prev.map((c) => (c._id === editingItem._id ? res.data : c))

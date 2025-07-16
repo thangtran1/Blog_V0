@@ -35,7 +35,6 @@ import {
 } from "@/lib/api-services";
 import { useEffect, useState } from "react";
 import { Button } from "antd";
-import { formatDateVN } from "@/lib/utils";
 
 const iconGradients = [
   "from-amber-500 to-orange-600",
@@ -61,68 +60,30 @@ export default function AboutPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAll = async () => {
       try {
-        const res = await callFetchAboutAuthor();
-        setAbout(res.data);
+        const [aboutRes, skillsRes, lifeRes, expensiveRes, connectRes] =
+          await Promise.all([
+            callFetchAboutAuthor(),
+            callFetchSkillsAuthor(),
+            callFetchLifeAuthor(),
+            callFetchExpensiveAuthor(),
+            callFetchConnectAuthor(),
+          ]);
+
+        setAbout(aboutRes.data);
+        setSkills(skillsRes.data);
+        setLifes(lifeRes.data);
+        setExpensive(expensiveRes.data);
+        setConnect(connectRes.data);
       } catch (err) {
-        console.error(err);
+        console.error("Lỗi khi fetch dữ liệu tác giả:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await callFetchSkillsAuthor();
-        setSkills(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await callFetchLifeAuthor();
-        setLifes(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await callFetchExpensiveAuthor();
-        setExpensive(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await callFetchConnectAuthor();
-        setConnect(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchData();
+    fetchAll();
   }, []);
 
   useEffect(() => {
@@ -145,7 +106,9 @@ export default function AboutPage() {
     if (!cv?.fileUrl) return;
 
     try {
-      const response = await fetch(cv.fileUrl);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/${cv.fileUrl}`
+      );
       if (!response.ok) throw new Error("Không tải được file");
 
       const blob = await response.blob();
@@ -179,13 +142,11 @@ export default function AboutPage() {
     <div className="min-h-screen bg-background">
       <div className="py-12 px-4">
         <div className={`${maxWidth} mx-auto `}>
-          {/* Hero Section */}
           <div className="text-center mb-16">
             <div className="flex flex-col md:flex-row justify-center items-center">
               <div className="relative inline-block mb-8 md:mb-0">
                 <div className="w-40 h-40 bg-gradient-to-br from-green-500 to-green-600 rounded-full mx-auto flex items-center justify-center shadow-2xl relative overflow-hidden">
                   <span className="text-5xl font-bold text-white">CE</span>
-                  {/* Animated border */}
                   <div className="absolute inset-0 rounded-full border-4 border-green-400/30 animate-pulse"></div>
                   <div className="absolute inset-2 rounded-full border-2 border-green-300/20 animate-ping"></div>
                 </div>
@@ -247,7 +208,6 @@ export default function AboutPage() {
             </CardContent>
           </Card>
 
-          {/* Skills Section */}
           <Card className="mb-12 border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-card to-muted/50 shadow-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-2xl">
@@ -320,7 +280,6 @@ export default function AboutPage() {
             </CardContent>
           </Card>
 
-          {/* Lifestyle Section */}
           <Card className="mb-12 border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-card to-muted/50 shadow-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-2xl">
@@ -369,7 +328,6 @@ export default function AboutPage() {
             </CardContent>
           </Card>
 
-          {/* Experience Section */}
           <Card className="mb-12 border border-green-200 dark:border-green-800 bg-gradient-to-br from-white via-green-50 to-white/80 dark:from-[#0f172a] dark:via-[#1e293b] dark:to-[#0f172a] shadow-2xl transition-all duration-300">
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-2xl text-foreground">
@@ -425,7 +383,6 @@ export default function AboutPage() {
             </CardContent>
           </Card>
 
-          {/* Contact Section */}
           <Card className="border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-card to-muted/50 shadow-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-2xl">

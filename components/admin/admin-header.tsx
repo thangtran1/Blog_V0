@@ -30,9 +30,7 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
 
   return (
     <header className="h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 lg:px-6 flex items-center justify-between">
-      {/* Left Section */}
       <div className="flex items-center gap-4">
-        {/* Mobile Menu Button */}
         <Button
           variant="ghost"
           size="icon"
@@ -42,7 +40,6 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
           <Menu className="w-5 h-5" />
         </Button>
 
-        {/* Search - Hidden on mobile */}
         <div className="hidden md:flex items-center gap-4 flex-1 max-w-md">
           <div className="relative w-full">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -54,14 +51,11 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
         </div>
       </div>
 
-      {/* Right Section */}
       <div className="flex items-center gap-2 lg:gap-3">
-        {/* Mobile Search Button */}
         <Button variant="ghost" size="icon" className="md:hidden">
           <Search className="w-5 h-5" />
         </Button>
 
-        {/* Quick Create */}
         <Button
           asChild
           size="sm"
@@ -73,7 +67,6 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
           </Link>
         </Button>
 
-        {/* Mobile Quick Create */}
         <Button
           asChild
           size="icon"
@@ -84,7 +77,6 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
           </Link>
         </Button>
 
-        {/* Notifications */}
         <Button
           variant="ghost"
           size="icon"
@@ -96,7 +88,6 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
           </div>
         </Button>
 
-        {/* User Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
