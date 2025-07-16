@@ -61,7 +61,6 @@ export default function TagForm({ tag, onClose }: TagFormProps) {
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Tag data:", formData);
       alert(tag ? "Cập nhật tag thành công!" : "Tạo tag thành công!");
       onClose();
     } catch (error) {

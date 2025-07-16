@@ -82,7 +82,6 @@ export default function CreatePostPage() {
       };
 
       const response = await callCreatePost(payload);
-      console.log("Danh sách bài viết đã tạo :", response.data);
 
       router.push("/admin/posts");
     } catch (error) {

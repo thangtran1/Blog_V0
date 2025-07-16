@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
-console.log("🚀 ~ NEXT_PUBLIC_API_URL TEST:", NEXT_PUBLIC_API_URL);
 // Axios instance configuration
 const apiClient = axios.create({
   baseURL: NEXT_PUBLIC_API_URL,
