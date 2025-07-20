@@ -870,27 +870,34 @@ html {
 
 /* Code block cho UI markdown */
 .prose pre {
-  background-color: #121212; /* nền tối rất đậm */
-  color: #e0e0ff; /* chữ sáng, màu tím nhẹ */
+  background-color: #121212;
+  color: #e0e0ff;
   padding: 1rem 1.5rem;
   border-radius: 0.6rem;
-  overflow-x: auto;
+  overflow-x: auto; /* cho phép scroll ngang khi cần */
+  max-width: 100%; /* không vượt quá container cha */
+  white-space: pre-wrap; /* cho phép xuống dòng khi cần */
+  word-break: break-word; /* xuống dòng khi từ quá dài */
   font-family: "Fira Code", monospace;
   font-size: 1rem;
   box-shadow: 0 0 12px rgb(130 130 255 / 0.5);
   margin: 1.75rem 0;
 }
 
-/* Inline code */
 .prose code {
-  background-color: #c7d2fe; /* nền xanh nhẹ hơn */
-  color: #1e40af; /* chữ xanh đậm */
+  background-color: #c7d2fe;
+  color: #1e40af;
   padding: 0.2rem 0.4rem;
   border-radius: 0.35rem;
   font-family: "Fira Code", monospace;
   font-size: 0.9rem;
   font-weight: 600;
   box-shadow: 0 0 5px rgb(147 197 253 / 0.4);
+
+  white-space: pre-wrap; /* xuống dòng nếu code inline quá dài */
+  word-break: break-word; /* xuống dòng khi từ quá dài */
+  max-width: 100%; /* không vượt container */
+  display: inline-block; /* để max-width có hiệu lực */
 }
 
 /* Dark mode inline code */
