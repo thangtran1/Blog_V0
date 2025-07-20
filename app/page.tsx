@@ -12,7 +12,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, ArrowRight, Code, Sparkles } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  ArrowRight,
+  Code,
+  Sparkles,
+  Heart,
+} from "lucide-react";
 import TrendingCarousel from "@/components/trending-carousel";
 import {
   titleName,
@@ -23,16 +30,28 @@ import {
 } from "../styles/classNames";
 import {
   callFetchCategories,
+  callFetchLikedCategories,
   callFetchRecentPosts,
+  callLike,
+  callUnlike,
   ICategory,
   IPost,
 } from "@/lib/api-services";
-import { formatDateVN } from "@/lib/utils";
+import { formatDateVN, getVisitorId } from "@/lib/utils";
+import toast from "react-hot-toast";
 
 export default function HomePage() {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [recentPosts, setRecentPosts] = useState<IPost[]>([]);
   const [loadingRecent, setLoadingRecent] = useState(true);
+
+  const [visitorId, setVisitorId] = useState<string>("");
+
+  useEffect(() => {
+    const id = localStorage.getItem("visitorId") || crypto.randomUUID();
+    localStorage.setItem("visitorId", id);
+    setVisitorId(id);
+  }, []);
 
   const [sectionsVisible, setSectionsVisible] = useState({
     hero: false,
@@ -69,33 +88,152 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    if (!visitorId) return;
+
     const fetchCategories = async () => {
       try {
-        const res = await callFetchCategories();
-        const sortedByPostCount = res.data
+        const [res, likedRes] = await Promise.all([
+          callFetchCategories(),
+          callFetchLikedCategories(visitorId),
+        ]);
+
+        const likedIds = likedRes.data;
+
+        const sorted = res.data
           .sort((a, b) => (b.totalPost || 0) - (a.totalPost || 0))
           .slice(0, 4);
 
-        setCategories(sortedByPostCount);
+        const withLikeState = sorted.map((cat) => ({
+          ...cat,
+          liked: likedIds.includes(cat._id),
+          likes: cat.totalLike ?? 0,
+        }));
+
+        setCategories(withLikeState);
       } catch (err) {
-        console.error("Lỗi fetch categories:", err);
+        console.error("Lỗi fetch categories hoặc liked:", err);
       }
     };
 
     fetchCategories();
-  }, []);
+  }, [visitorId]);
 
   useEffect(() => {
-    setLoadingRecent(true);
-    callFetchRecentPosts()
-      .then((res) => {
-        setRecentPosts(res.data.slice(0, 3));
-      })
-      .catch(() => {
+    if (!visitorId) return;
+
+    const fetchRecent = async () => {
+      setLoadingRecent(true);
+      try {
+        const [res, likedRes] = await Promise.all([
+          callFetchRecentPosts(),
+          callFetchLikedCategories(visitorId), // 👈 gọi API lấy post đã like
+        ]);
+
+        const likedPostIds = likedRes.data;
+
+        const withLikeState = res.data.slice(0, 3).map((post) => ({
+          ...post,
+          liked: likedPostIds.includes(post._id),
+          totalLike: post.totalLike ?? 0,
+        }));
+
+        setRecentPosts(withLikeState);
+      } catch (err) {
+        console.error("Lỗi fetch bài viết hoặc liked:", err);
         setRecentPosts([]);
-      })
-      .finally(() => setLoadingRecent(false));
-  }, []);
+      } finally {
+        setLoadingRecent(false);
+      }
+    };
+
+    fetchRecent();
+  }, [visitorId]);
+
+  const handleLikeCategories = async (categoryId: string) => {
+    try {
+      const updatedCategories = await Promise.all(
+        categories.map(async (cat) => {
+          if (cat._id === categoryId) {
+            const isLiked = cat.liked ?? false;
+
+            try {
+              if (isLiked) {
+                await callUnlike({
+                  visitorId,
+                  targetId: categoryId,
+                  type: "category",
+                });
+                toast.success("Đã bỏ tym thành công ❤️‍🔥");
+              } else {
+                await callLike({
+                  visitorId,
+                  targetId: categoryId,
+                  type: "category",
+                });
+                toast.success("Đã tym bài viết thành công 💖");
+              }
+            } catch (err) {
+              console.error("Gọi API like/unlike thất bại", err);
+            }
+
+            return {
+              ...cat,
+              liked: !isLiked,
+              totalLike: cat.totalLike + (isLiked ? -1 : 1),
+            };
+          }
+          return cat;
+        })
+      );
+
+      setCategories(updatedCategories);
+    } catch (err) {
+      console.error("Lỗi xử lý like:", err);
+    }
+  };
+
+  const handleLikePost = async (postId: string) => {
+    try {
+      const updatedPosts = await Promise.all(
+        recentPosts.map(async (post) => {
+          if (post._id === postId) {
+            const isLiked = post.liked ?? false;
+
+            try {
+              if (isLiked) {
+                await callUnlike({
+                  visitorId,
+                  targetId: postId,
+                  type: "post",
+                });
+                toast.success("Đã bỏ tym bài viết thành công ❤️‍🔥");
+              } else {
+                await callLike({
+                  visitorId,
+                  targetId: postId,
+                  type: "post",
+                });
+                toast.success("Đã tym bài viết thành công 💖");
+              }
+            } catch (err) {
+              console.error("Gọi API like/unlike thất bại", err);
+            }
+
+            return {
+              ...post,
+              liked: !isLiked,
+              totalLike: post.totalLike + (isLiked ? -1 : 1),
+            };
+          }
+          return post;
+        })
+      );
+
+      setRecentPosts(updatedPosts);
+    } catch (err) {
+      console.error("Lỗi xử lý like bài viết:", err);
+    }
+  };
 
   return (
     <div className="flex flex-col px-4 min-h-screen">
@@ -195,10 +333,14 @@ export default function HomePage() {
                           <CardTitle className="text-xl group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors mb-2">
                             {category.name}
                           </CardTitle>
-                          <div className="flex items-center gap-2">
-                            <Badge variant="secondary" className="text-xs">
+
+                          <div className="flex items-center gap-1">
+                            <Badge variant="destructive" className="text-xs">
                               {category.posts ? category.posts.length : 0} bài
                               viết
+                            </Badge>
+                            <Badge variant="destructive" className="text-xs">
+                              {category.totalLike} lượt thích
                             </Badge>
                           </div>
                         </div>
@@ -210,12 +352,31 @@ export default function HomePage() {
                         {category.description}
                       </CardDescription>
 
-                      <Button asChild className="w-full px-2 group mt-auto">
-                        <Link href={`/categories/${category.slug}`}>
-                          Khám phá {category.name}
-                          <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                      </Button>
+                      <div className="flex gap-4">
+                        <Button asChild className="w-full mt-auto">
+                          <Link href={`/categories/${category.slug}`}>
+                            Khám phá {category.name}
+                            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                          </Link>
+                        </Button>
+
+                        <div
+                          key={category._id}
+                          className="relative px-3 py-2 flex justify-center items-center border border-red-400 rounded-lg bg-transparent group"
+                        >
+                          <Heart
+                            className={`w-5 h-5 cursor-pointer transition-transform group-hover:scale-125 ${
+                              category.liked
+                                ? "fill-red-500 text-red-500"
+                                : "text-red-500"
+                            }`}
+                            onClick={() => handleLikeCategories(category._id)}
+                          />
+                          <span className="absolute text-[10px] font-semibold text-white bg-red-500 rounded-full w-6 h-6 flex items-center justify-center -top-2 -right-2 shadow-md">
+                            {category.totalLike}
+                          </span>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
                 </div>
@@ -241,8 +402,6 @@ export default function HomePage() {
       {/* Latest Posts Section */}
       <section id="latest" className="py-12 bg-background">
         <div className="">
-          {/* <div className="absolute inset-0 bg-black/10 pointer-events-none"></div> */}
-
           <div className={`${maxWidth} mx-auto `}>
             <div
               className={`text-center mb-12 transition-all duration-1000 ${
@@ -305,16 +464,38 @@ export default function HomePage() {
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock className="w-4 h-4" />
-                            {post.readingTime} phút đọc
+                            {post.readingTime < 60
+                              ? `${post.readingTime} phút đọc`
+                              : `${Math.floor(post.readingTime / 60)} giờ ${
+                                  post.readingTime % 60
+                                } phút đọc`}
                           </div>
                         </div>
                       </div>
-                      <Button asChild className="w-full group">
-                        <Link href={`/posts/${post._id}`}>
-                          Đọc tiếp
-                          <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                      </Button>
+                      <div className="flex gap-4">
+                        <Button asChild className="w-full group">
+                          <Link href={`/posts/${post._id}`}>
+                            Đọc tiếp
+                            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                          </Link>
+                        </Button>
+                        <div
+                          key={post._id}
+                          className="relative px-3 py-2 flex justify-center items-center border border-red-400 rounded-lg bg-transparent group"
+                        >
+                          <Heart
+                            className={`w-5 h-5 cursor-pointer transition-transform group-hover:scale-125 ${
+                              post.liked
+                                ? "fill-red-500 text-red-500"
+                                : "text-red-500"
+                            }`}
+                            onClick={() => handleLikePost(post._id)}
+                          />
+                          <span className="absolute text-[10px] font-semibold text-white bg-red-500 rounded-full w-6 h-6 flex items-center justify-center -top-2 -right-2 shadow-md">
+                            {post.totalLike}
+                          </span>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
                 </div>

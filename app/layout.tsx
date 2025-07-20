@@ -10,6 +10,7 @@ import ScrollToTop from "@/components/scroll-to-top";
 import ScrollToTopNavigation from "@/components/scroll-to-top-navigation";
 import PageTransition from "@/components/page-transition";
 import { titleName } from "../styles/classNames";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,6 +38,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Toaster position="top-right" />
           <ScrollProgress />
           <ScrollToTopNavigation />
           <EnhancedHeader />

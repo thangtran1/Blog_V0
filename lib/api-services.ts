@@ -44,7 +44,8 @@ export interface IPost {
   readingTime: number;
   image: string;
   views: number;
-  likes: number;
+  liked?: boolean;
+  totalLike: number;
   createdAt: string;
   updatedAt: string;
   __v: number;
@@ -54,6 +55,7 @@ export interface ISubCategory {
   _id: string;
   title: string;
   category: string | ICategory;
+  liked: boolean | number;
 }
 
 export interface ICategory {
@@ -65,7 +67,9 @@ export interface ICategory {
   content: string;
   slug?: string;
   posts?: ISubCategory[];
+  liked?: boolean;
   totalPost: number;
+  totalLike: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -78,6 +82,8 @@ export interface IAllPost {
   introduction: string;
   content?: string;
   readingTime: number;
+  totalLike: number;
+  liked: number;
   category: ICategory;
   createdAt: string;
   updatedAt: string;
@@ -92,7 +98,7 @@ export interface IPostByCategory {
   content?: string;
   image?: string;
   category: ICategory;
-  readingTime?: number;
+  readingTime: number;
   createdAt: string;
   updatedAt?: string;
   __v?: number;
@@ -145,6 +151,12 @@ export interface IConnectMe {
   image: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface ILikePayload {
+  visitorId: string;
+  targetId: string;
+  type: "post" | "category";
 }
 
 export interface ICV {
@@ -297,5 +309,19 @@ export const callDeleteCV = (id: string) => {
 export const callUploadCV = (formData: FormData) => {
   return apiClient.post<ICV>("/cv", formData, {
     headers: { "Content-Type": "multipart/form-data" },
+  });
+};
+
+export const callLike = (payload: ILikePayload) => {
+  return apiClient.post("/likes", payload);
+};
+
+export const callUnlike = (payload: ILikePayload) => {
+  return apiClient.delete("/likes", { data: payload });
+};
+
+export const callFetchLikedCategories = (visitorId: string) => {
+  return apiClient.get<string[]>("/likes", {
+    params: { visitorId },
   });
 };

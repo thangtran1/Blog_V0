@@ -109,7 +109,7 @@ export default function EditPostForm({
                   handleInputChange("introduction", e.target.value)
                 }
                 placeholder="Tóm tắt sơ lược về bài viết này..."
-                rows={4}
+                rows={6}
               />
             </div>
             <div className="space-y-2">

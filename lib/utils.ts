@@ -12,3 +12,15 @@ export function formatDateVN(dateStr: string) {
   const year = date.getFullYear();
   return `${day} tháng ${month}, ${year}`;
 }
+
+export const getVisitorId = (): string => {
+  const key = "visitorId";
+
+  let id = localStorage.getItem(key);
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem(key, id);
+  }
+
+  return id;
+};

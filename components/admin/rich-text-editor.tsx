@@ -125,7 +125,7 @@ export default function RichTextEditor({
   ];
 
   return (
-    <div className="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden bg-white dark:bg-gray-800">
+    <div className="border w-[325px] md:w-full border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden bg-white dark:bg-gray-800">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-4 py-3">
           <TabsList className="h-9 bg-white dark:bg-gray-700">
@@ -149,6 +149,7 @@ export default function RichTextEditor({
             <div className="flex items-center gap-1">
               {toolbarButtons.map((button, index) => (
                 <Button
+                  type="button"
                   key={index}
                   variant="ghost"
                   size="sm"
@@ -179,7 +180,7 @@ export default function RichTextEditor({
         </TabsContent>
 
         <TabsContent value="preview" className="m-0">
-          <div className="min-h-[500px] p-6">
+          <div className="min-h-[500px] px-4">
             {value ? (
               <div className="prose prose-lg max-w-none dark:prose-invert">
                 <ReactMarkdown

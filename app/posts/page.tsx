@@ -18,12 +18,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Calendar, Clock, Search, Filter } from "lucide-react";
+import { Calendar, Clock, Search, Filter, Heart } from "lucide-react";
 import { maxWidth, textDefault } from "@/styles/classNames";
 import {
   callFetchCategories,
+  callFetchLikedCategories,
   callFetchPostAuthor,
   callFetchRecentPosts,
+  callLike,
+  callUnlike,
   IAllPost,
   ICategory,
   IPost,
@@ -32,6 +35,7 @@ import { useEffect, useState } from "react";
 import { formatDateVN } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
+import toast from "react-hot-toast";
 
 export default function PostsPage() {
   const [recentPosts, setRecentPosts] = useState<IPost[]>([]);
@@ -41,6 +45,13 @@ export default function PostsPage() {
   const [filteredPosts, setFilteredPosts] = useState<IAllPost[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [visitorId, setVisitorId] = useState<string>("");
+
+  useEffect(() => {
+    const id = localStorage.getItem("visitorId") || crypto.randomUUID();
+    localStorage.setItem("visitorId", id);
+    setVisitorId(id);
+  }, []);
 
   useEffect(() => {
     setLoadingRecent(true);
@@ -55,18 +66,34 @@ export default function PostsPage() {
   }, []);
 
   useEffect(() => {
+    if (!visitorId) return;
+
     const fetchData = async () => {
-      const [postRes, catRes] = await Promise.all([
-        callFetchPostAuthor(),
-        callFetchCategories(),
-      ]);
-      setAllPosts(postRes.data);
-      setFilteredPosts(postRes.data);
-      setCategories(catRes.data);
+      try {
+        const [postRes, catRes, likedRes] = await Promise.all([
+          callFetchPostAuthor(),
+          callFetchCategories(),
+          callFetchLikedCategories(visitorId), // 👈 thêm API này
+        ]);
+
+        const likedPostIds = likedRes.data; // mảng ID đã tym
+
+        const postsWithLike = postRes.data.map((post: IAllPost) => ({
+          ...post,
+          liked: likedPostIds.includes(post._id) ? 1 : 0,
+          totalLike: post.totalLike ?? 0,
+        }));
+
+        setAllPosts(postsWithLike);
+        setFilteredPosts(postsWithLike);
+        setCategories(catRes.data);
+      } catch (err) {
+        console.error("Lỗi fetch post/cat/liked:", err);
+      }
     };
 
-    fetchData().catch(console.error);
-  }, []);
+    fetchData();
+  }, [visitorId]);
 
   useEffect(() => {
     let filtered = allPosts;
@@ -87,6 +114,50 @@ export default function PostsPage() {
   }, [allPosts, selectedCategory, searchTerm]);
   const pathname = usePathname();
   const currentId = pathname?.split("/").pop();
+
+  const handleLikePost = async (postId: string) => {
+    try {
+      const updatedPosts = await Promise.all(
+        filteredPosts.map(async (post) => {
+          if (post._id === postId) {
+            const isLiked = post.liked ?? false;
+
+            try {
+              if (isLiked) {
+                await callUnlike({
+                  visitorId,
+                  targetId: postId,
+                  type: "post",
+                });
+                toast.success("Đã bỏ tym bài viết thành công ❤️‍🔥");
+              } else {
+                await callLike({
+                  visitorId,
+                  targetId: postId,
+                  type: "post",
+                });
+                toast.success("Đã tym bài viết thành công 💖");
+              }
+            } catch (err) {
+              console.error("Gọi API like/unlike thất bại", err);
+            }
+
+            return {
+              ...post,
+              liked: isLiked ? 0 : 1,
+              totalLike: post.totalLike + (isLiked ? -1 : 1),
+            };
+          }
+          return post;
+        })
+      );
+
+      setFilteredPosts(updatedPosts);
+    } catch (err) {
+      console.error("Lỗi xử lý like bài viết:", err);
+    }
+  };
+
   return (
     <div className="px-4 py-8">
       <div className={`${maxWidth} mx-auto `}>
@@ -246,6 +317,23 @@ export default function PostsPage() {
                                 post.readingTime % 60
                               } phút đọc`}
                         </div>
+                      </div>
+                      <div
+                        key={post._id}
+                        className="relative px-3 py-2 flex justify-center items-center border border-red-400 rounded-lg bg-transparent group"
+                      >
+                        <Heart
+                          className={`w-5 h-5 cursor-pointer transition-transform group-hover:scale-125 ${
+                            post.liked
+                              ? "text-red-500 fill-current"
+                              : "text-red-500"
+                          }`}
+                          fill={post.liked ? "currentColor" : "none"}
+                          onClick={() => handleLikePost(post._id)}
+                        />
+                        <span className="absolute text-[10px] font-semibold text-white bg-red-500 rounded-full w-6 h-6 flex items-center justify-center -top-2 -right-2 shadow-md">
+                          {post.totalLike}
+                        </span>
                       </div>
                     </div>
                   </CardContent>

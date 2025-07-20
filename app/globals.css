@@ -885,8 +885,8 @@ html {
 }
 
 .prose code {
-  background-color: #c7d2fe;
-  color: #1e40af;
+  background-color: #d4daf1; /* nền xanh nhẹ hơn */
+  color: #959ebc; /* chữ xanh đậm */
   padding: 0.2rem 0.4rem;
   border-radius: 0.35rem;
   font-family: "Fira Code", monospace;
@@ -902,7 +902,7 @@ html {
 
 /* Dark mode inline code */
 .dark .prose code {
-  background-color: #374151; /* nền xám đậm */
+  background-color: #23344f; /* nền xám đậm */
   color: #a5b4fc; /* chữ tím nhạt */
   box-shadow: 0 0 8px rgb(165 180 252 / 0.6);
 }

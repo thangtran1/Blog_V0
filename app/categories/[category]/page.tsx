@@ -135,7 +135,11 @@ export default function CategoryPage({
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="w-4 h-4" />
-                      {post.readingTime} phút đọc
+                      {post.readingTime < 60
+                        ? `${post.readingTime} phút đọc`
+                        : `${Math.floor(post.readingTime / 60)} giờ ${
+                            post.readingTime % 60
+                          } phút đọc`}
                     </div>
                   </div>
                 </div>

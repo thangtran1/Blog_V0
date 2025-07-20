@@ -9,31 +9,105 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Heart } from "lucide-react";
 import { maxWidth, textDefault } from "@/styles/classNames";
-import { callFetchCategories, ICategory } from "@/lib/api-services";
+import {
+  callFetchCategories,
+  callFetchLikedCategories,
+  callLike,
+  callUnlike,
+  ICategory,
+} from "@/lib/api-services";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<ICategory[]>([]);
+  const [visitorId, setVisitorId] = useState<string>("");
 
   useEffect(() => {
+    const id = localStorage.getItem("visitorId") || crypto.randomUUID();
+    localStorage.setItem("visitorId", id);
+    setVisitorId(id);
+  }, []);
+
+  useEffect(() => {
+    if (!visitorId) return;
+
     const fetchCategories = async () => {
       try {
-        const res = await callFetchCategories();
-        setCategories(res.data);
+        const [res, likedRes] = await Promise.all([
+          callFetchCategories(),
+          callFetchLikedCategories(visitorId),
+        ]);
+
+        const likedIds = likedRes.data;
+        const sorted = res.data.sort(
+          (a, b) => (b.totalPost || 0) - (a.totalPost || 0)
+        );
+
+        const withLikeState = sorted.map((cat) => ({
+          ...cat,
+          liked: likedIds.includes(cat._id),
+          likes: cat.totalLike ?? 0,
+        }));
+
+        setCategories(withLikeState);
       } catch (err) {
-        console.error("Lỗi fetch categories:", err);
+        console.error("Lỗi fetch categories hoặc liked:", err);
       }
     };
 
     fetchCategories();
-  }, []);
+  }, [visitorId]);
 
   const totalPosts = categories.reduce(
     (sum, cat) => sum + (cat.posts ? cat.posts.length : 0),
     0
   );
+
+  const handleLike = async (categoryId: string) => {
+    try {
+      const updatedCategories = await Promise.all(
+        categories.map(async (cat) => {
+          if (cat._id === categoryId) {
+            const isLiked = cat.liked ?? false;
+
+            try {
+              if (isLiked) {
+                await callUnlike({
+                  visitorId,
+                  targetId: categoryId,
+                  type: "category",
+                });
+                toast.success("Đã bỏ tym thành công ❤️‍🔥");
+              } else {
+                await callLike({
+                  visitorId,
+                  targetId: categoryId,
+                  type: "category",
+                });
+                toast.success("Đã tym bài viết thành công 💖");
+              }
+            } catch (err) {
+              console.error("Gọi API like/unlike thất bại", err);
+            }
+
+            return {
+              ...cat,
+              liked: !isLiked,
+              totalLike: cat.totalLike + (isLiked ? -1 : 1),
+            };
+          }
+          return cat;
+        })
+      );
+
+      setCategories(updatedCategories);
+    } catch (err) {
+      console.error("Lỗi xử lý like:", err);
+    }
+  };
 
   return (
     <div
@@ -116,12 +190,30 @@ export default function CategoriesPage() {
                       </ul>
                     </div>
 
-                    <Button asChild className="w-full group mt-auto">
-                      <Link href={`/categories/${category.slug}`}>
-                        Khám phá {category.name}
-                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                      </Link>
-                    </Button>
+                    <div className="flex gap-4">
+                      <Button asChild className="w-full group mt-auto">
+                        <Link href={`/categories/${category.slug}`}>
+                          Khám phá {category.name}
+                          <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                      </Button>
+                      <div
+                        key={category._id}
+                        className="relative px-3 py-2 flex justify-center items-center border border-red-400 rounded-lg bg-transparent group"
+                      >
+                        <Heart
+                          className={`w-5 h-5 cursor-pointer transition-transform group-hover:scale-125 ${
+                            category.liked
+                              ? "fill-red-500 text-red-500"
+                              : "text-red-500"
+                          }`}
+                          onClick={() => handleLike(category._id)}
+                        />
+                        <span className="absolute text-[10px] font-semibold text-white bg-red-500 rounded-full w-6 h-6 flex items-center justify-center -top-2 -right-2 shadow-md">
+                          {category.totalLike}
+                        </span>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </div>

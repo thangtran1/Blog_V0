@@ -244,7 +244,9 @@ export default function AdminCategories() {
       >
         <DialogContent className="w-full max-w-2xl max-h-[90vh] overflow-y-auto p-4 rounded-lg">
           <DialogHeader>
-            <DialogTitle>Chỉnh sửa danh mục</DialogTitle>
+            <DialogTitle>
+              <div className="flex">Chỉnh sửa danh mục</div>
+            </DialogTitle>
           </DialogHeader>
           {editingCategory && (
             <CategoryForm
