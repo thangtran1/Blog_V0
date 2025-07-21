@@ -239,7 +239,7 @@ export default function HomePage() {
     <div className="flex flex-col px-4 min-h-screen">
       <section
         id="hero"
-        className={`relative px-2 rounded-lg ${bgWelcome} text-white py-10 lg:py-32 overflow-hidden`}
+        className={`relative px-2 rounded-lg ${bgWelcome} text-white py-5 md:py-5 lg:py-5 `}
       >
         <div
           className={`relative z-10 transition-all duration-1000 ${
@@ -249,7 +249,7 @@ export default function HomePage() {
           }`}
         >
           <div className="mx-auto text-center">
-            <div className="flex justify-center mb-8">
+            <div className="flex justify-center lg:mb-8 mb-4">
               <div className="relative animate-bounce-in-down">
                 <div className="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30 shadow-2xl">
                   <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-lg">
@@ -261,17 +261,17 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-green-100 bg-clip-text text-transparent animate-slide-in-up stagger-1">
+            <div className="text-4xl lg:text-6xl font-bold mb-4 leading-tight bg-gradient-to-r from-white to-green-100 bg-clip-text text-transparent animate-slide-in-up stagger-1">
               Chào mừng đến với {titleName}!
-            </h1>
-            <p className="text-xl md:text-2xl mb-4 text-green-100 animate-slide-in-up stagger-2">
+            </div>
+            <p className="text-xl md:text-2xl mb-2 text-green-100 animate-slide-in-up stagger-2">
               Nơi chia sẻ kiến thức lập trình và công nghệ
             </p>
-            <p className="text-lg mb-8 text-green-200 max-w-2xl mx-auto animate-slide-in-up stagger-3">
+            <p className="text-lg lg:mb-6 mb-4 text-green-200 max-w-2xl mx-auto animate-slide-in-up stagger-3">
               Khám phá những bài viết chất lượng về Frontend, Backend, DevOps và
               AI. Từ cơ bản đến nâng cao, từ lý thuyết đến thực hành.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-scale-in stagger-4">
+            <div className="flex flex-col sm:flex-row gap-2 justify-center animate-scale-in stagger-4">
               <Button
                 asChild
                 size="sm"

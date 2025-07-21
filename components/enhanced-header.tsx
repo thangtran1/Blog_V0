@@ -14,6 +14,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useEffect, useState } from "react";
 import { textDefault, titleName } from "@/styles/classNames";
+import Image from "next/image";
 export default function EnhancedHeader() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -68,10 +69,16 @@ export default function EnhancedHeader() {
       }`}
     >
       <div className="flex h-16 items-center px-4 justify-between w-full">
-        {/* Logo with enhanced animation */}
         <Link href="/" className="flex items-center space-x-2 mr-8 group">
           <div className="relative">
-            <Code className="h-6 w-6 text-green-500 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" />
+            {/* <Code className="h-6 w-6 text-green-500 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" /> */}
+            <Image
+              src="/icon.public-removebg.png"
+              alt="Code Icon"
+              width={24}
+              height={24}
+              className="h-6 w-6 text-green-500 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
+            />
             <div className="absolute -inset-1 bg-green-500/20 rounded-full blur animate-pulse opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
           <span className="font-bold text-green-500 text-xl transition-all duration-300 group-hover:text-green-400">
