@@ -187,7 +187,10 @@ export default function AboutPage() {
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Calendar className="w-5 h-5 text-green-500" />
-                  <span>{about?.yearsOfExperience}+ năm kinh nghiệm</span>
+                  <span>
+                    Có khả năng làm việc độc lập và phối hợp nhóm hiệu quả, đáp
+                    ứng nhanh với thay đổi và thử thách mới.
+                  </span>
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Heart className="w-5 h-5 text-red-500" />
