@@ -1,4 +1,4 @@
-export const titleName = "NoBugKai";
+export const titleName = "Thang Codes";
 
 export const maxWidth = "max-w-[5000px]";
 

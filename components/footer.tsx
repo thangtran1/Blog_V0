@@ -4,6 +4,7 @@ import { Code, Github, Linkedin, Mail, Heart, Divide } from "lucide-react";
 import { buttonDefault, maxWidth, titleName } from "@/styles/classNames";
 import { ICategory, callFetchCategories } from "@/lib/api-services";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 export default function Footer() {
   const [categories, setCategories] = useState<ICategory[]>([]);
 
@@ -25,7 +26,13 @@ export default function Footer() {
         >
           <div className="space-y-4  sm:col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center space-x-2">
-              <Code className="h-6 w-6 text-green-500" />
+              <Image
+                src="/icon.public-removebg.png"
+                alt="Code Icon"
+                width={24}
+                height={24}
+                className="h-6 w-6 text-green-500 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
+              />
               <span className="font-bold text-xl text-green-500">
                 {titleName}
               </span>
