@@ -166,17 +166,6 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <Card className="border-2 mb-12 border-green-200 dark:border-green-800 bg-gradient-to-br from-card to-muted/50 shadow-xl relative overflow-hidden">
-            <CardHeader>
-              <CardTitle className="text-2xl">Hồ sơ cá nhân</CardTitle>
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <Button onClick={handleDownload} variant="outlined">
-                <Download className="w-4 h-4 " />
-                Tải CV xuống
-              </Button>
-            </CardContent>
-          </Card>
           <Card className="mb-12 border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-card to-muted/50 shadow-xl relative overflow-hidden">
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-2xl">
