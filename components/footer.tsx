@@ -1,6 +1,14 @@
 "use client";
 import Link from "next/link";
-import { Code, Github, Linkedin, Mail, Heart, Divide } from "lucide-react";
+import {
+  Code,
+  Github,
+  Linkedin,
+  Mail,
+  Heart,
+  Divide,
+  BarChart2,
+} from "lucide-react";
 import { buttonDefault, maxWidth, titleName } from "@/styles/classNames";
 import { ICategory, callFetchCategories } from "@/lib/api-services";
 import { useState, useEffect } from "react";
@@ -26,13 +34,8 @@ export default function Footer() {
         >
           <div className="space-y-4  sm:col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center space-x-2">
-              <Image
-                src="/icon.public-removebg.png"
-                alt="Code Icon"
-                width={24}
-                height={24}
-                className="h-6 w-6 text-green-500 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
-              />
+              <BarChart2 className="w-6 h-6 text-primary" />
+
               <span className="font-bold text-xl text-green-500">
                 {titleName}
               </span>

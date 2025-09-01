@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { Moon, Sun, Code, Menu, X } from "lucide-react";
+import { Moon, Sun, Code, Menu, X, BarChart2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -72,13 +72,7 @@ export default function EnhancedHeader() {
         <Link href="/" className="flex items-center space-x-2 mr-8 group">
           <div className="relative">
             {/* <Code className="h-6 w-6 text-green-500 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" /> */}
-            <Image
-              src="/icon.public-removebg.png"
-              alt="Code Icon"
-              width={24}
-              height={24}
-              className="h-6 w-6 text-green-500 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
-            />
+            <BarChart2 className="w-6 h-6 text-primary" />
             <div className="absolute -inset-1 bg-green-500/20 rounded-full blur animate-pulse opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
           <span className="font-bold text-green-500 text-xl transition-all duration-300 group-hover:text-green-400">

@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description:
     "Blog chia sẻ kiến thức về lập trình, công nghệ và phát triển phần mềm",
   icons: {
-    icon: "/icon.public-removebg.png",
+    icon: "/icon-public.png",
   },
   generator: "v0.dev",
 };
