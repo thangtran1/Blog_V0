@@ -84,24 +84,27 @@ export default function AdminCategories() {
   };
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-            <FolderOpen className="w-6 h-6" />
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-0">
+        <div className="flex-1 min-w-0">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2 truncate">
+            <FolderOpen className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
             Quản lý danh mục
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm sm:text-base truncate">
             Tạo và quản lý danh mục cho bài viết của bạn
           </p>
         </div>
+
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
-            <Button className={bgDefault2}>
+            <Button
+              className={`${bgDefault2} w-full md:w-auto flex items-center justify-center`}
+            >
               <Plus className="w-4 h-4 mr-2" />
               Tạo danh mục mới
             </Button>
           </DialogTrigger>
-          <DialogContent className="w-full  rounded-lg md:max-w-2xl max-h-[90vh] max-w-[90%] overflow-y-auto">
+          <DialogContent className="w-full rounded-lg md:max-w-2xl max-h-[90vh] max-w-[90%] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Tạo danh mục mới</DialogTitle>
             </DialogHeader>

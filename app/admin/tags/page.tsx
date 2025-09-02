@@ -42,6 +42,7 @@ import {
   Trash2,
   Tag,
   TrendingUp,
+  Tags,
 } from "lucide-react";
 import TagForm from "@/components/admin/tag-form";
 import { buttonDefault } from "@/styles/classNames";
@@ -105,11 +106,14 @@ export default function AdminTagsPage() {
 
   return (
     <div className="space-y-6 animate-fade-in-up">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Quản lý Tags</h1>
-          <p className="text-muted-foreground mt-2">
-            Tạo, chỉnh sửa và quản lý tags bài viết
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-0">
+        <div className="flex-1 min-w-0">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2 truncate">
+            <Tags className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
+            Quản lý Tags
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm sm:text-base truncate">
+            Tạo và quản lý tags cho bài viết của bạn
           </p>
         </div>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>

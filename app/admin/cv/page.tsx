@@ -49,13 +49,13 @@ export default function AdminCVPage() {
   }, []);
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
-      <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800 dark:text-gray-100">
+    <div className="">
+      <h2 className="text-2xl font-semibold mb-3 text-gray-800 dark:text-gray-100">
         Quản lý CV
       </h2>
 
       <div
-        className="rounded-2xl shadow-lg p-6 transition-colors duration-300"
+        className="rounded-2xl border border-green-300 dark:border-green-700 shadow-lg p-6 transition-colors duration-300"
         style={{
           background: token.colorBgContainer,
           color: token.colorText,

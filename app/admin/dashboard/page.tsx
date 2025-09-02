@@ -170,8 +170,8 @@ export default function AdminDashboard() {
                     <h4 className="font-medium text-gray-900 dark:text-gray-100">
                       {post.title}
                     </h4>
-                    <div className="flex items-center gap-4 mt-1">
-                      <span className="text-sm border border-green-400 rounded-lg px-2 text-gray-500">
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="w-[140px] md:w-[160px] lg-w-[180px] line-clamp-1 md:line-clamp-none lg:line-clamp-none text-sm border border-green-400 rounded-lg w px-2 text-gray-500">
                         {post.category.name}
                       </span>
                       <span

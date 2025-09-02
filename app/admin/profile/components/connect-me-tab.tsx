@@ -105,7 +105,9 @@ export default function ConnectTab() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">Social Connections</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2 truncate">
+          Social Connections
+        </h2>
         <Button onClick={handleAdd}>
           <Plus className="w-4 h-4 mr-2" />
           Add Connection

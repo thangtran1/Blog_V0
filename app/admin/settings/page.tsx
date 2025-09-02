@@ -40,13 +40,13 @@ export default function AdminSettings() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-            <Settings className="w-6 h-6" />
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-0">
+        <div className="flex-1 min-w-0">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2 truncate">
+            <Settings className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
             Cài đặt hệ thống
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm sm:text-base truncate">
             Quản lý cấu hình và tùy chỉnh blog của bạn
           </p>
         </div>
@@ -56,27 +56,43 @@ export default function AdminSettings() {
       </div>
 
       <Tabs defaultValue="general" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="general" className="flex items-center gap-2">
+        <TabsList className="grid w-full grid-cols-5 border-b border-green-300 dark:border-green-700">
+          <TabsTrigger
+            value="general"
+            className="flex items-center gap-2 border-b-2 border-transparent data-[state=active]:border-green-600 data-[state=active]:bg-green-50 dark:data-[state=active]:bg-green-900/20 px-3 py-2 rounded-t transition-colors"
+          >
             <Globe className="w-4 h-4" />
             Chung
           </TabsTrigger>
-          <TabsTrigger value="appearance" className="flex items-center gap-2">
+
+          <TabsTrigger
+            value="appearance"
+            className="flex items-center gap-2 border-b-2 border-transparent data-[state=active]:border-green-600 data-[state=active]:bg-green-50 dark:data-[state=active]:bg-green-900/20 px-3 py-2 rounded-t transition-colors"
+          >
             <Palette className="w-4 h-4" />
             Giao diện
           </TabsTrigger>
-          <TabsTrigger value="security" className="flex items-center gap-2">
+
+          <TabsTrigger
+            value="security"
+            className="flex items-center gap-2 border-b-2 border-transparent data-[state=active]:border-green-600 data-[state=active]:bg-green-50 dark:data-[state=active]:bg-green-900/20 px-3 py-2 rounded-t transition-colors"
+          >
             <Shield className="w-4 h-4" />
             Bảo mật
           </TabsTrigger>
+
           <TabsTrigger
             value="notifications"
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 border-b-2 border-transparent data-[state=active]:border-green-600 data-[state=active]:bg-green-50 dark:data-[state=active]:bg-green-900/20 px-3 py-2 rounded-t transition-colors"
           >
             <Bell className="w-4 h-4" />
             Thông báo
           </TabsTrigger>
-          <TabsTrigger value="Advanced" className="flex items-center gap-2">
+
+          <TabsTrigger
+            value="Advanced"
+            className="flex items-center gap-2 border-b-2 border-transparent data-[state=active]:border-green-600 data-[state=active]:bg-green-50 dark:data-[state=active]:bg-green-900/20 px-3 py-2 rounded-t transition-colors"
+          >
             <Database className="w-4 h-4" />
             Nâng cao
           </TabsTrigger>

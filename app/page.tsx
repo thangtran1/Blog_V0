@@ -37,7 +37,7 @@ import {
   ICategory,
   IPost,
 } from "@/lib/api-services";
-import { formatDateVN, getVisitorId } from "@/lib/utils";
+import { formatDateVN } from "@/lib/utils";
 import toast from "react-hot-toast";
 
 export default function HomePage() {
@@ -236,10 +236,10 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex flex-col px-4 min-h-screen">
+    <>
       <section
         id="hero"
-        className={`relative px-2 rounded-lg ${bgWelcome} text-white py-5 md:py-5 lg:py-5 `}
+        className={`relative px-2 border border-b-green-500/20 ${bgWelcome} text-white py-5 md:py-5 lg:py-5 `}
       >
         <div
           className={`relative z-10 transition-all duration-1000 ${
@@ -261,262 +261,259 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-            <div className="text-4xl lg:text-6xl font-bold mb-4 leading-tight bg-gradient-to-r from-white to-green-100 bg-clip-text text-transparent animate-slide-in-up stagger-1">
+            <div className="text-4xl lg:text-6xl font-bold mb-1 leading-tight bg-gradient-to-r from-white to-green-100 bg-clip-text text-transparent animate-slide-in-up stagger-1">
               Chào mừng đến với {titleName}!
             </div>
-            <p className="text-xl md:text-2xl mb-2 text-green-100 animate-slide-in-up stagger-2">
-              Nơi chia sẻ kiến thức lập trình và công nghệ
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-4 text-green-100/70 italic animate-slide-in-up stagger-2">
+              Nơi chia sẻ kiến thức lập trình, công nghệ và AI từ cơ bản đến
+              nâng cao.
             </p>
-            <p className="text-lg lg:mb-6 mb-4 text-green-200 max-w-2xl mx-auto animate-slide-in-up stagger-3">
-              Khám phá những bài viết chất lượng về Frontend, Backend, DevOps và
-              AI. Từ cơ bản đến nâng cao, từ lý thuyết đến thực hành.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-2 justify-center animate-scale-in stagger-4">
+            <div className="flex  gap-2 justify-center animate-scale-in stagger-4">
               <Button
                 asChild
                 size="sm"
-                variant="outline"
-                className="border border-border-gray-300 dark:border-gray-300 hover:bg-white/10 p-5 rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 bg-transparent"
+                className="border border-white text-white hover:bg-white/10 px-6 py-3 rounded-full font-semibold shadow transition duration-300"
               >
-                <Link href="/posts">📚 Khám phá bài viết</Link>
+                <Link href="/posts">Khám phá bài viết →</Link>
               </Button>
 
               <Button
                 asChild
                 size="sm"
-                variant="outline"
-                className="border border-border-gray-300 dark:border-gray-300 hover:bg-white/10 p-5 rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 bg-transparent"
+                className="border border-white text-white hover:bg-white/10 px-6 py-3 rounded-full font-semibold shadow transition duration-300"
               >
-                <Link href="/categories">🚀 Xem danh mục</Link>
+                <Link href="/categories">Xem danh mục →</Link>
               </Button>
             </div>
           </div>
         </div>
       </section>
+      <div className="flex flex-col px-4 min-h-screen">
+        <TrendingCarousel />
 
-      <TrendingCarousel />
+        <section id="categories" className="py-12 bg-muted/40 rounded-lg">
+          <div className="">
+            <div className={`${maxWidth} mx-auto`}>
+              <div
+                className={`text-center mb-16 transition-all duration-1000 ${
+                  sectionsVisible.categories
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-10"
+                }`}
+              >
+                <h2 className={`text-4xl ${textDefault} font-bold mb-4 `}>
+                  Danh mục bài viết
+                </h2>
+                <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                  Khám phá các chủ đề công nghệ được phân loại chi tiết, từ cơ
+                  bản đến nâng cao
+                </p>
+              </div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {categories.map((category, index) => (
+                  <div
+                    key={index}
+                    className="group animate-fade-in-up rounded-md bg-gradient-to-br from-card to-muted/50  dark:border-gray-700 hover:scale-105 transform transition duration-500 hover:shadow-xl dark:hover:shadow-green-900"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <Card className="flex flex-col h-full hover:border-green-400 dark:hover:border-green-600 transition-colors duration-300">
+                      <CardHeader className="pb-4">
+                        <div className="flex items-start gap-4">
+                          <img
+                            src={category.image}
+                            alt={category.name}
+                            className="w-24 h-24 border border-green-200 dark:border-green-400 rounded-2xl object-cover shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-300"
+                          />
+                          <div className="flex-1">
+                            <CardTitle className="text-xl group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors mb-2">
+                              {category.name}
+                            </CardTitle>
 
-      <section id="categories" className="py-12 bg-muted/40 rounded-lg">
-        <div className="">
-          <div className={`${maxWidth} mx-auto`}>
-            <div
-              className={`text-center mb-16 transition-all duration-1000 ${
-                sectionsVisible.categories
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-10"
-              }`}
-            >
-              <h2 className={`text-4xl ${textDefault} font-bold mb-4 `}>
-                Danh mục bài viết
-              </h2>
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Khám phá các chủ đề công nghệ được phân loại chi tiết, từ cơ bản
-                đến nâng cao
-              </p>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {categories.map((category, index) => (
-                <div
-                  key={index}
-                  className="group animate-fade-in-up rounded-md bg-gradient-to-br from-card to-muted/50  dark:border-gray-700 hover:scale-105 transform transition duration-500 hover:shadow-xl dark:hover:shadow-green-900"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                            <div className="flex items-center gap-1">
+                              <Badge variant="destructive" className="text-xs">
+                                {category.posts ? category.posts.length : 0} bài
+                                viết
+                              </Badge>
+                              <Badge variant="destructive" className="text-xs">
+                                {category.totalLike} lượt thích
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+                      </CardHeader>
+
+                      <CardContent className="flex flex-col flex-grow space-y-4 p-5">
+                        <CardDescription className="leading-relaxed text-sm line-clamp-2 min-h-[2.5rem]">
+                          {category.description}
+                        </CardDescription>
+
+                        <div className="flex gap-4">
+                          <Button asChild className="w-full mt-auto">
+                            <Link href={`/categories/${category.slug}`}>
+                              Khám phá {category.name}
+                              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                          </Button>
+
+                          <div
+                            key={category._id}
+                            className="relative px-3 py-2 flex justify-center items-center border border-red-400 rounded-lg bg-transparent group"
+                          >
+                            <Heart
+                              className={`w-5 h-5 cursor-pointer transition-transform group-hover:scale-125 ${
+                                category.liked
+                                  ? "fill-red-500 text-red-500"
+                                  : "text-red-500"
+                              }`}
+                              onClick={() => handleLikeCategories(category._id)}
+                            />
+                            <span className="absolute text-[10px] font-semibold text-white bg-red-500 rounded-full w-6 h-6 flex items-center justify-center -top-2 -right-2 shadow-md">
+                              {category.totalLike}
+                            </span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ))}
+              </div>
+              <div className="text-center mt-6">
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="hover:scale-105 transition-transform bg-transparent border-2 border-green-500/20 hover:border-green-500"
                 >
-                  <Card className="flex flex-col h-full hover:border-green-400 dark:hover:border-green-600 transition-colors duration-300">
-                    <CardHeader className="pb-4">
-                      <div className="flex items-start gap-4">
-                        <img
-                          src={category.image}
-                          alt={category.name}
-                          className="w-24 h-24 border border-green-200 dark:border-green-400 rounded-2xl object-cover shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-300"
+                  <Link href="/categories">
+                    Xem tất cả danh mục
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Latest Posts Section */}
+        <section id="latest" className="py-12 bg-background">
+          <div className="">
+            <div className={`${maxWidth} mx-auto `}>
+              <div
+                className={`text-center mb-12 transition-all duration-1000 ${
+                  sectionsVisible.latest
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-10"
+                }`}
+              >
+                <h2 className={`text-3xl font-bold mb-4 ${textDefault}`}>
+                  Bài viết mới nhất
+                </h2>
+                <p className="text-muted-foreground text-lg">
+                  Cập nhật những kiến thức và công nghệ mới nhất
+                </p>
+              </div>
+
+              <div className=" grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {recentPosts.map((post, index) => (
+                  <div
+                    key={post._id}
+                    className={`transition-all duration-700  ${
+                      sectionsVisible.latest
+                        ? "opacity-100 translate-y-0 scale-100"
+                        : "opacity-0 translate-y-10 scale-95"
+                    }`}
+                    style={{ transitionDelay: `${index * 200}ms` }}
+                  >
+                    <Card className="group card-hover-lift border-green-100 dark:border-green-900 hover:border-green-400 dark:hover:border-green-600 relative overflow-hidden">
+                      <div className="relative overflow-hidden rounded-t-lg">
+                        <Image
+                          src={
+                            post.image ||
+                            "/placeholder.svg?height=400&width=600"
+                          }
+                          alt={post.title}
+                          width={400}
+                          height={200}
+                          className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                         />
-                        <div className="flex-1">
-                          <CardTitle className="text-xl group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors mb-2">
-                            {category.name}
-                          </CardTitle>
+                        <div className="absolute top-4 left-4">
+                          <Badge className={buttonDefault}>
+                            {post.category.name}
+                          </Badge>
+                        </div>
+                      </div>
+                      <CardHeader>
+                        <CardTitle className="line-clamp-1 min-h-[1.5rem] group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors capitalize">
+                          {post.title}
+                        </CardTitle>
 
-                          <div className="flex items-center gap-1">
-                            <Badge variant="destructive" className="text-xs">
-                              {category.posts ? category.posts.length : 0} bài
-                              viết
-                            </Badge>
-                            <Badge variant="destructive" className="text-xs">
-                              {category.totalLike} lượt thích
-                            </Badge>
+                        <CardDescription className="text-sm text-muted-foreground min-h-[2.5rem] line-clamp-2 overflow-hidden">
+                          {post.introduction}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
+                          <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-1">
+                              <Calendar className="w-4 h-4" />
+                              {formatDateVN(post.createdAt)}
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Clock className="w-4 h-4" />
+                              {post.readingTime < 60
+                                ? `${post.readingTime} phút đọc`
+                                : `${Math.floor(post.readingTime / 60)} giờ ${
+                                    post.readingTime % 60
+                                  } phút đọc`}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </CardHeader>
-
-                    <CardContent className="flex flex-col flex-grow space-y-4 p-5">
-                      <CardDescription className="leading-relaxed text-sm line-clamp-2 min-h-[2.5rem]">
-                        {category.description}
-                      </CardDescription>
-
-                      <div className="flex gap-4">
-                        <Button asChild className="w-full mt-auto">
-                          <Link href={`/categories/${category.slug}`}>
-                            Khám phá {category.name}
-                            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                          </Link>
-                        </Button>
-
-                        <div
-                          key={category._id}
-                          className="relative px-3 py-2 flex justify-center items-center border border-red-400 rounded-lg bg-transparent group"
-                        >
-                          <Heart
-                            className={`w-5 h-5 cursor-pointer transition-transform group-hover:scale-125 ${
-                              category.liked
-                                ? "fill-red-500 text-red-500"
-                                : "text-red-500"
-                            }`}
-                            onClick={() => handleLikeCategories(category._id)}
-                          />
-                          <span className="absolute text-[10px] font-semibold text-white bg-red-500 rounded-full w-6 h-6 flex items-center justify-center -top-2 -right-2 shadow-md">
-                            {category.totalLike}
-                          </span>
+                        <div className="flex gap-4">
+                          <Button asChild className="w-full group">
+                            <Link href={`/posts/${post._id}`}>
+                              Đọc tiếp
+                              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                          </Button>
+                          <div
+                            key={post._id}
+                            className="relative px-3 py-2 flex justify-center items-center border border-red-400 rounded-lg bg-transparent group"
+                          >
+                            <Heart
+                              className={`w-5 h-5 cursor-pointer transition-transform group-hover:scale-125 ${
+                                post.liked
+                                  ? "fill-red-500 text-red-500"
+                                  : "text-red-500"
+                              }`}
+                              onClick={() => handleLikePost(post._id)}
+                            />
+                            <span className="absolute text-[10px] font-semibold text-white bg-red-500 rounded-full w-6 h-6 flex items-center justify-center -top-2 -right-2 shadow-md">
+                              {post.totalLike}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
-            </div>
-            <div className="text-center mt-6">
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="hover:scale-105 transition-transform bg-transparent border-2 border-green-500/20 hover:border-green-500"
-              >
-                <Link href="/categories">
-                  Xem tất cả danh mục
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Latest Posts Section */}
-      <section id="latest" className="py-12 bg-background">
-        <div className="">
-          <div className={`${maxWidth} mx-auto `}>
-            <div
-              className={`text-center mb-12 transition-all duration-1000 ${
-                sectionsVisible.latest
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-10"
-              }`}
-            >
-              <h2 className={`text-3xl font-bold mb-4 ${textDefault}`}>
-                Bài viết mới nhất
-              </h2>
-              <p className="text-muted-foreground text-lg">
-                Cập nhật những kiến thức và công nghệ mới nhất
-              </p>
-            </div>
-
-            <div className=" grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {recentPosts.map((post, index) => (
-                <div
-                  key={post._id}
-                  className={`transition-all duration-700  ${
-                    sectionsVisible.latest
-                      ? "opacity-100 translate-y-0 scale-100"
-                      : "opacity-0 translate-y-10 scale-95"
-                  }`}
-                  style={{ transitionDelay: `${index * 200}ms` }}
+                      </CardContent>
+                    </Card>
+                  </div>
+                ))}
+              </div>
+              <div className="text-center mt-6">
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="hover:scale-105 transition-transform bg-transparent border-2 border-green-500/20 hover:border-green-500"
                 >
-                  <Card className="group card-hover-lift border-green-100 dark:border-green-900 hover:border-green-400 dark:hover:border-green-600 relative overflow-hidden">
-                    <div className="relative overflow-hidden rounded-t-lg">
-                      <Image
-                        src={
-                          post.image || "/placeholder.svg?height=400&width=600"
-                        }
-                        alt={post.title}
-                        width={400}
-                        height={200}
-                        className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                      <div className="absolute top-4 left-4">
-                        <Badge className={buttonDefault}>
-                          {post.category.name}
-                        </Badge>
-                      </div>
-                    </div>
-                    <CardHeader>
-                      <CardTitle className="line-clamp-1 min-h-[1.5rem] group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors capitalize">
-                        {post.title}
-                      </CardTitle>
-
-                      <CardDescription className="text-sm text-muted-foreground min-h-[2.5rem] line-clamp-2 overflow-hidden">
-                        {post.introduction}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-                        <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-1">
-                            <Calendar className="w-4 h-4" />
-                            {formatDateVN(post.createdAt)}
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Clock className="w-4 h-4" />
-                            {post.readingTime < 60
-                              ? `${post.readingTime} phút đọc`
-                              : `${Math.floor(post.readingTime / 60)} giờ ${
-                                  post.readingTime % 60
-                                } phút đọc`}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex gap-4">
-                        <Button asChild className="w-full group">
-                          <Link href={`/posts/${post._id}`}>
-                            Đọc tiếp
-                            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                          </Link>
-                        </Button>
-                        <div
-                          key={post._id}
-                          className="relative px-3 py-2 flex justify-center items-center border border-red-400 rounded-lg bg-transparent group"
-                        >
-                          <Heart
-                            className={`w-5 h-5 cursor-pointer transition-transform group-hover:scale-125 ${
-                              post.liked
-                                ? "fill-red-500 text-red-500"
-                                : "text-red-500"
-                            }`}
-                            onClick={() => handleLikePost(post._id)}
-                          />
-                          <span className="absolute text-[10px] font-semibold text-white bg-red-500 rounded-full w-6 h-6 flex items-center justify-center -top-2 -right-2 shadow-md">
-                            {post.totalLike}
-                          </span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
-            </div>
-            <div className="text-center mt-6">
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="hover:scale-105 transition-transform bg-transparent border-2 border-green-500/20 hover:border-green-500"
-              >
-                <Link href="/posts">
-                  Xem tất cả bài viết
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
-              </Button>
+                  <Link href="/posts">
+                    Xem tất cả bài viết
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      </div>
+    </>
   );
 }

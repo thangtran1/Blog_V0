@@ -168,13 +168,13 @@ export default function EnhancedHeader() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-80 animate-slide-in-right">
-              <div className="flex flex-col space-y-4 mt-8">
+              <div className="flex flex-col mt-6 space-y-2">
                 {navigation.map((item, index) => (
                   <Link
                     key={item.name}
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`text-lg font-medium transition-all duration-300 p-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-950 animate-fade-in-left stagger-${
+                    className={`text-lg border border-green-500/20  font-medium transition-all duration-300 p-2 rounded-lg hover:bg-green-50 dark:hover:bg-green-950 animate-fade-in-left stagger-${
                       index + 1
                     } ${
                       isActive(item.href)
