@@ -1,19 +1,21 @@
 "use client";
 import Link from "next/link";
-import {
-  Code,
-  Github,
-  Linkedin,
-  Mail,
-  Heart,
-  Divide,
-  BarChart2,
-} from "lucide-react";
-import { buttonDefault, maxWidth, titleName } from "@/styles/classNames";
+import { Github, Linkedin, Mail, Heart, BarChart2 } from "lucide-react";
+import { maxWidth, titleName } from "@/styles/classNames";
 import { ICategory, callFetchCategories } from "@/lib/api-services";
 import { useState, useEffect } from "react";
-import Image from "next/image";
+import toast from "react-hot-toast";
+import { Form, Input, Button } from "antd";
+
 export default function Footer() {
+  const [form] = Form.useForm();
+
+  const handleFinish = (values: { email: string }) => {
+    toast.success(`Đăng ký thành công`);
+
+    form.resetFields();
+  };
+
   const [categories, setCategories] = useState<ICategory[]>([]);
 
   useEffect(() => {
@@ -131,18 +133,39 @@ export default function Footer() {
             <p className="text-muted-foreground text-sm">
               Nhận thông báo về bài viết mới nhất
             </p>
-            <div className="space-y-3">
-              <input
-                type="email"
-                placeholder="Email của bạn"
-                className="w-full px-3 py-2 text-sm border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              />
-              <button
-                className={`w-full ${buttonDefault} text-white text-sm py-2 px-4 rounded-md transition-colors font-medium`}
+            <Form
+              form={form}
+              layout="vertical"
+              onFinish={handleFinish}
+              className="space-y-3"
+            >
+              <style>{`
+    label.ant-form-item-required {
+      color: hsl(var(--muted-foreground)) !important;
+    }
+  `}</style>
+
+              <Form.Item
+                label="Email của bạn"
+                name="email"
+                rules={[
+                  { required: true, message: "Vui lòng nhập email!" },
+                  { type: "email", message: "Email không hợp lệ!" },
+                ]}
               >
-                Đăng ký
-              </button>
-            </div>
+                <Input placeholder="Email của bạn" />
+              </Form.Item>
+
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="w-full font-medium bg-gradient-to-r from-green-500 to-green-500 text-primary-foreground hover:bg-primary/90"
+                >
+                  Đăng ký
+                </Button>
+              </Form.Item>
+            </Form>
           </div>
         </div>
 
