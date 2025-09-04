@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { bgDefault2 } from "@/styles/classNames";
+import Notification from "@/components/notification";
 
 interface AdminHeaderProps {
   onMenuClick: () => void;
@@ -87,16 +88,7 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
             </Link>
           </Button>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative hover:bg-gray-100 dark:hover:bg-gray-800"
-          >
-            <Bell className="w-5 h-5" />
-            <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
-              <span className="text-xs text-white font-medium">3</span>
-            </div>
-          </Button>
+          <Notification />
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

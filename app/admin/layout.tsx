@@ -70,7 +70,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
           }`}
         >
           <AdminHeader onMenuClick={() => setSidebarOpen(true)} />
-          <main className="p-4 lg:p-6 m-1 bg-white rounded-md dark:bg-gray-900">
+          <main className="p-4 lg:p-6 mt-1 mx-1 mb-1 bg-white rounded-lg dark:bg-gray-900">
             <div className={`${maxWidth} mx-auto`}>{children}</div>
           </main>
         </div>
