@@ -16,6 +16,7 @@ import {
   Files,
   X,
 } from "lucide-react";
+import * as Tooltip from "@radix-ui/react-tooltip";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { bgDefault, bgDefault2, titleName } from "@/styles/classNames";
@@ -144,24 +145,39 @@ export default function AdminSidebar({
                       ? `${bgDefault2} text-white shadow-lg`
                       : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800"
                   } ${isCollapsed && !isMobile ? "justify-center" : ""}`}
-                  title={isCollapsed && !isMobile ? item.name : ""}
                 >
-                  <item.icon
-                    className={`w-5 h-5 transition-transform group-hover:scale-110 ${
-                      active ? "text-white" : ""
-                    } ${isCollapsed && !isMobile ? "mx-auto" : ""}`}
-                  />
-                  {(!isCollapsed || isMobile) && (
-                    <>
-                      <span>{item.name}</span>
-                      {active && (
-                        <div className="absolute right-3 w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                      )}
-                    </>
-                  )}
-                  {isCollapsed && !isMobile && active && (
-                    <div className="absolute right-1 top-2 w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                  )}
+                  <Tooltip.Provider>
+                    <Tooltip.Root>
+                      <Tooltip.Trigger>
+                        <div className="flex items-center gap-3">
+                          <item.icon
+                            className={`w-5 h-5 transition-transform group-hover:scale-110 ${
+                              active ? "text-white" : ""
+                            } ${isCollapsed && !isMobile ? "mx-auto" : ""}`}
+                          />
+                          {(!isCollapsed || isMobile) && (
+                            <>
+                              <span>{item.name}</span>
+                              {active && (
+                                <div className="absolute right-3 w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                              )}
+                            </>
+                          )}
+                          {isCollapsed && !isMobile && active && (
+                            <div className="absolute right-1 top-2 w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                          )}
+                        </div>
+                      </Tooltip.Trigger>
+                      <Tooltip.Content
+                        side="right"
+                        align="center"
+                        className="bg-black text-white text-xs px-2 py-1 rounded shadow-lg"
+                        style={{ marginLeft: "16px" }}
+                      >
+                        {item.name}
+                      </Tooltip.Content>
+                    </Tooltip.Root>
+                  </Tooltip.Provider>
                 </Link>
               );
             })}
