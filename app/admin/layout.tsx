@@ -60,9 +60,15 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
         <AdminSidebar
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
+          isCollapsed={sidebarCollapsed}
+          setIsCollapsed={setSidebarCollapsed}
         />
 
-        <div className="lg:ml-64 transition-all duration-300">
+        <div
+          className={`transition-all duration-300 ${
+            sidebarCollapsed ? "lg:ml-20" : "lg:ml-64"
+          }`}
+        >
           <AdminHeader onMenuClick={() => setSidebarOpen(true)} />
           <main className="p-4 lg:p-6">
             <div className={`${maxWidth} mx-auto`}>{children}</div>

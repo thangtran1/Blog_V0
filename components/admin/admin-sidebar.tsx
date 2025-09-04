@@ -27,17 +27,23 @@ const navigation = [
   { name: "Comments", href: "/admin/comments", icon: MessageSquare },
   { name: "Cài đặt", href: "/admin/settings", icon: Settings },
   { name: "Thông tin admin", href: "/admin/profile", icon: UserCircle },
-  { name: "CV", href: "/admin/cv", icon: Files },
+  { name: "Hồ sơ", href: "/admin/cv", icon: Files },
 ];
 
 interface AdminSidebarProps {
   isOpen: boolean;
   onClose: () => void;
+  isCollapsed: boolean;
+  setIsCollapsed: (v: boolean) => void;
 }
 
-export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
+export default function AdminSidebar({
+  isOpen,
+  onClose,
+  isCollapsed,
+  setIsCollapsed,
+}: AdminSidebarProps) {
   const pathname = usePathname();
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -47,11 +53,10 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
         setIsCollapsed(false);
       }
     };
-
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  }, [setIsCollapsed]);
 
   const isActive = (href: string) => {
     if (href === "/admin/dashboard") {
@@ -91,10 +96,10 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
             {(!isCollapsed || isMobile) && (
               <Link
                 href="/admin/dashboard"
-                className="flex items-center gap-2 group"
+                className="flex items-center gap-6 group"
               >
                 <div
-                  className={`w-8 h-8 ${bgDefault2} rounded-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform`}
+                  className={`w-10 h-10 ${bgDefault2} rounded-lg flex items-center justify-center shadow-md group-hover:scale-110 transition-transform`}
                 >
                   <Code className="w-4 h-4 text-white" />
                 </div>
@@ -108,39 +113,22 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
 
             {isCollapsed && !isMobile && (
               <div
-                className={`w-8 h-8 ${bgDefault2} rounded-lg flex items-center justify-center shadow-md`}
+                className={`w-10 h-10 ${bgDefault2} rounded-lg flex items-center justify-center shadow-md`}
               >
                 <Code className="w-4 h-4 text-white" />
               </div>
             )}
 
-            <div className="flex items-center gap-2">
-              {!isMobile && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleToggleCollapse}
-                  className="h-8 w-8"
-                >
-                  {isCollapsed ? (
-                    <ChevronRight className="w-4 h-4" />
-                  ) : (
-                    <ChevronLeft className="w-4 h-4" />
-                  )}
-                </Button>
-              )}
-
-              {isMobile && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={onClose}
-                  className="h-8 w-8"
-                >
-                  <X className="w-4 h-4" />
-                </Button>
-              )}
-            </div>
+            {isMobile && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onClose}
+                className="h-10 w-10"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            )}
           </div>
 
           <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
@@ -172,7 +160,7 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                     </>
                   )}
                   {isCollapsed && !isMobile && active && (
-                    <div className="absolute right-2 w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                    <div className="absolute right-1 top-2 w-2 h-2 bg-white rounded-full animate-pulse"></div>
                   )}
                 </Link>
               );
@@ -194,6 +182,19 @@ export default function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
             </div>
           )}
         </div>
+
+        {!isMobile && (
+          <button
+            onClick={handleToggleCollapse}
+            className="absolute top-1/2 -right-3 transform -translate-y-1/2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-full p-1 shadow-md hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+          >
+            {isCollapsed ? (
+              <ChevronRight className="w-6 h-6" />
+            ) : (
+              <ChevronLeft className="w-6 h-6" />
+            )}
+          </button>
+        )}
       </div>
     </>
   );
