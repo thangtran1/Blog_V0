@@ -39,7 +39,11 @@ import {
 } from "@/lib/api-services";
 import { formatDateVN } from "@/lib/utils";
 import toast from "react-hot-toast";
+import Marquee from "react-fast-marquee";
 
+const texts = [
+  "Chào mừng bạn đến với Kai Codes. Nơi chia sẻ những kiến thức về lập trình và AI.",
+];
 export default function HomePage() {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [recentPosts, setRecentPosts] = useState<IPost[]>([]);
@@ -288,6 +292,15 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <div className="bg-[#0c3055] text-[#ECF0F1] p-1.5">
+        <Marquee speed={50} pauseOnHover={true} gradient={false}>
+          {texts.map((text, idx) => (
+            <span key={idx} className="mr-4">
+              {text}
+            </span>
+          ))}
+        </Marquee>
+      </div>
       <div className="flex flex-col px-4 min-h-screen">
         <TrendingCarousel />
 
