@@ -8,13 +8,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Bell, LogOut, Settings, User, Search, Plus, Menu } from "lucide-react";
+import { LogOut, User, Search, Plus, Menu } from "lucide-react";
 import { useAdminAuth } from "@/lib/admin-auth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { bgDefault2 } from "@/styles/classNames";
-import Notification from "@/components/notification";
+import Notification from "@/components/admin/notification";
 
 interface AdminHeaderProps {
   onMenuClick: () => void;
@@ -33,7 +33,6 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
     <header className="h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 lg:px-6 flex items-center justify-between relative">
       <div className="flex gap-2 justify-between w-full">
         <div className="flex items-center gap-4 flex-1">
-          {/* Menu icon mobile */}
           <Button
             variant="ghost"
             size="icon"
@@ -43,7 +42,6 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
             <Menu className="w-5 h-5" />
           </Button>
 
-          {/* Desktop Search */}
           <div className="hidden md:flex items-center gap-4 flex-1 max-w-md">
             <div className="relative w-full border border-green-300 dark:border-green-800 rounded-md focus-visible:ring-1 focus-visible:ring-green-500 focus:border-green-500 transition">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -54,7 +52,6 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
             </div>
           </div>
 
-          {/* Mobile Search */}
           <div className="flex-1 md:hidden">
             <div className="relative w-full border border-green-300 dark:border-green-800 rounded-md focus-visible:ring-1 focus-visible:ring-green-500 focus:border-green-500 transition">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -110,17 +107,23 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuItem>
-                <User className="mr-2 h-4 w-4" />
-                Thông tin cá nhân
+              <DropdownMenuItem asChild>
+                <Link
+                  href="/admin/profile"
+                  className="flex cursor-pointer items-center"
+                >
+                  <User className="mr-1 h-4 w-4" />
+                  Hồ sơ
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                Cài đặt
-              </DropdownMenuItem>
+
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout} className="text-red-600">
-                <LogOut className="mr-2 h-4 w-4" />
+
+              <DropdownMenuItem
+                onClick={handleLogout}
+                className="text-red-600 cursor-pointer"
+              >
+                <LogOut className="mr-1 h-4 w-4" />
                 Đăng xuất
               </DropdownMenuItem>
             </DropdownMenuContent>
