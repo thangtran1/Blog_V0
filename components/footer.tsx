@@ -163,14 +163,26 @@ export default function Footer() {
                   { type: "email", message: t("footer.emailInvalid") },
                 ]}
               >
-                <Input placeholder={t("footer.email")} />
+                <Input
+                  placeholder={t("footer.email")}
+                  className="bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 
+               text-gray-900 dark:text-gray-100 
+               placeholder-gray-400 dark:placeholder-gray-500 
+               rounded-md shadow-sm focus:ring-2 focus:ring-green-500"
+                />
               </Form.Item>
 
               <Form.Item>
                 <Button
                   type="primary"
                   htmlType="submit"
-                  className="w-full font-medium bg-gradient-to-r from-green-500 to-green-500 text-primary-foreground hover:bg-primary/90"
+                  className="w-full font-medium 
+                    bg-gradient-to-r from-green-500 to-green-600 
+                    text-white 
+                    hover:from-green-600 hover:to-green-700 
+                    !hover:text-white 
+                    !bg-gradient-to-r 
+                    transition-all duration-200"
                 >
                   {t("footer.subscribe")}
                 </Button>
