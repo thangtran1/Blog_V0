@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Save, X, Hash } from "lucide-react";
 import { buttonDefault } from "@/styles/classNames";
+import { useI18n } from "@/i18n/i18n-provider";
 
 interface TagFormProps {
   tag?: any;
@@ -29,6 +30,7 @@ const colorOptions = [
 ];
 
 export default function TagForm({ tag, onClose }: TagFormProps) {
+  const { t } = useI18n();
   const [formData, setFormData] = useState({
     name: tag?.name || "",
     slug: tag?.slug || "",
@@ -61,10 +63,14 @@ export default function TagForm({ tag, onClose }: TagFormProps) {
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      alert(tag ? "Cập nhật tag thành công!" : "Tạo tag thành công!");
+      alert(
+        tag
+          ? t("admin.tags.updateTagSuccess")
+          : t("admin.tags.createTagSuccess")
+      );
       onClose();
     } catch (error) {
-      alert("Có lỗi xảy ra!");
+      alert(t("admin.tags.error"));
     } finally {
       setIsLoading(false);
     }
@@ -73,7 +79,7 @@ export default function TagForm({ tag, onClose }: TagFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="name">Tên tag *</Label>
+        <Label htmlFor="name">{t("admin.tags.name")} *</Label>
         <Input
           id="name"
           value={formData.name}
@@ -84,7 +90,7 @@ export default function TagForm({ tag, onClose }: TagFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="slug">Slug *</Label>
+        <Label htmlFor="slug">{t("admin.tags.slug")} *</Label>
         <div className="relative">
           <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
@@ -99,7 +105,7 @@ export default function TagForm({ tag, onClose }: TagFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description">Mô tả</Label>
+        <Label htmlFor="description">{t("admin.tags.description2")}</Label>
         <Textarea
           id="description"
           value={formData.description}
@@ -110,7 +116,7 @@ export default function TagForm({ tag, onClose }: TagFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label>Màu sắc</Label>
+        <Label>{t("admin.tags.color")}</Label>
         <div className="flex gap-2 flex-wrap">
           {colorOptions.map((color) => (
             <button
@@ -127,20 +133,22 @@ export default function TagForm({ tag, onClose }: TagFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label>Xem trước</Label>
+        <Label>{t("admin.tags.preview")}</Label>
         <div className="flex items-center gap-2 p-2 border rounded">
           <div
             className="w-4 h-4 rounded-full"
             style={{ backgroundColor: formData.color }}
           ></div>
-          <span className="font-medium">{formData.name || "Tên tag"}</span>
+          <span className="font-medium">
+            {formData.name || t("admin.tags.name")}
+          </span>
         </div>
       </div>
 
       <div className="flex items-center justify-end gap-4 pt-4 border-t">
         <Button type="button" variant="outline" onClick={onClose}>
           <X className="w-4 h-4 mr-2" />
-          Hủy
+          {t("admin.tags.cancel")}
         </Button>
         <Button type="submit" disabled={isLoading} className={buttonDefault}>
           {isLoading ? (
@@ -148,7 +156,7 @@ export default function TagForm({ tag, onClose }: TagFormProps) {
           ) : (
             <Save className="w-4 h-4 mr-2" />
           )}
-          {tag ? "Cập nhật" : "Tạo tag"}
+          {tag ? t("admin.tags.update") : t("admin.tags.createTag")}
         </Button>
       </div>
     </form>

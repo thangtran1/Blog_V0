@@ -18,6 +18,7 @@ import {
 import { Save, X } from "lucide-react";
 import { buttonDefault } from "@/styles/classNames";
 import { callCreateCategories, callUpdateCategories } from "@/lib/api-services";
+import { useI18n } from "@/i18n/i18n-provider";
 
 interface CategoryFormProps {
   category?: any;
@@ -30,6 +31,7 @@ export default function CategoryForm({
   onClose,
   onSuccess,
 }: CategoryFormProps) {
+  const { t } = useI18n();
   const [formData, setFormData] = useState({
     name: category?.name || "",
     content: category?.content || "",
@@ -86,12 +88,16 @@ export default function CategoryForm({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Thông tin cơ bản</CardTitle>
-            <CardDescription>Thông tin chính của danh mục</CardDescription>
+            <CardTitle className="text-lg">
+              {t("admin.categories.basicInfo")}
+            </CardTitle>
+            <CardDescription>
+              {t("admin.categories.basicInfoDescription")}
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Tên danh mục *</Label>
+              <Label htmlFor="name">{t("admin.categories.name")} *</Label>
               <Input
                 id="name"
                 value={formData.name}
@@ -102,46 +108,54 @@ export default function CategoryForm({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Mô tả</Label>
+              <Label htmlFor="description">
+                {t("admin.categories.description")}
+              </Label>
               <Textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) =>
                   handleInputChange("description", e.target.value)
                 }
-                placeholder="Mô tả ngắn về danh mục này..."
+                placeholder={t("admin.categories.descriptionPlaceholder")}
                 rows={4}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="content">Nội dung</Label>
+              <Label htmlFor="content">{t("admin.categories.content")}</Label>
               <Textarea
                 id="content"
                 value={formData.content}
                 onChange={(e) => handleInputChange("content", e.target.value)}
-                placeholder="Mô tả ngắn về danh mục này..."
+                placeholder={t("admin.categories.contentPlaceholder")}
                 rows={4}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="totalPost">Tổng số bài viết</Label>
+              <Label htmlFor="totalPost">
+                {t("admin.categories.totalPost")}
+              </Label>
               <Input
                 id="totalPost"
                 value={formData.totalPost}
                 onChange={(e) => handleInputChange("totalPost", e.target.value)}
-                placeholder="Ví dụ: 10"
+                placeholder={t("admin.categories.totalPostPlaceholder")}
                 disabled
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="isActive">Trạng thái danh mục</Label>
+              <Label htmlFor="isActive">{t("admin.categories.isActive")}</Label>
               <div className="flex items-center gap-2">
                 <Input
                   id="isActive"
-                  value={formData.isActive ? "Đang hoạt động" : "Tạm dừng"}
+                  value={
+                    formData.isActive
+                      ? t("admin.categories.active")
+                      : t("admin.categories.inactive")
+                  }
                   disabled
                 />
                 <Switch
@@ -157,25 +171,29 @@ export default function CategoryForm({
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Giao diện</CardTitle>
-            <CardDescription>Tùy chỉnh Hình ảnh</CardDescription>
+            <CardTitle className="text-lg">
+              {t("admin.categories.interface")}
+            </CardTitle>
+            <CardDescription>
+              {t("admin.categories.interfaceDescription")}
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Nhập URL ảnh */}
             <div className="space-y-2">
-              <Label htmlFor="image">Link ảnh</Label>
+              <Label htmlFor="image">{t("admin.categories.imageLink")}</Label>
               <Input
                 id="image"
                 type="url"
                 value={formData.image || ""}
                 onChange={(e) => handleInputChange("image", e.target.value)}
-                placeholder="Dán URL ảnh hoặc chọn ảnh từ thư viện..."
+                placeholder={t("admin.categories.imageLinkPlaceholder")}
               />
             </div>
 
             {/* Xem trước ảnh */}
             <div className="space-y-2">
-              <Label>Xem trước</Label>
+              <Label>{t("admin.categories.preview")}</Label>
               <div className="p-4 border rounded-lg bg-muted/50">
                 {formData.image ? (
                   <img
@@ -188,7 +206,7 @@ export default function CategoryForm({
                   />
                 ) : (
                   <div className="flex items-center justify-center text-gray-400 h-40">
-                    Chưa có ảnh
+                    {t("admin.categories.noImage")}
                   </div>
                 )}
               </div>
@@ -200,7 +218,7 @@ export default function CategoryForm({
       <div className="flex items-center justify-end gap-4 pt-6 border-t">
         <Button type="button" variant="outline" onClick={onClose}>
           <X className="w-4 h-4 mr-2" />
-          Hủy
+          {t("admin.categories.cancel")}
         </Button>
         <Button type="submit" disabled={isLoading} className={buttonDefault}>
           {isLoading ? (
@@ -208,7 +226,9 @@ export default function CategoryForm({
           ) : (
             <Save className="w-4 h-4 mr-2" />
           )}
-          {category ? "Cập nhật" : "Tạo danh mục"}
+          {category
+            ? t("admin.categories.update")
+            : t("admin.categories.createCategory")}
         </Button>
       </div>
     </form>

@@ -10,8 +10,10 @@ import {
   ICV,
 } from "@/lib/api-services";
 import { Eye, Trash2, UploadIcon } from "lucide-react";
+import { useI18n } from "@/i18n/i18n-provider";
 
 export default function AdminCVPage() {
+  const { t } = useI18n();
   const [cv, setCV] = useState<ICV | null>(null);
   const [loading, setLoading] = useState(false);
   const { token } = theme.useToken();
@@ -21,7 +23,7 @@ export default function AdminCVPage() {
       const res = await callFetchCV();
       setCV(res.data);
     } catch {
-      message.error("Không thể tải CV.");
+      message.error(t("admin.cv.error"));
     }
   };
 
@@ -33,10 +35,10 @@ export default function AdminCVPage() {
       setLoading(true);
       const res = await callUploadCV(formData);
       setCV(res.data);
-      message.success("Tải lên thành công!");
+      message.success(t("admin.cv.success"));
     } catch (error) {
       console.error("Upload error:", error);
-      message.error("Tải lên thất bại.");
+      message.error(t("admin.cv.error"));
     } finally {
       setLoading(false);
     }
@@ -51,20 +53,14 @@ export default function AdminCVPage() {
   return (
     <div className="">
       <h2 className="text-2xl font-semibold mb-3 text-gray-800 dark:text-gray-100">
-        Quản lý CV
+        {t("admin.cv.title")}
       </h2>
 
-      <div
-        className="rounded-2xl border border-green-300 dark:border-green-700 shadow-lg p-6 transition-colors duration-300"
-        style={{
-          background: token.colorBgContainer,
-          color: token.colorText,
-        }}
-      >
+      <div className="rounded-2xl border border-green-300 dark:border-green-700 shadow-lg p-6 transition-colors duration-300">
         {cv ? (
           <div className="space-y-4">
             <p className="text-lg font-medium">
-              Tệp hiện tại:{" "}
+              {t("admin.cv.currentFile")}:{" "}
               <span className="text-blue-600 dark:text-blue-400">
                 {cv.fileName}
               </span>
@@ -78,39 +74,39 @@ export default function AdminCVPage() {
                 className="inline-flex items-center gap-1 text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md transition"
               >
                 <Eye className="w-4 h-4" />
-                Xem CV
+                {t("admin.cv.view")}
               </a>
 
               <Popconfirm
                 className="hover:bg-red-500 hover:text-white"
-                title="Xoá CV"
-                description="Bạn có chắc chắn muốn xoá CV này không?"
+                title={t("admin.cv.deleteCV")}
+                description={t("admin.cv.deleteCVDescription")}
                 onConfirm={async () => {
                   try {
                     await callDeleteCV(cv._id);
                     setCV(null);
-                    message.success("Đã xóa CV.");
+                    message.success(t("admin.cv.successDelete"));
                   } catch (err) {
                     console.error(err);
-                    message.error("Xóa thất bại.");
+                    message.error(t("admin.cv.errorDelete"));
                   }
                 }}
-                okText="Xoá"
-                cancelText="Huỷ"
+                okText={t("admin.cv.delete")}
+                cancelText={t("admin.cv.cancel")}
               >
                 <Button
                   size="large"
                   className="border border-red-500 text-red-500 hover:!text-red-500"
                   icon={<Trash2 className="w-4 h-4" />}
                 >
-                  Xoá
+                  {t("admin.cv.delete")}
                 </Button>
               </Popconfirm>
             </div>
           </div>
         ) : (
           <p className="text-gray-500 dark:text-gray-400 italic">
-            Chưa có CV nào được tải lên.
+            {t("admin.cv.noCV")}
           </p>
         )}
 
@@ -121,7 +117,7 @@ export default function AdminCVPage() {
             accept=".pdf,.doc,.docx"
           >
             <Button icon={<UploadIcon />} loading={loading}>
-              Tải lên CV mới
+              {t("admin.cv.upload")}
             </Button>
           </Upload>
         </div>

@@ -39,9 +39,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import EditPostForm from "@/components/admin/edit-post-form";
+import { useI18n } from "@/i18n/i18n-provider";
 const { Option } = Select;
 
 export default function AdminPosts() {
+  const { t } = useI18n();
   const [posts, setPosts] = useState<IAllPost[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -70,17 +72,17 @@ export default function AdminPosts() {
 
   const stats = [
     {
-      title: "Tổng bài viết",
+      title: t("admin.posts.totalPosts"),
       value: totalPosts,
       color: "from-blue-400 to-blue-600",
     },
     {
-      title: "Bài viết đang hoạt động",
+      title: t("admin.posts.activePosts"),
       value: activePosts,
       color: "from-green-400 to-green-600",
     },
     {
-      title: "Bài viết tạm dừng",
+      title: t("admin.posts.inactivePosts"),
       value: inactivePosts,
       color: "from-red-400 to-red-600",
     },
@@ -94,13 +96,13 @@ export default function AdminPosts() {
       case "active":
         return (
           <Badge className="bg-green-100 border border-green-400 text-green-800 dark:bg-green-900/20 dark:text-green-400">
-            Hoạt động
+            {t("admin.posts.active")}
           </Badge>
         );
       case "inactive":
         return (
           <Badge className="bg-red-100 border border-red-400 text-red-800 dark:bg-red-900/20 dark:text-red-400">
-            Không hoạt động
+            {t("admin.posts.inactive")}
           </Badge>
         );
       default:
@@ -136,17 +138,17 @@ export default function AdminPosts() {
         <div className="flex-1 min-w-0">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2 truncate">
             <FileText className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
-            Quản lý bài viết
+            {t("admin.posts.title")}
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm sm:text-base truncate">
-            Tạo, chỉnh sửa và quản lý tất cả bài viết của bạn
+            {t("admin.posts.description")}
           </p>
         </div>
 
         <Button asChild className={bgDefault2}>
           <Link href="/admin/posts/new">
             <Plus className="w-4 h-4 mr-2" />
-            Tạo bài viết mới
+            {t("admin.posts.createPost")}
           </Link>
         </Button>
       </div>
@@ -192,9 +194,9 @@ export default function AdminPosts() {
                 onChange={(value) => setFilterStatus(value)}
                 style={{ width: 160 }}
               >
-                <Option value="all">Tất cả</Option>
-                <Option value="active">Hoạt động</Option>
-                <Option value="inactive">Không hoạt động</Option>
+                <Option value="all">{t("admin.posts.all")}</Option>
+                <Option value="active">{t("admin.posts.active")}</Option>
+                <Option value="inactive">{t("admin.posts.inactive")}</Option>
               </Select>
             </Card>
           </div>
@@ -204,19 +206,21 @@ export default function AdminPosts() {
       {/* Posts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {loading ? (
-          <p>Đang tải dữ liệu...</p>
+          <p>{t("admin.posts.loading")}</p>
         ) : filteredPosts.length === 0 ? (
           <Card>
             <CardContent className="p-8 text-center">
               <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
-                Không tìm thấy bài viết
+                {t("admin.posts.noPostsFound")}
               </h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Thử thay đổi từ khóa tìm kiếm hoặc bộ lọc
+                {t("admin.posts.tryChangeSearchOrFilter")}
               </p>
               <Button asChild>
-                <Link href="/admin/posts/new">Tạo bài viết đầu tiên</Link>
+                <Link href="/admin/posts/new">
+                  {t("admin.posts.createPost")}
+                </Link>
               </Button>
             </CardContent>
           </Card>
@@ -242,11 +246,11 @@ export default function AdminPosts() {
                       <Pencil className="w-4 h-4 text-gray-600" />
                     </button>
                     <Popconfirm
-                      title="Xoá bài viết"
-                      description="Bạn có chắc chắn muốn xoá bài viết này không?"
+                      title={t("admin.posts.deletePost")}
+                      description={t("admin.posts.deletePostDescription")}
                       onConfirm={() => handleDelete(post._id)}
-                      okText="Xoá"
-                      cancelText="Huỷ"
+                      okText={t("admin.posts.delete")}
+                      cancelText={t("admin.posts.cancel")}
                     >
                       <Button size="sm" variant="outline">
                         <Trash2 className="w-3 h-3" />
@@ -266,15 +270,15 @@ export default function AdminPosts() {
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem>
                           <Eye className="mr-2 h-4 w-4" />
-                          Xem trước
+                          {t("admin.posts.preview")}
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                           <Edit className="mr-2 h-4 w-4" />
-                          Chỉnh sửa
+                          {t("admin.posts.edit")}
                         </DropdownMenuItem>
                         <DropdownMenuItem className="text-red-600">
                           <Trash2 className="mr-2 h-4 w-4" />
-                          Xóa
+                          {t("admin.posts.delete")}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -292,7 +296,7 @@ export default function AdminPosts() {
                     <div className="flex items-center gap-4">
                       <span className="flex items-center gap-1">
                         <User className="w-3 h-3" />
-                        Admin
+                        {t("admin.posts.admin")}
                       </span>
                       <span className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
@@ -301,9 +305,10 @@ export default function AdminPosts() {
                     </div>
                     <div className="flex items-center gap-3">
                       <span className="flex items-center gap-1">
-                        <Eye className="w-3 h-3" />0 có view OK
+                        <Eye className="w-3 h-3" />
+                        {t("admin.posts.view")}
                       </span>
-                      <span>10 comments</span>
+                      <span>10 {t("admin.posts.comments")}</span>
                     </div>
                   </div>
 
@@ -321,7 +326,7 @@ export default function AdminPosts() {
       <Dialog open={!!editingPost} onOpenChange={() => setEditingPost(null)}>
         <DialogContent className="w-full max-w-4xl max-h-[90vh] overflow-y-auto p-4 rounded-lg">
           <DialogHeader>
-            <DialogTitle>Chỉnh sửa bài viết</DialogTitle>
+            <DialogTitle>{t("admin.posts.editPost")}</DialogTitle>
           </DialogHeader>
           {editingPost && (
             <EditPostForm

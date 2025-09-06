@@ -35,51 +35,52 @@ import {
   Clock,
   AlertCircle,
 } from "lucide-react";
-
-const comments = [
-  {
-    id: 1,
-    content: "Bài viết rất hay và chi tiết! Cảm ơn tác giả đã chia sẻ.",
-    author: "Nguyễn Văn A",
-    email: "nguyenvana@email.com",
-    post: "Elasticsearch Toàn Tập: Search Engine Hiện Đại",
-    status: "pending",
-    createdAt: "2025-01-08T10:30:00Z",
-    likes: 0,
-  },
-  {
-    id: 2,
-    content: "Mình có thể áp dụng được ngay vào dự án. Thanks!",
-    author: "Trần Thị B",
-    email: "tranthib@email.com",
-    post: "API Gateway với Kong - Microservices",
-    status: "approved",
-    createdAt: "2025-01-07T15:20:00Z",
-    likes: 3,
-  },
-  {
-    id: 3,
-    content: "Có thể hướng dẫn chi tiết hơn về phần deployment không ạ?",
-    author: "Lê Văn C",
-    email: "levanc@email.com",
-    post: "Micro Frontend Architecture",
-    status: "approved",
-    createdAt: "2025-01-06T09:15:00Z",
-    likes: 1,
-  },
-  {
-    id: 4,
-    content: "Spam content here...",
-    author: "Spammer",
-    email: "spam@spam.com",
-    post: "Elasticsearch Toàn Tập",
-    status: "rejected",
-    createdAt: "2025-01-05T14:45:00Z",
-    likes: 0,
-  },
-];
+import { useI18n } from "@/i18n/i18n-provider";
 
 export default function AdminCommentsPage() {
+  const { t } = useI18n();
+  const comments = [
+    {
+      id: 1,
+      content: t("admin.comments.comment1"),
+      author: "Nguyễn Văn A",
+      email: "nguyenvana@email.com",
+      post: t("admin.comments.post1"),
+      status: "pending",
+      createdAt: "2025-01-08T10:30:00Z",
+      likes: 0,
+    },
+    {
+      id: 2,
+      content: t("admin.comments.comment2"),
+      author: "Trần Thị B",
+      email: "tranthib@email.com",
+      post: t("admin.comments.post2"),
+      status: "approved",
+      createdAt: "2025-01-07T15:20:00Z",
+      likes: 3,
+    },
+    {
+      id: 3,
+      content: t("admin.comments.comment3"),
+      author: "Lê Văn C",
+      email: "levanc@email.com",
+      post: t("admin.comments.post3"),
+      status: "approved",
+      createdAt: "2025-01-06T09:15:00Z",
+      likes: 1,
+    },
+    {
+      id: 4,
+      content: t("admin.comments.comment4"),
+      author: "Spammer",
+      email: "spam@spam.com",
+      post: t("admin.comments.post4"),
+      status: "rejected",
+      createdAt: "2025-01-05T14:45:00Z",
+      likes: 0,
+    },
+  ];
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
@@ -94,12 +95,10 @@ export default function AdminCommentsPage() {
 
   const handleApprove = (commentId: number) => {
     console.log("Approve comment:", commentId);
-    alert("Đã duyệt comment!");
   };
 
   const handleReject = (commentId: number) => {
     console.log("Reject comment:", commentId);
-    alert("Đã từ chối comment!");
   };
 
   const getStatusBadge = (status: string) => {
@@ -107,19 +106,19 @@ export default function AdminCommentsPage() {
       case "approved":
         return (
           <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-            Đã duyệt
+            {t("admin.comments.approved")}
           </Badge>
         );
       case "pending":
         return (
           <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-            Chờ duyệt
+            {t("admin.comments.pending")}
           </Badge>
         );
       case "rejected":
         return (
           <Badge className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
-            Từ chối
+            {t("admin.comments.rejected")}
           </Badge>
         );
       default:
@@ -130,71 +129,87 @@ export default function AdminCommentsPage() {
   return (
     <div className="space-y-6 animate-fade-in-up">
       <div>
-        <h1 className="text-3xl font-bold">Quản lý Comments</h1>
+        <h1 className="text-3xl font-bold">{t("admin.comments.title")}</h1>
         <p className="text-muted-foreground mt-2">
-          Duyệt và quản lý bình luận từ người dùng
+          {t("admin.comments.description1")}
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card className="animate-fade-in-up stagger-1">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Tổng comments</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("admin.comments.totalComments")}
+            </CardTitle>
             <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{comments.length}</div>
-            <p className="text-xs text-muted-foreground">+12 hôm nay</p>
+            <p className="text-xs text-muted-foreground">
+              {t("admin.comments.today")}
+            </p>
           </CardContent>
         </Card>
         <Card className="animate-fade-in-up stagger-2">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Chờ duyệt</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("admin.comments.pending")}
+            </CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {comments.filter((c) => c.status === "pending").length}
             </div>
-            <p className="text-xs text-muted-foreground">Cần xem xét</p>
+            <p className="text-xs text-muted-foreground">
+              {t("admin.comments.needReview")}
+            </p>
           </CardContent>
         </Card>
         <Card className="animate-fade-in-up stagger-3">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Đã duyệt</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("admin.comments.approved")}
+            </CardTitle>
             <Check className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {comments.filter((c) => c.status === "approved").length}
             </div>
-            <p className="text-xs text-muted-foreground">Hiển thị công khai</p>
+            <p className="text-xs text-muted-foreground">
+              {t("admin.comments.publicDisplay")}
+            </p>
           </CardContent>
         </Card>
         <Card className="animate-fade-in-up stagger-4">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Từ chối</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("admin.comments.rejected")}
+            </CardTitle>
             <AlertCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {comments.filter((c) => c.status === "rejected").length}
             </div>
-            <p className="text-xs text-muted-foreground">Spam/Vi phạm</p>
+            <p className="text-xs text-muted-foreground">
+              {t("admin.comments.spamViolation")}
+            </p>
           </CardContent>
         </Card>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Bộ lọc</CardTitle>
+          <CardTitle>{t("admin.comments.filter")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
-                placeholder="Tìm kiếm comments..."
+                placeholder={t("admin.comments.searchComments")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -205,10 +220,10 @@ export default function AdminCommentsPage() {
               onChange={(e) => setStatusFilter(e.target.value)}
               className="px-3 py-2 border border-input bg-background rounded-md"
             >
-              <option value="all">Tất cả trạng thái</option>
-              <option value="pending">Chờ duyệt</option>
-              <option value="approved">Đã duyệt</option>
-              <option value="rejected">Từ chối</option>
+              <option value="all">{t("admin.comments.allStatus")}</option>
+              <option value="pending">{t("admin.comments.pending")}</option>
+              <option value="approved">{t("admin.comments.approved")}</option>
+              <option value="rejected">{t("admin.comments.rejected")}</option>
             </select>
           </div>
         </CardContent>
@@ -216,19 +231,23 @@ export default function AdminCommentsPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Danh sách comments ({filteredComments.length})</CardTitle>
-          <CardDescription>Quản lý tất cả bình luận trên blog</CardDescription>
+          <CardTitle>
+            {t("admin.comments.listComments")} ({filteredComments.length})
+          </CardTitle>
+          <CardDescription> {t("admin.comments.description2")}</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Nội dung</TableHead>
-                <TableHead>Tác giả</TableHead>
-                <TableHead>Bài viết</TableHead>
-                <TableHead>Trạng thái</TableHead>
-                <TableHead>Thời gian</TableHead>
-                <TableHead className="text-right">Thao tác</TableHead>
+                <TableHead>{t("admin.comments.content")}</TableHead>
+                <TableHead>{t("admin.comments.author")}</TableHead>
+                <TableHead>{t("admin.comments.post")}</TableHead>
+                <TableHead>{t("admin.comments.status")}</TableHead>
+                <TableHead>{t("admin.comments.time")}</TableHead>
+                <TableHead className="text-right">
+                  {t("admin.comments.action")}
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -239,7 +258,7 @@ export default function AdminCommentsPage() {
                       <p className="line-clamp-2 text-sm">{comment.content}</p>
                       {comment.likes > 0 && (
                         <p className="text-xs text-muted-foreground mt-1">
-                          ❤️ {comment.likes} likes
+                          ❤️ {comment.likes} {t("admin.comments.likes")}
                         </p>
                       )}
                     </div>
@@ -260,10 +279,17 @@ export default function AdminCommentsPage() {
                   <TableCell>{getStatusBadge(comment.status)}</TableCell>
                   <TableCell>
                     <p className="text-sm">
-                      {new Date(comment.createdAt).toLocaleDateString("vi-VN")}
+                      {new Date(comment.createdAt).toLocaleDateString("vi-VN", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      {new Date(comment.createdAt).toLocaleTimeString("vi-VN")}
+                      {new Date(comment.createdAt).toLocaleTimeString("vi-VN", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
                     </p>
                   </TableCell>
                   <TableCell className="text-right">
@@ -276,7 +302,7 @@ export default function AdminCommentsPage() {
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem>
                           <Eye className="w-4 h-4 mr-2" />
-                          Xem chi tiết
+                          {t("admin.comments.viewDetail")}
                         </DropdownMenuItem>
                         {comment.status === "pending" && (
                           <>
@@ -285,14 +311,14 @@ export default function AdminCommentsPage() {
                               className="text-green-600"
                             >
                               <Check className="w-4 h-4 mr-2" />
-                              Duyệt
+                              {t("admin.comments.approve")}
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               onClick={() => handleReject(comment.id)}
                               className="text-red-600"
                             >
                               <X className="w-4 h-4 mr-2" />
-                              Từ chối
+                              {t("admin.comments.reject")}
                             </DropdownMenuItem>
                           </>
                         )}
@@ -302,7 +328,7 @@ export default function AdminCommentsPage() {
                             className="text-red-600"
                           >
                             <X className="w-4 h-4 mr-2" />
-                            Ẩn comment
+                            {t("admin.comments.hideComment")}
                           </DropdownMenuItem>
                         )}
                       </DropdownMenuContent>

@@ -7,22 +7,15 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Settings,
-  Globe,
-  Shield,
-  Bell,
-  Palette,
-  Database,
-  Mail,
-  User,
-} from "lucide-react";
+import { Settings, Globe, Shield, Bell, User } from "lucide-react";
 import { useState } from "react";
 import { bgDefault2, titleName } from "@/styles/classNames";
+import { useI18n } from "@/i18n/i18n-provider";
 export default function AdminSettings() {
+  const { t } = useI18n();
   const [settings, setSettings] = useState({
     siteName: `${titleName} Blog`,
-    siteDescription: "Blog về lập trình và công nghệ",
+    siteDescription: t("admin.settings.siteDescription"),
     siteUrl: "https://vanthang.io.vn",
     adminEmail: process.env.ADMIN_EMAIL,
     enableComments: true,
@@ -44,33 +37,25 @@ export default function AdminSettings() {
         <div className="flex-1 min-w-0">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2 truncate">
             <Settings className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
-            Cài đặt hệ thống
+            {t("admin.settings.title")}
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm sm:text-base truncate">
-            Quản lý cấu hình và tùy chỉnh blog của bạn
+            {t("admin.settings.description")}
           </p>
         </div>
         <Button onClick={handleSave} className={bgDefault2}>
-          Lưu thay đổi
+          {t("admin.settings.save")}
         </Button>
       </div>
 
       <Tabs defaultValue="general" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5 border-b border-green-300 dark:border-green-700">
+        <TabsList className="grid w-full grid-cols-3 border-b border-green-300 dark:border-green-700">
           <TabsTrigger
             value="general"
             className="flex items-center gap-2 border-b-2 border-transparent data-[state=active]:border-green-600 data-[state=active]:bg-green-50 dark:data-[state=active]:bg-green-900/20 px-3 py-2 rounded-t transition-colors"
           >
             <Globe className="w-4 h-4" />
-            Chung
-          </TabsTrigger>
-
-          <TabsTrigger
-            value="appearance"
-            className="flex items-center gap-2 border-b-2 border-transparent data-[state=active]:border-green-600 data-[state=active]:bg-green-50 dark:data-[state=active]:bg-green-900/20 px-3 py-2 rounded-t transition-colors"
-          >
-            <Palette className="w-4 h-4" />
-            Giao diện
+            {t("admin.settings.general")}
           </TabsTrigger>
 
           <TabsTrigger
@@ -78,7 +63,7 @@ export default function AdminSettings() {
             className="flex items-center gap-2 border-b-2 border-transparent data-[state=active]:border-green-600 data-[state=active]:bg-green-50 dark:data-[state=active]:bg-green-900/20 px-3 py-2 rounded-t transition-colors"
           >
             <Shield className="w-4 h-4" />
-            Bảo mật
+            {t("admin.settings.security")}
           </TabsTrigger>
 
           <TabsTrigger
@@ -86,15 +71,7 @@ export default function AdminSettings() {
             className="flex items-center gap-2 border-b-2 border-transparent data-[state=active]:border-green-600 data-[state=active]:bg-green-50 dark:data-[state=active]:bg-green-900/20 px-3 py-2 rounded-t transition-colors"
           >
             <Bell className="w-4 h-4" />
-            Thông báo
-          </TabsTrigger>
-
-          <TabsTrigger
-            value="Advanced"
-            className="flex items-center gap-2 border-b-2 border-transparent data-[state=active]:border-green-600 data-[state=active]:bg-green-50 dark:data-[state=active]:bg-green-900/20 px-3 py-2 rounded-t transition-colors"
-          >
-            <Database className="w-4 h-4" />
-            Nâng cao
+            {t("admin.settings.notifications")}
           </TabsTrigger>
         </TabsList>
 
@@ -104,12 +81,14 @@ export default function AdminSettings() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Globe className="w-5 h-5" />
-                  Thông tin website
+                  {t("admin.settings.websiteInfo")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="siteName">Tên website</Label>
+                  <Label htmlFor="siteName">
+                    {t("admin.settings.websiteName")}
+                  </Label>
                   <Input
                     id="siteName"
                     value={settings.siteName}
@@ -119,7 +98,9 @@ export default function AdminSettings() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="siteDescription">Mô tả website</Label>
+                  <Label htmlFor="siteDescription">
+                    {t("admin.settings.websiteDescription")}
+                  </Label>
                   <Textarea
                     id="siteDescription"
                     value={settings.siteDescription}
@@ -133,7 +114,9 @@ export default function AdminSettings() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="siteUrl">URL website</Label>
+                  <Label htmlFor="siteUrl">
+                    {t("admin.settings.websiteUrl")}
+                  </Label>
                   <Input
                     id="siteUrl"
                     value={settings.siteUrl}
@@ -149,12 +132,14 @@ export default function AdminSettings() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <User className="w-5 h-5" />
-                  Thông tin admin
+                  {t("admin.settings.adminInfo")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="adminEmail">Email admin</Label>
+                  <Label htmlFor="adminEmail">
+                    {t("admin.settings.adminEmail")}
+                  </Label>
                   <Input
                     id="adminEmail"
                     type="email"
@@ -165,7 +150,9 @@ export default function AdminSettings() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="postsPerPage">Số bài viết mỗi trang</Label>
+                  <Label htmlFor="postsPerPage">
+                    {t("admin.settings.postsPerPage")}
+                  </Label>
                   <Input
                     id="postsPerPage"
                     type="number"
@@ -179,7 +166,9 @@ export default function AdminSettings() {
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="autoSave">Tự động lưu</Label>
+                  <Label htmlFor="autoSave">
+                    {t("admin.settings.autoSave")}
+                  </Label>
                   <Switch
                     id="autoSave"
                     checked={settings.autoSave}
@@ -193,98 +182,63 @@ export default function AdminSettings() {
           </div>
         </TabsContent>
 
-        <TabsContent value="appearance">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Palette className="w-5 h-5" />
-                Tùy chỉnh giao diện
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Label>Dark Mode</Label>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Cho phép người dùng chuyển đổi theme
-                  </p>
-                </div>
-                <Switch
-                  checked={settings.enableDarkMode}
-                  onCheckedChange={(checked) =>
-                    setSettings({ ...settings, enableDarkMode: checked })
-                  }
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 border rounded-lg cursor-pointer hover:border-green-500 transition-colors">
-                  <div
-                    className={`w-full h-20  rounded mb-2 ${bgDefault2}`}
-                  ></div>
-                  <p className="text-sm font-medium">Green Theme</p>
-                  <p className="text-xs text-gray-500">Theme mặc định</p>
-                </div>
-                <div className="p-4 border rounded-lg cursor-pointer hover:border-blue-500 transition-colors opacity-50">
-                  <div className="w-full h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded mb-2"></div>
-                  <p className="text-sm font-medium">Blue Theme</p>
-                  <p className="text-xs text-gray-500">Sắp ra mắt</p>
-                </div>
-                <div className="p-4 border rounded-lg cursor-pointer hover:border-purple-500 transition-colors opacity-50">
-                  <div className="w-full h-20 bg-gradient-to-r from-purple-500 to-purple-600 rounded mb-2"></div>
-                  <p className="text-sm font-medium">Purple Theme</p>
-                  <p className="text-xs text-gray-500">Sắp ra mắt</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
         <TabsContent value="security">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Shield className="w-5 h-5" />
-                  Bảo mật
+                  {t("admin.settings.security")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="currentPassword">Mật khẩu hiện tại</Label>
+                  <Label htmlFor="currentPassword">
+                    {t("admin.settings.currentPassword")}
+                  </Label>
                   <Input id="currentPassword" type="password" />
                 </div>
                 <div>
-                  <Label htmlFor="newPassword">Mật khẩu mới</Label>
+                  <Label htmlFor="newPassword">
+                    {t("admin.settings.newPassword")}
+                  </Label>
                   <Input id="newPassword" type="password" />
                 </div>
                 <div>
-                  <Label htmlFor="confirmPassword">Xác nhận mật khẩu</Label>
+                  <Label htmlFor="confirmPassword">
+                    {t("admin.settings.confirmPassword")}
+                  </Label>
                   <Input id="confirmPassword" type="password" />
                 </div>
-                <Button className="w-full">Đổi mật khẩu</Button>
+                <Button className="w-full">
+                  {t("admin.settings.changePassword")}
+                </Button>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Phiên đăng nhập</CardTitle>
+                <CardTitle>{t("admin.settings.loginSession")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="p-3 border rounded-lg">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">Chrome - Windows</p>
+                      <p className="font-medium">
+                        {t("admin.settings.chromeWindows")}
+                      </p>
                       <p className="text-sm text-gray-500">IP: 192.168.1.1</p>
-                      <p className="text-sm text-gray-500">Hiện tại</p>
+                      <p className="text-sm text-gray-500">
+                        {t("admin.settings.currently")}
+                      </p>
                     </div>
                     <Button variant="outline" size="sm">
-                      Đăng xuất
+                      {t("admin.settings.logout")}
                     </Button>
                   </div>
                 </div>
                 <Button variant="destructive" className="w-full">
-                  Đăng xuất tất cả thiết bị
+                  {t("admin.settings.logoutAllDevices")}
                 </Button>
               </CardContent>
             </Card>
@@ -296,15 +250,15 @@ export default function AdminSettings() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Bell className="w-5 h-5" />
-                Cài đặt thông báo
+                {t("admin.settings.notifications")}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>Thông báo email</Label>
+                  <Label>{t("admin.settings.emailNotifications")}</Label>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Nhận thông báo qua email
+                    {t("admin.settings.emailNotificationsDescription")}
                   </p>
                 </div>
                 <Switch
@@ -317,78 +271,21 @@ export default function AdminSettings() {
 
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span>Bài viết mới được tạo</span>
+                  <span>{t("admin.settings.newPosts")}</span>
                   <Switch defaultChecked />
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>Comment mới</span>
+                  <span>{t("admin.settings.newComments")}</span>
                   <Switch defaultChecked />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span>Báo cáo hàng tuần</span>
+                  <span>{t("admin.settings.weeklyReport")}</span>
                   <Switch defaultChecked />
                 </div>
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
-
-        <TabsContent value="Advanced">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Database className="w-5 h-5" />
-                  Cơ sở dữ liệu
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label>Comments</Label>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Cho phép bình luận
-                    </p>
-                  </div>
-                  <Switch
-                    checked={settings.enableComments}
-                    onCheckedChange={(checked) =>
-                      setSettings({ ...settings, enableComments: checked })
-                    }
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Mail className="w-5 h-5" />
-                  Backup & Export
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Button variant="outline" className="w-full bg-transparent">
-                  Backup dữ liệu
-                </Button>
-                <Button variant="outline" className="w-full bg-transparent">
-                  Export bài viết
-                </Button>
-                <Button variant="outline" className="w-full bg-transparent">
-                  Import dữ liệu
-                </Button>
-                <div className="pt-4 border-t">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                    Backup gần nhất: 15/01/2024
-                  </p>
-                  <Button variant="destructive" size="sm">
-                    Xóa tất cả dữ liệu
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
         </TabsContent>
       </Tabs>
     </div>

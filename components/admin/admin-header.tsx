@@ -15,12 +15,14 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { bgDefault2 } from "@/styles/classNames";
 import Notification from "@/components/admin/notification";
+import { useI18n } from "@/i18n/i18n-provider";
 
 interface AdminHeaderProps {
   onMenuClick: () => void;
 }
 
 export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
+  const { t } = useI18n();
   const { admin, logout } = useAdminAuth();
   const router = useRouter();
 
@@ -46,7 +48,7 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
             <div className="relative w-full border border-green-300 dark:border-green-800 rounded-md focus-visible:ring-1 focus-visible:ring-green-500 focus:border-green-500 transition">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
-                placeholder="Tìm kiếm..."
+                placeholder={t("admin.adminHeader.search")}
                 className="pl-10 bg-gray-50 dark:bg-gray-800 border-0 focus-visible:ring-1 focus-visible:ring-green-500"
               />
             </div>
@@ -56,7 +58,7 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
             <div className="relative w-full border border-green-300 dark:border-green-800 rounded-md focus-visible:ring-1 focus-visible:ring-green-500 focus:border-green-500 transition">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
-                placeholder="Tìm kiếm..."
+                placeholder={t("admin.adminHeader.search")}
                 className="pl-10 w-full bg-gray-50 dark:bg-gray-800 border-0 focus-visible:ring-1 focus-visible:ring-green-500"
               />
             </div>
@@ -71,7 +73,9 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
           >
             <Link href="/admin/posts/new">
               <Plus className="w-4 h-4 mr-2" />
-              <span className="hidden lg:inline">Tạo mới</span>
+              <span className="hidden lg:inline">
+                {t("admin.adminHeader.create")}
+              </span>
             </Link>
           </Button>
 
@@ -113,7 +117,7 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
                   className="flex cursor-pointer items-center"
                 >
                   <User className="mr-1 h-4 w-4" />
-                  Hồ sơ
+                  {t("admin.adminHeader.profile")}
                 </Link>
               </DropdownMenuItem>
 
@@ -124,7 +128,7 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
                 className="text-red-600 cursor-pointer"
               >
                 <LogOut className="mr-1 h-4 w-4" />
-                Đăng xuất
+                {t("admin.adminHeader.logout")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

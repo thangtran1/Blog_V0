@@ -15,7 +15,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useEffect, useState } from "react";
 import { textDefault, titleName } from "@/styles/classNames";
 import { LanguageSwitcher } from "./language-swicher";
+import { useI18n } from "@/i18n/i18n-provider";
 export default function EnhancedHeader() {
+  const { t } = useI18n();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -34,10 +36,10 @@ export default function EnhancedHeader() {
   }, []);
 
   const navigation = [
-    { name: "Trang chủ", href: "/" },
-    { name: "Tất cả bài viết", href: "/posts" },
-    { name: "Danh mục", href: "/categories" },
-    { name: "Về tác giả", href: "/about" },
+    { name: t("enhancedHeader.home"), href: "/" },
+    { name: t("enhancedHeader.allPosts"), href: "/posts" },
+    { name: t("enhancedHeader.categories"), href: "/categories" },
+    { name: t("enhancedHeader.about"), href: "/about" },
   ];
 
   const isActive = (href: string) => {
@@ -115,7 +117,9 @@ export default function EnhancedHeader() {
                 <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all duration-500 dark:-rotate-90 dark:scale-0" />
                 <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all duration-500 dark:rotate-0 dark:scale-100" />
                 <div className="absolute inset-0 bg-green-500/20 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 animate-pulse-glow"></div>
-                <span className="sr-only">Toggle theme</span>
+                <span className="sr-only">
+                  {t("enhancedHeader.toggleTheme")}
+                </span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="animate-scale-in">
@@ -124,14 +128,14 @@ export default function EnhancedHeader() {
                 className="hover:bg-green-50 dark:hover:bg-green-950"
               >
                 <Moon className="mr-2 h-4 w-4" />
-                Dark
+                {t("enhancedHeader.dark")}
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => setTheme("light")}
                 className="hover:bg-green-50 dark:hover:bg-green-950"
               >
                 <Sun className="mr-2 h-4 w-4" />
-                Light
+                {t("enhancedHeader.light")}
               </DropdownMenuItem>
 
               <DropdownMenuItem
@@ -139,7 +143,7 @@ export default function EnhancedHeader() {
                 className="hover:bg-green-50 dark:hover:bg-green-950"
               >
                 <Code className="mr-2 h-4 w-4" />
-                System
+                {t("enhancedHeader.system")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -165,7 +169,9 @@ export default function EnhancedHeader() {
                       : "rotate-90 scale-0"
                   }`}
                 />
-                <span className="sr-only">Toggle menu</span>
+                <span className="sr-only">
+                  {t("enhancedHeader.toggleMenu")}
+                </span>
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-80 animate-slide-in-right">

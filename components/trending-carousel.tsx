@@ -105,7 +105,7 @@ export default function TrendingCarousel() {
   const currentPost = featuredPosts[currentSlide];
 
   return (
-    <section id="trending-section" className="py-12 bg-background">
+    <section id="trending-section" className="py-6 bg-background">
       <div className="">
         <div className={`${maxWidth} mx-auto `}>
           <div

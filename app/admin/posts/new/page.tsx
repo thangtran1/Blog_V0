@@ -37,8 +37,10 @@ import {
   callFetchCategories,
   ICategory,
 } from "@/lib/api-services";
+import { useI18n } from "@/i18n/i18n-provider";
 
 export default function CreatePostPage() {
+  const { t } = useI18n();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -102,10 +104,10 @@ export default function CreatePostPage() {
               <div
                 className={`text-3xl lg:text-4xl text-green-500 font-bold ${bgDefault} bg-clip-text `}
               >
-                Tạo bài viết mới
+                {t("admin.posts.createPost")}
               </div>
               <p className="text-gray-600 dark:text-gray-400 text-lg">
-                Viết và xuất bản bài viết mới cho blog của bạn
+                {t("admin.posts.createPosts.description")}
               </p>
             </div>
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
@@ -116,7 +118,7 @@ export default function CreatePostPage() {
                 className="flex-1 sm:flex-none border-gray-300 hover:border-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 <Save className="w-4 h-4 mr-2" />
-                Xuất bản ngay
+                {t("admin.posts.createPosts.publish")}
               </Button>
               <Button
                 onClick={() => handleSubmit("inactive")}
@@ -124,7 +126,7 @@ export default function CreatePostPage() {
                 className={`flex-1 sm:flex-none ${bgDefault2} hover:from-green-600 hover:to-green-700 shadow-lg`}
               >
                 <Eye className="w-4 h-4 mr-2" />
-                Lưu tạm thời
+                {t("admin.posts.createPosts.save")}
               </Button>
             </div>
           </div>
@@ -138,22 +140,22 @@ export default function CreatePostPage() {
                   <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
                     <FileText className="w-4 h-4 text-white" />
                   </div>
-                  Thông tin cơ bản
+                  {t("admin.posts.createPosts.basicInfo")}
                 </CardTitle>
                 <CardDescription>
-                  Nhập thông tin chính của bài viết
+                  {t("admin.posts.createPosts.basicInfoDescription")}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="title" className="text-sm font-medium">
-                    Tiêu đề bài viết *
+                    {t("admin.posts.createPosts.title")} *
                   </Label>
                   <Input
                     id="title"
                     value={formData.title}
                     onChange={(e) => handleInputChange("title", e.target.value)}
-                    placeholder="Nhập tiêu đề hấp dẫn cho bài viết..."
+                    placeholder={t("admin.posts.createPosts.titlePlaceholder")}
                     className="text-lg h-12 border-gray-300 focus:border-green-500 focus:ring-green-500"
                     required
                   />
@@ -161,7 +163,7 @@ export default function CreatePostPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="introduction" className="text-sm font-medium">
-                    Tóm tắt bài viết
+                    {t("admin.posts.createPosts.summary")}
                   </Label>
                   <Textarea
                     id="introduction"
@@ -169,13 +171,15 @@ export default function CreatePostPage() {
                     onChange={(e) =>
                       handleInputChange("introduction", e.target.value)
                     }
-                    placeholder="Viết tóm tắt ngắn gọn và hấp dẫn về bài viết..."
+                    placeholder={t(
+                      "admin.posts.createPosts.summaryPlaceholder"
+                    )}
                     rows={4}
                     className="border-gray-300 focus:border-green-500 focus:ring-green-500 resize-none"
                   />
                   <div className="flex justify-between items-center text-xs">
                     <span className="text-gray-500">
-                      Tóm tắt giúp người đọc hiểu nhanh nội dung
+                      {t("admin.posts.createPosts.summaryDescription")}
                     </span>
                     <span
                       className={`${
@@ -197,10 +201,10 @@ export default function CreatePostPage() {
                   <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center">
                     <FileText className="w-4 h-4 text-white" />
                   </div>
-                  Nội dung bài viết
+                  {t("admin.posts.createPosts.content")}
                 </CardTitle>
                 <CardDescription>
-                  Viết nội dung chính của bài viết với Markdown
+                  {t("admin.posts.createPosts.contentDescription")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -221,12 +225,14 @@ export default function CreatePostPage() {
                   >
                     <Settings className="w-3.5 h-3.5 text-white" />
                   </div>
-                  Cài đặt xuất bản
+                  {t("admin.posts.createPosts.publishSettings")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium">Trạng thái</Label>
+                  <Label className="text-sm font-medium">
+                    {t("admin.posts.createPosts.status")}
+                  </Label>
                   <Select
                     value={formData.status}
                     onValueChange={(value) =>
@@ -240,20 +246,22 @@ export default function CreatePostPage() {
                       <SelectItem value="active">
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                          Hoạt động
+                          {t("admin.posts.createPosts.active")}
                         </div>
                       </SelectItem>
                       <SelectItem value="inactive">
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          Tạm dừng
+                          {t("admin.posts.createPosts.inactive")}
                         </div>
                       </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium">Danh mục</Label>
+                  <Label className="text-sm font-medium">
+                    {t("admin.posts.createPosts.category")}
+                  </Label>
                   <Select
                     value={formData.categoryId}
                     onValueChange={(value) =>
@@ -261,7 +269,9 @@ export default function CreatePostPage() {
                     }
                   >
                     <SelectTrigger className="border-gray-300 focus:border-green-500 focus:ring-green-500">
-                      <SelectValue placeholder="Chọn danh mục" />
+                      <SelectValue
+                        placeholder={t("admin.posts.createPosts.category")}
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       {categories.map((cat) => (
@@ -277,10 +287,10 @@ export default function CreatePostPage() {
                   <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                     <div className="space-y-0.5">
                       <Label className="text-sm font-medium">
-                        Bài viết nổi bật
+                        {t("admin.posts.createPosts.featured")}
                       </Label>
                       <p className="text-xs text-gray-500">
-                        Hiển thị trong slider trang chủ
+                        {t("admin.posts.createPosts.featuredDescription")}
                       </p>
                     </div>
                     <Switch
@@ -300,7 +310,7 @@ export default function CreatePostPage() {
                   <div className="w-7 h-7 bg-gradient-to-r from-pink-500 to-pink-600 rounded-lg flex items-center justify-center">
                     <ImageIcon className="w-3.5 h-3.5 text-white" />
                   </div>
-                  Ảnh đại diện
+                  {t("admin.posts.createPosts.featuredImage")}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -323,7 +333,7 @@ export default function CreatePostPage() {
                           className="bg-red-500 hover:bg-red-600"
                         >
                           <X className="w-4 h-4 mr-2" />
-                          Xóa ảnh
+                          {t("admin.posts.createPosts.deleteImage")}
                         </Button>
                       </div>
                     </div>
@@ -335,16 +345,18 @@ export default function CreatePostPage() {
                         </div>
                         <div>
                           <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
-                            Dán link ảnh PNG, JPG, GIF - tối đa 5MB
+                            {t("admin.posts.createPosts.pasteImageLink")}
                           </p>
                           <p className="text-xs text-gray-500">
-                            Ảnh sẽ hiển thị khi nhập đúng đường dẫn
+                            {t("admin.posts.createPosts.imageDisplay")}
                           </p>
                         </div>
 
                         <input
                           type="text"
-                          placeholder="Dán link ảnh vào đây..."
+                          placeholder={t(
+                            "admin.posts.createPosts.pasteImageLink"
+                          )}
                           className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-green-500"
                           onBlur={(e) => {
                             const url = e.target.value.trim();

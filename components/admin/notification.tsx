@@ -10,30 +10,36 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { vi } from "date-fns/locale";
-
-const initialNotifications = [
-  { id: 1, title: "Bạn có 1 đơn hàng mới", time: new Date(), read: false },
-  {
-    id: 2,
-    title: "Cập nhật trạng thái đơn hàng",
-    time: new Date(Date.now() - 1000 * 60 * 30),
-    read: true,
-  },
-  {
-    id: 3,
-    title: "Nhắc nhở sự kiện sắp tới",
-    time: new Date(Date.now() - 1000 * 60 * 60 * 2),
-    read: false,
-  },
-];
+import { useI18n } from "@/i18n/i18n-provider";
 
 const Notification = () => {
+  const { t } = useI18n();
+  const initialNotifications = [
+    {
+      id: 1,
+      title: t("admin.adminNotification.newOrder"),
+      time: new Date(),
+      read: false,
+    },
+    {
+      id: 2,
+      title: t("admin.adminNotification.updateOrderStatus"),
+      time: new Date(Date.now() - 1000 * 60 * 30),
+      read: true,
+    },
+    {
+      id: 3,
+      title: t("admin.adminNotification.reminderEvent"),
+      time: new Date(Date.now() - 1000 * 60 * 60 * 2),
+      read: false,
+    },
+  ];
   const [notifications, setNotifications] = useState(initialNotifications);
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   const markAllAsRead = () => {
     setNotifications(notifications.map((n) => ({ ...n, read: true })));
-    toast.success("Đã đánh dấu tất cả là đã đọc!");
+    toast.success(t("admin.adminNotification.markAllAsRead"));
   };
 
   const NotificationItem = ({ notification }: { notification: any }) => (
@@ -69,9 +75,11 @@ const Notification = () => {
       </PopoverTrigger>
       <PopoverContent className="w-100  p-0">
         <div className="flex justify-between items-center px-4 py-3 border-b">
-          <span className="font-semibold text-lg">Thông báo</span>
+          <span className="font-semibold text-lg">
+            {t("admin.adminNotification.notification")}
+          </span>
           <Button size="sm" variant="ghost" onClick={markAllAsRead}>
-            Đánh dấu tất cả là đã đọc
+            {t("admin.adminNotification.markAllAsRead")}
           </Button>
         </div>
         <Tabs defaultValue="all">
@@ -80,13 +88,13 @@ const Notification = () => {
               value="all"
               className="data-[state=active]:border-b-2 data-[state=active]:border-green-500"
             >
-              Tất cả
+              {t("admin.adminNotification.all")}
             </TabsTrigger>
             <TabsTrigger
               value="unread"
               className="data-[state=active]:border-b-2 data-[state=active]:border-green-500"
             >
-              Chưa đọc
+              {t("admin.adminNotification.unread")}
             </TabsTrigger>
           </TabsList>
           <TabsContent
@@ -95,7 +103,7 @@ const Notification = () => {
           >
             {notifications.length === 0 ? (
               <p className="text-sm text-gray-500 text-center">
-                Không có thông báo
+                {t("admin.adminNotification.noNotification")}
               </p>
             ) : (
               notifications.map((n) => (
@@ -109,7 +117,7 @@ const Notification = () => {
           >
             {notifications.filter((n) => !n.read).length === 0 ? (
               <p className="text-sm text-gray-500 text-center">
-                Không có thông báo chưa đọc
+                {t("admin.adminNotification.noUnreadNotification")}
               </p>
             ) : (
               notifications

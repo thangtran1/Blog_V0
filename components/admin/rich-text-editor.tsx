@@ -22,6 +22,7 @@ import {
   Type,
   Heading,
 } from "lucide-react";
+import { useI18n } from "@/i18n/i18n-provider";
 
 interface RichTextEditorProps {
   value: string;
@@ -32,6 +33,7 @@ export default function RichTextEditor({
   value,
   onChange,
 }: RichTextEditorProps) {
+  const { t } = useI18n();
   const [activeTab, setActiveTab] = useState("write");
 
   const insertMarkdown = (before: string, after = "") => {
@@ -134,14 +136,14 @@ export default function RichTextEditor({
               className="text-sm flex items-center gap-2"
             >
               <Type className="w-4 h-4" />
-              Viết
+              {t("admin.richTextEditor.write")}
             </TabsTrigger>
             <TabsTrigger
               value="preview"
               className="text-sm flex items-center gap-2"
             >
               <Eye className="w-4 h-4" />
-              Xem trước
+              {t("admin.richTextEditor.preview")}
             </TabsTrigger>
           </TabsList>
 
@@ -170,11 +172,11 @@ export default function RichTextEditor({
               id="content-editor"
               value={value}
               onChange={(e) => onChange(e.target.value)}
-              placeholder={`Bắt đầu viết nội dung của bạn ở đây...`}
+              placeholder={t("admin.richTextEditor.startWriting")}
               className="min-h-[500px] border-0 rounded-none resize-none focus-visible:ring-0 text-base leading-relaxed p-6"
             />
             <div className="absolute bottom-4 right-4 text-xs text-gray-400 bg-white dark:bg-gray-800 px-2 py-1 rounded">
-              {value.length} ký tự
+              {value.length} {t("admin.richTextEditor.characters")}
             </div>
           </div>
         </TabsContent>
@@ -289,8 +291,12 @@ export default function RichTextEditor({
               <div className="flex items-center justify-center h-64 text-gray-400">
                 <div className="text-center">
                   <Eye className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p className="text-lg">Chưa có nội dung để xem trước</p>
-                  <p className="text-sm">Hãy viết nội dung ở tab "Viết"</p>
+                  <p className="text-lg">
+                    {t("admin.richTextEditor.noContentToPreview")}
+                  </p>
+                  <p className="text-sm">
+                    {t("admin.richTextEditor.startWritingTab")}
+                  </p>
                 </div>
               </div>
             )}

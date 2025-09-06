@@ -28,9 +28,11 @@ import {
   ICategory,
 } from "@/lib/api-services";
 import { Popconfirm, Select } from "antd";
+import { useI18n } from "@/i18n/i18n-provider";
 const { Option } = Select;
 
 export default function AdminCategories() {
+  const { t } = useI18n();
   const [searchTerm, setSearchTerm] = useState("");
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -88,10 +90,10 @@ export default function AdminCategories() {
         <div className="flex-1 min-w-0">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2 truncate">
             <FolderOpen className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
-            Quản lý danh mục
+            {t("admin.categories.title")}
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm sm:text-base truncate">
-            Tạo và quản lý danh mục cho bài viết của bạn
+            {t("admin.categories.description")}
           </p>
         </div>
 
@@ -101,12 +103,12 @@ export default function AdminCategories() {
               className={`${bgDefault2} w-full md:w-auto flex items-center justify-center`}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Tạo danh mục mới
+              {t("admin.categories.createCategory")}
             </Button>
           </DialogTrigger>
           <DialogContent className="w-full rounded-lg md:max-w-2xl max-h-[90vh] max-w-[90%] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Tạo danh mục mới</DialogTitle>
+              <DialogTitle>{t("admin.categories.createCategory")}</DialogTitle>
             </DialogHeader>
             <CategoryForm
               onSuccess={fetchCategories}
@@ -119,14 +121,18 @@ export default function AdminCategories() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-gray-500">Tổng danh mục</p>
+            <p className="text-sm text-gray-500">
+              {t("admin.categories.totalCategories")}
+            </p>
             <p className="text-2xl font-bold">{categories.length}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-gray-500">Tổng số bài viết</p>
+            <p className="text-sm text-gray-500">
+              {t("admin.categories.totalPosts")}
+            </p>
             <p className="text-2xl font-bold text-blue-600">{totalPosts}</p>
           </CardContent>
         </Card>
@@ -137,7 +143,7 @@ export default function AdminCategories() {
           <div className="relative w-full max-w-sm">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <Input
-              placeholder="Tìm kiếm danh mục..."
+              placeholder={t("admin.categories.searchCategory")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -148,9 +154,9 @@ export default function AdminCategories() {
             onChange={(value) => setIsActiveFilter(value)}
             style={{ width: 160 }}
           >
-            <Option value="all">Tất cả</Option>
-            <Option value="true">Hoạt động</Option>
-            <Option value="false">Không hoạt động</Option>
+            <Option value="all">{t("admin.categories.all")}</Option>
+            <Option value="true">{t("admin.categories.active")}</Option>
+            <Option value="false">{t("admin.categories.inactive")}</Option>
           </Select>
         </CardContent>
       </Card>
@@ -170,7 +176,7 @@ export default function AdminCategories() {
                 />
               ) : (
                 <div className="flex items-center justify-center w-full h-full text-gray-400 text-sm">
-                  Không có ảnh
+                  {t("admin.categories.noImage")}
                 </div>
               )}
 
@@ -182,11 +188,11 @@ export default function AdminCategories() {
                   <Pencil className="w-4 h-4 text-gray-600" />
                 </button>
                 <Popconfirm
-                  title="Xoá kết nối"
-                  description="Bạn có chắc chắn muốn xoá kết nối này không?"
+                  title={t("admin.categories.deleteCategory")}
+                  description={t("admin.categories.deleteCategoryDescription")}
                   onConfirm={() => handleDelete(category._id)}
-                  okText="Xoá"
-                  cancelText="Huỷ"
+                  okText={t("admin.categories.delete")}
+                  cancelText={t("admin.categories.cancel")}
                 >
                   <Button size="sm" variant="outline">
                     <Trash2 className="w-3 h-3" />
@@ -221,7 +227,7 @@ export default function AdminCategories() {
               <div>
                 <p className="text-xs min-h-[2rem] line-clamp-2 text-gray-500 dark:text-gray-400 mb-1">
                   <span className="font-medium text-blue-600">
-                    Bài nổi bật:
+                    {t("admin.categories.featured")}:
                   </span>{" "}
                   {category.content || "Chưa có nội dung nổi bật"}
                 </p>
@@ -230,10 +236,13 @@ export default function AdminCategories() {
               <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
                 <div className="flex items-center gap-1">
                   <FileText className="w-4 h-4" />
-                  <span>{category.totalPost || 0} bài viết</span>
+                  <span>
+                    {category.totalPost || 0} {t("admin.categories.posts")}
+                  </span>
                 </div>
                 <p>
-                  Tạo ngày: {new Date(category.createdAt).toLocaleDateString()}
+                  {t("admin.categories.createdAt")}:{" "}
+                  {new Date(category.createdAt).toLocaleDateString()}
                 </p>
               </div>
             </CardContent>
@@ -248,7 +257,7 @@ export default function AdminCategories() {
         <DialogContent className="w-full max-w-2xl max-h-[90vh] overflow-y-auto p-4 rounded-lg">
           <DialogHeader>
             <DialogTitle>
-              <div className="flex">Chỉnh sửa danh mục</div>
+              <div className="flex">{t("admin.categories.editCategory")}</div>
             </DialogTitle>
           </DialogHeader>
           {editingCategory && (
@@ -266,13 +275,13 @@ export default function AdminCategories() {
           <CardContent className="p-8 text-center">
             <FolderOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
-              Không tìm thấy danh mục
+              {t("admin.categories.noCategoryFound")}
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Thử thay đổi từ khóa tìm kiếm
+              {t("admin.categories.tryChangeSearch")}
             </p>
             <Button onClick={() => setIsCreateDialogOpen(true)}>
-              Tạo danh mục đầu tiên
+              {t("admin.categories.createCategoryFirst")}
             </Button>
           </CardContent>
         </Card>

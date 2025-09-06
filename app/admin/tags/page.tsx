@@ -46,6 +46,7 @@ import {
 } from "lucide-react";
 import TagForm from "@/components/admin/tag-form";
 import { buttonDefault } from "@/styles/classNames";
+import { useI18n } from "@/i18n/i18n-provider";
 
 const tags = [
   {
@@ -96,6 +97,7 @@ const tags = [
 ];
 
 export default function AdminTagsPage() {
+  const { t } = useI18n();
   const [searchTerm, setSearchTerm] = useState("");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [editingTag, setEditingTag] = useState<any>(null);
@@ -110,23 +112,23 @@ export default function AdminTagsPage() {
         <div className="flex-1 min-w-0">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2 truncate">
             <Tags className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
-            Quản lý Tags
+            {t("admin.tags.title")}
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm sm:text-base truncate">
-            Tạo và quản lý tags cho bài viết của bạn
+            {t("admin.tags.description")}
           </p>
         </div>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button className={buttonDefault}>
               <Plus className="w-4 h-4 mr-2" />
-              Tạo tag mới
+              {t("admin.tags.createTag")}
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="w-[95%] md:w-full max-w-lg max-h-[90vh] overflow-y-auto p-4 rounded-lg">
             <DialogHeader>
-              <DialogTitle>Tạo tag mới</DialogTitle>
-              <DialogDescription>Thêm tag mới cho bài viết</DialogDescription>
+              <DialogTitle>{t("admin.tags.createTag")}</DialogTitle>
+              <DialogDescription>{t("admin.tags.addTag")}</DialogDescription>
             </DialogHeader>
             <TagForm onClose={() => setIsCreateDialogOpen(false)} />
           </DialogContent>
@@ -136,43 +138,55 @@ export default function AdminTagsPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="animate-fade-in-up stagger-1">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Tổng tags</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("admin.tags.totalTags")}
+            </CardTitle>
             <Tag className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{tags.length}</div>
-            <p className="text-xs text-muted-foreground">+3 từ tháng trước</p>
+            <p className="text-xs text-muted-foreground">
+              +3 {t("admin.tags.fromLastMonth")}
+            </p>
           </CardContent>
         </Card>
         <Card className="animate-fade-in-up stagger-2">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Tags phổ biến</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("admin.tags.popularTags")}
+            </CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {tags.filter((t) => t.postCount > 15).length}
             </div>
-            <p className="text-xs text-muted-foreground">Trên 15 bài viết</p>
+            <p className="text-xs text-muted-foreground">
+              {t("admin.tags.moreThan15Posts")}
+            </p>
           </CardContent>
         </Card>
         <Card className="animate-fade-in-up stagger-3">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Tổng bài viết</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("admin.tags.totalPosts")}
+            </CardTitle>
             <Tag className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {tags.reduce((sum, t) => sum + t.postCount, 0)}
             </div>
-            <p className="text-xs text-muted-foreground">Có sử dụng tags</p>
+            <p className="text-xs text-muted-foreground">
+              {t("admin.tags.usingTags")}
+            </p>
           </CardContent>
         </Card>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Bộ lọc</CardTitle>
+          <CardTitle>{t("admin.tags.filter")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex gap-4">
@@ -187,7 +201,7 @@ export default function AdminTagsPage() {
             </div>
             <Button variant="outline">
               <Filter className="w-4 h-4 mr-2" />
-              Bộ lọc
+              {t("admin.tags.filter")}
             </Button>
           </div>
         </CardContent>
@@ -195,19 +209,23 @@ export default function AdminTagsPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Danh sách tags ({filteredTags.length})</CardTitle>
-          <CardDescription>Quản lý tất cả tags trên blog</CardDescription>
+          <CardTitle>
+            {t("admin.tags.listTags")} ({filteredTags.length})
+          </CardTitle>
+          <CardDescription>{t("admin.tags.description2")}</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Tag</TableHead>
-                <TableHead>Slug</TableHead>
-                <TableHead>Mô tả</TableHead>
-                <TableHead>Bài viết</TableHead>
-                <TableHead>Ngày tạo</TableHead>
-                <TableHead className="text-right">Thao tác</TableHead>
+                <TableHead>{t("admin.tags.tag")}</TableHead>
+                <TableHead>{t("admin.tags.slug")}</TableHead>
+                <TableHead>{t("admin.tags.description2")}</TableHead>
+                <TableHead>{t("admin.tags.posts")}</TableHead>
+                <TableHead>{t("admin.tags.createdAt")}</TableHead>
+                <TableHead className="text-right">
+                  {t("admin.tags.action")}
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -233,7 +251,9 @@ export default function AdminTagsPage() {
                     </span>
                   </TableCell>
                   <TableCell>
-                    <Badge variant="secondary">{tag.postCount} bài viết</Badge>
+                    <Badge variant="secondary">
+                      {tag.postCount} {t("admin.tags.posts")}
+                    </Badge>
                   </TableCell>
                   <TableCell>
                     {new Date(tag.createdAt).toLocaleDateString("vi-VN")}
@@ -248,11 +268,11 @@ export default function AdminTagsPage() {
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => setEditingTag(tag)}>
                           <Edit className="w-4 h-4 mr-2" />
-                          Chỉnh sửa
+                          {t("admin.tags.edit")}
                         </DropdownMenuItem>
                         <DropdownMenuItem className="text-red-600">
                           <Trash2 className="w-4 h-4 mr-2" />
-                          Xóa
+                          {t("admin.tags.delete")}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -268,8 +288,8 @@ export default function AdminTagsPage() {
         <Dialog open={!!editingTag} onOpenChange={() => setEditingTag(null)}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Chỉnh sửa tag</DialogTitle>
-              <DialogDescription>Cập nhật thông tin tag</DialogDescription>
+              <DialogTitle>{t("admin.tags.edit")}</DialogTitle>
+              <DialogDescription>{t("admin.tags.updateTag")}</DialogDescription>
             </DialogHeader>
             <TagForm tag={editingTag} onClose={() => setEditingTag(null)} />
           </DialogContent>

@@ -20,15 +20,7 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { bgDefault, bgDefault2, titleName } from "@/styles/classNames";
-const navigation = [
-  { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-  { name: "Danh mục", href: "/admin/categories", icon: FolderOpen },
-  { name: "Bài viết", href: "/admin/posts", icon: FileText },
-  { name: "Tags", href: "/admin/tags", icon: Tags },
-  { name: "Comments", href: "/admin/comments", icon: MessageSquare },
-  { name: "Cài đặt", href: "/admin/settings", icon: Settings },
-  { name: "Hồ sơ", href: "/admin/cv", icon: Files },
-];
+import { useI18n } from "@/i18n/i18n-provider";
 
 interface AdminSidebarProps {
   isOpen: boolean;
@@ -43,9 +35,39 @@ export default function AdminSidebar({
   isCollapsed,
   setIsCollapsed,
 }: AdminSidebarProps) {
+  const { t } = useI18n();
   const pathname = usePathname();
   const [isMobile, setIsMobile] = useState(false);
 
+  const navigation = [
+    {
+      name: t("admin.adminSidebar.dashboard"),
+      href: "/admin/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      name: t("admin.adminSidebar.categories"),
+      href: "/admin/categories",
+      icon: FolderOpen,
+    },
+    {
+      name: t("admin.adminSidebar.posts"),
+      href: "/admin/posts",
+      icon: FileText,
+    },
+    { name: t("admin.adminSidebar.tags"), href: "/admin/tags", icon: Tags },
+    {
+      name: t("admin.adminSidebar.comments"),
+      href: "/admin/comments",
+      icon: MessageSquare,
+    },
+    {
+      name: t("admin.adminSidebar.settings"),
+      href: "/admin/settings",
+      icon: Settings,
+    },
+    { name: t("admin.adminSidebar.cv"), href: "/admin/cv", icon: Files },
+  ];
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 1024);
@@ -191,7 +213,7 @@ export default function AdminSidebar({
                   className="flex items-center gap-2 text-sm text-green-600 hover:text-green-700 transition-colors"
                 >
                   <FileText className="w-4 h-4" />
-                  Tạo bài viết mới
+                  {t("admin.adminSidebar.createPost")}
                 </Link>
               </div>
             </div>

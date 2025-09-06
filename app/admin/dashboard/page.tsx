@@ -23,6 +23,7 @@ import {
   IPost,
 } from "@/lib/api-services";
 import { formatDateVN } from "@/lib/utils";
+import { useI18n } from "@/i18n/i18n-provider";
 
 interface StatItem {
   title: string;
@@ -33,6 +34,7 @@ interface StatItem {
   bgColor: string;
 }
 export default function AdminDashboard() {
+  const { t } = useI18n();
   const [recentPosts, setRecentPosts] = useState<IPost[]>([]);
   const [stats, setStats] = useState<StatItem[]>([]);
 
@@ -44,7 +46,7 @@ export default function AdminDashboard() {
       .catch(() => {
         setRecentPosts([]);
       });
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -62,7 +64,7 @@ export default function AdminDashboard() {
 
         setStats([
           {
-            title: "Tổng bài viết",
+            title: t("admin.dashboard.totalPosts"),
             value: totalPosts.toString(),
             change: "+12%",
             icon: FileText,
@@ -70,7 +72,7 @@ export default function AdminDashboard() {
             bgColor: "bg-blue-50 dark:bg-blue-900/20",
           },
           {
-            title: "Danh mục",
+            title: t("admin.dashboard.totalCategories"),
             value: totalCategories.toString(),
             change: "+2",
             icon: FolderOpen,
@@ -78,7 +80,7 @@ export default function AdminDashboard() {
             bgColor: "bg-green-50 dark:bg-green-900/20",
           },
           {
-            title: "Lượt xem",
+            title: t("admin.dashboard.totalViews"),
             value: "12.5K",
             change: "+18%",
             icon: Eye,
@@ -87,12 +89,12 @@ export default function AdminDashboard() {
           },
         ]);
       } catch (error) {
-        console.error("Lỗi khi fetch thống kê:", error);
+        console.error(t("admin.dashboard.errorFetchStats"), error);
       }
     };
 
     fetchStats();
-  }, []);
+  }, [t]);
 
   return (
     <div className="space-y-6">
@@ -100,10 +102,10 @@ export default function AdminDashboard() {
       <div className={`${bgDefault2} rounded-2xl p-6 text-white`}>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold mb-2">Chào mừng trở lại! 👋</h1>
-            <p className="text-green-100">
-              Quản lý blog của bạn một cách hiệu quả
-            </p>
+            <h1 className="text-2xl font-bold mb-2">
+              {t("admin.dashboard.welcome")}
+            </h1>
+            <p className="text-green-100">{t("admin.dashboard.manageBlog")}</p>
           </div>
           <Button
             asChild
@@ -112,7 +114,7 @@ export default function AdminDashboard() {
           >
             <Link href="/admin/posts/new">
               <Plus className="w-4 h-4 mr-2" />
-              Tạo bài viết mới
+              {t("admin.dashboard.createPost")}
             </Link>
           </Button>
         </div>
@@ -153,10 +155,10 @@ export default function AdminDashboard() {
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="flex items-center gap-2">
               <FileText className="w-5 h-5" />
-              Bài viết gần đây
+              {t("admin.dashboard.recentPosts")}
             </CardTitle>
             <Button asChild variant="outline" size="sm">
-              <Link href="/admin/posts">Xem tất cả</Link>
+              <Link href="/admin/posts">{t("admin.dashboard.viewAll")}</Link>
             </Button>
           </CardHeader>
           <CardContent>
@@ -182,17 +184,18 @@ export default function AdminDashboard() {
                         }`}
                       >
                         {post.status === "published"
-                          ? "Đã xuất bản"
-                          : "Tạm ngừng"}
+                          ? t("admin.dashboard.published")
+                          : t("admin.dashboard.paused")}
                       </span>
                     </div>
                   </div>
                   <div className="text-right">
                     <div className="flex items-center gap-1 border-b text-sm text-green-500">
-                      Ngày xuất bản
+                      {t("admin.dashboard.publishedDate")}
                     </div>
                     <p className="text-xs text-gray-400">
-                      {formatDateVN(post.createdAt)} {}
+                      {formatDateVN(post.createdAt)}{" "}
+                      {t("admin.dashboard.publishedDate")}
                     </p>
                   </div>
                 </div>
@@ -205,7 +208,7 @@ export default function AdminDashboard() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="w-5 h-5" />
-              Thống kê nhanh
+              {t("admin.dashboard.quickStats")}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -216,9 +219,11 @@ export default function AdminDashboard() {
                     <Calendar className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="font-medium">Bài viết tuần này</p>
+                    <p className="font-medium">
+                      {t("admin.dashboard.newPostsThisWeek")}
+                    </p>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                      5 bài viết mới
+                      {t("admin.dashboard.newPostsThisWeek")}
                     </p>
                   </div>
                 </div>
@@ -231,9 +236,11 @@ export default function AdminDashboard() {
                     <Users className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="font-medium">Người đọc mới</p>
+                    <p className="font-medium">
+                      {t("admin.dashboard.newReaders")}
+                    </p>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Tăng 23% so với tuần trước
+                      {t("admin.dashboard.newReadersDescription")}
                     </p>
                   </div>
                 </div>

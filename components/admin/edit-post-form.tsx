@@ -20,6 +20,7 @@ import { buttonDefault } from "@/styles/classNames";
 import RichTextEditor from "./rich-text-editor";
 import { callUpdatePosts } from "@/lib/api-services";
 import { message } from "antd";
+import { useI18n } from "@/i18n/i18n-provider";
 
 interface PostsFormProps {
   posts?: any;
@@ -32,6 +33,7 @@ export default function EditPostForm({
   onClose,
   onSuccess,
 }: PostsFormProps) {
+  const { t } = useI18n();
   const [formData, setFormData] = useState({
     content: posts?.content || "",
     image: posts?.image,
@@ -68,13 +70,13 @@ export default function EditPostForm({
     try {
       if (posts) {
         await callUpdatePosts(posts._id, formData);
-        message.success("Cập nhật thành công!");
+        message.success(t("admin.posts.updateSuccess"));
       }
       onClose();
       onSuccess?.();
     } catch (error) {
       console.error("Lỗi:", error);
-      alert("Có lỗi xảy ra!");
+      alert(t("admin.posts.error"));
     } finally {
       setIsLoading(false);
     }
@@ -85,12 +87,16 @@ export default function EditPostForm({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Thông tin cơ bản</CardTitle>
-            <CardDescription>Thông tin của bài viết</CardDescription>
+            <CardTitle className="text-lg">
+              {t("admin.posts.basicInfo")}
+            </CardTitle>
+            <CardDescription>
+              {t("admin.posts.basicInfoDescription")}
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="title">Tiêu đề bài viết</Label>
+              <Label htmlFor="title">{t("admin.posts.title2")}</Label>
               <Input
                 id="title"
                 value={formData.title}
@@ -101,23 +107,27 @@ export default function EditPostForm({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="introduction">Tóm tắt bài viết</Label>
+              <Label htmlFor="introduction">{t("admin.posts.summary")}</Label>
               <Textarea
                 id="introduction"
                 value={formData.introduction}
                 onChange={(e) =>
                   handleInputChange("introduction", e.target.value)
                 }
-                placeholder="Tóm tắt sơ lược về bài viết này..."
+                placeholder={t("admin.posts.summaryDescription")}
                 rows={6}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="isFeatured">Bài viết nổi bật</Label>
+              <Label htmlFor="isFeatured">{t("admin.posts.isFeatured")}</Label>
               <div className="flex items-center gap-2">
                 <Input
                   id="isFeatured"
-                  value={formData.isFeatured ? "Nổi bật" : "Không nổi bật"}
+                  value={
+                    formData.isFeatured
+                      ? t("admin.posts.featured")
+                      : t("admin.posts.notFeatured")
+                  }
                   disabled
                 />
                 <Switch
@@ -130,12 +140,14 @@ export default function EditPostForm({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="status">Trạng thái bài viết</Label>
+              <Label htmlFor="status">{t("admin.posts.status")}</Label>
               <div className="flex items-center gap-2">
                 <Input
                   id="status"
                   value={
-                    formData.status === "active" ? "Hoạt động" : "Tạm dừng"
+                    formData.status === "active"
+                      ? t("admin.posts.active")
+                      : t("admin.posts.inactive")
                   }
                   disabled
                 />
@@ -152,23 +164,27 @@ export default function EditPostForm({
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Giao diện</CardTitle>
-            <CardDescription>Tùy chỉnh hình ảnh</CardDescription>
+            <CardTitle className="text-lg">
+              {t("admin.posts.interface")}
+            </CardTitle>
+            <CardDescription>
+              {t("admin.posts.interfaceDescription")}
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="image">Link ảnh</Label>
+              <Label htmlFor="image">{t("admin.posts.imageLink")}</Label>
               <Input
                 id="image"
                 type="url"
                 value={formData.image || ""}
                 onChange={(e) => handleInputChange("image", e.target.value)}
-                placeholder="Dán URL ảnh hoặc chọn ảnh từ thư viện..."
+                placeholder={t("admin.posts.imageLinkPlaceholder")}
               />
             </div>
 
             <div className="space-y-2">
-              <Label>Xem trước</Label>
+              <Label>{t("admin.posts.preview")}</Label>
               <div className="p-4 border rounded-lg bg-muted/50">
                 {formData.image ? (
                   <img
@@ -181,14 +197,14 @@ export default function EditPostForm({
                   />
                 ) : (
                   <div className="flex items-center justify-center text-gray-400 h-40">
-                    Chưa có ảnh
+                    {t("admin.posts.noImage")}
                   </div>
                 )}
               </div>
             </div>
 
             <div>
-              <Label htmlFor="categorytId">Danh mục</Label>
+              <Label htmlFor="categorytId">{t("admin.posts.category")}</Label>
               <Input
                 id="categorytId"
                 value={formData.categorytId}
@@ -204,8 +220,10 @@ export default function EditPostForm({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Nội dung bài viết</CardTitle>
-          <CardDescription>Soạn thảo nội dung chi tiết ở đây</CardDescription>
+          <CardTitle className="text-lg">{t("admin.posts.content")}</CardTitle>
+          <CardDescription>
+            {t("admin.posts.contentDescription")}
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
@@ -221,7 +239,7 @@ export default function EditPostForm({
       <div className="flex items-center justify-end gap-4 border-t pt-4">
         <Button type="button" variant="outline" onClick={onClose}>
           <X className="w-4 h-4 mr-2" />
-          Hủy
+          {t("admin.posts.cancel")}
         </Button>
         <Button type="submit" disabled={isLoading} className={buttonDefault}>
           {isLoading ? (
@@ -229,7 +247,7 @@ export default function EditPostForm({
           ) : (
             <Save className="w-4 h-4 mr-2" />
           )}
-          Cập nhật
+          {t("admin.posts.update")}
         </Button>
       </div>
     </form>

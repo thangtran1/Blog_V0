@@ -18,7 +18,9 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Eye, EyeOff, Lock, Mail, Shield } from "lucide-react";
 import { useAdminAuth } from "@/lib/admin-auth";
 import { bgDefault, bgDefault2, titleName } from "@/styles/classNames";
+import { useI18n } from "@/i18n/i18n-provider";
 export default function AdminLoginPage() {
+  const { t } = useI18n();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -37,10 +39,10 @@ export default function AdminLoginPage() {
       if (success) {
         router.push("/admin/dashboard");
       } else {
-        setError("Email hoặc mật khẩu không đúng");
+        setError(t("admin.login.emailOrPasswordIncorrect"));
       }
     } catch (error) {
-      setError("Đã có lỗi xảy ra. Vui lòng thử lại.");
+      setError(t("admin.login.error"));
     } finally {
       setIsLoading(false);
     }
@@ -59,18 +61,20 @@ export default function AdminLoginPage() {
           <h1
             className={`text-3xl font-bold  ${bgDefault} bg-clip-text text-transparent mb-2`}
           >
-            Admin Panel
+            {t("admin.login.adminPanel")}
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
-            Đăng nhập để quản lý blog {titleName}
+            {t("admin.login.loginToManageBlog")} {titleName}
           </p>
         </div>
 
         <Card className="shadow-2xl border-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
           <CardHeader className="space-y-1 pb-6">
-            <CardTitle className="text-2xl text-center">Đăng nhập</CardTitle>
+            <CardTitle className="text-2xl text-center">
+              {t("admin.login.login")}
+            </CardTitle>
             <CardDescription className="text-center">
-              Nhập thông tin đăng nhập của bạn
+              {t("admin.login.enterLoginInfo")}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -85,13 +89,13 @@ export default function AdminLoginPage() {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t("admin.login.email")}</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                   <Input
                     id="email"
                     type="email"
-                    placeholder="Nhập email"
+                    placeholder={t("admin.login.enterEmail")}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-green-500 focus:border-transparent"
@@ -101,7 +105,7 @@ export default function AdminLoginPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Mật khẩu</Label>
+                <Label htmlFor="password">{t("admin.login.password")}</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                   <Input
@@ -137,24 +141,26 @@ export default function AdminLoginPage() {
                 {isLoading ? (
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    Đang đăng nhập...
+                    {t("admin.login.loggingIn")}
                   </div>
                 ) : (
-                  "Đăng nhập"
+                  t("admin.login.login")
                 )}
               </Button>
             </form>
 
             <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-dashed border-gray-200 dark:border-gray-700">
               <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-2 font-medium">
-                Demo đăng nhập:
+                {t("admin.login.demoLogin")}
               </p>
               <div className="text-xs space-y-1 text-center">
                 <p className="font-mono  dark:bg-gray-900 px-2 py-1 rounded">
-                  <strong>Email:</strong> còn lâu mới nói
+                  <strong>{t("admin.login.email")}:</strong>{" "}
+                  {t("admin.login.demoEmail")}
                 </p>
                 <p className="font-mono  dark:bg-gray-900 px-2 py-1 rounded">
-                  <strong>Password:</strong> mật khẩu bị ẩn rùi nè
+                  <strong>{t("admin.login.password")}:</strong>{" "}
+                  {t("admin.login.demoPassword")}
                 </p>
               </div>
             </div>

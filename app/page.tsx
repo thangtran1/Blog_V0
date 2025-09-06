@@ -309,7 +309,7 @@ export default function HomePage() {
       <div className="flex flex-col px-4 min-h-screen">
         <TrendingCarousel />
 
-        <section id="categories" className="py-12 bg-muted/40 rounded-lg">
+        <section id="categories" className="py-6 bg-muted/40 rounded-lg">
           <div className="">
             <div className={`${maxWidth} mx-auto`}>
               <div
@@ -412,7 +412,7 @@ export default function HomePage() {
         </section>
 
         {/* Latest Posts Section */}
-        <section id="latest" className="py-12 bg-background">
+        <section id="latest" className="py-6 bg-background">
           <div className="">
             <div className={`${maxWidth} mx-auto `}>
               <div
