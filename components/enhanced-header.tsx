@@ -14,7 +14,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useEffect, useState } from "react";
 import { textDefault, titleName } from "@/styles/classNames";
-import Image from "next/image";
+import { LanguageSwitcher } from "./language-swicher";
 export default function EnhancedHeader() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -104,6 +104,7 @@ export default function EnhancedHeader() {
         </nav>
 
         <div className="flex items-center space-x-2">
+          <LanguageSwitcher />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button

@@ -40,11 +40,13 @@ import {
 import { formatDateVN } from "@/lib/utils";
 import toast from "react-hot-toast";
 import Marquee from "react-fast-marquee";
+import { useI18n } from "@/i18n/i18n-provider";
 
 const texts = [
   "Chào mừng bạn đến với Kai Codes. Nơi chia sẻ những kiến thức về lập trình và AI.",
 ];
 export default function HomePage() {
+  const { t, ready } = useI18n();
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [recentPosts, setRecentPosts] = useState<IPost[]>([]);
   const [loadingRecent, setLoadingRecent] = useState(true);
@@ -52,9 +54,11 @@ export default function HomePage() {
   const [visitorId, setVisitorId] = useState<string>("");
 
   useEffect(() => {
-    const id = localStorage.getItem("visitorId") || crypto.randomUUID();
-    localStorage.setItem("visitorId", id);
-    setVisitorId(id);
+    if (typeof window !== "undefined") {
+      const id = localStorage.getItem("visitorId") || crypto.randomUUID();
+      localStorage.setItem("visitorId", id);
+      setVisitorId(id);
+    }
   }, []);
 
   const [sectionsVisible, setSectionsVisible] = useState({
@@ -239,6 +243,14 @@ export default function HomePage() {
     }
   };
 
+  if (!ready) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-500"></div>
+      </div>
+    );
+  }
+
   return (
     <>
       <section
@@ -266,7 +278,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="text-4xl lg:text-6xl font-bold mb-1 leading-tight bg-gradient-to-r from-white to-green-100 bg-clip-text text-transparent animate-slide-in-up stagger-1">
-              Chào mừng đến với {titleName}!
+              {t("navigation.home")} {titleName}!
             </div>
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-4 text-green-100/70 italic animate-slide-in-up stagger-2">
               Nơi chia sẻ kiến thức lập trình, công nghệ và AI từ cơ bản đến

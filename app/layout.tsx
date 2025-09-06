@@ -11,6 +11,7 @@ import ScrollToTopNavigation from "@/components/scroll-to-top-navigation";
 import PageTransition from "@/components/page-transition";
 import { titleName } from "../styles/classNames";
 import { Toaster } from "react-hot-toast";
+import { I18nProvider } from "../i18n/i18n-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,7 +44,9 @@ export default function RootLayout({
           <ScrollToTopNavigation />
           <EnhancedHeader />
           <PageTransition>
-            <main className="min-h-screen">{children}</main>
+            <main className="min-h-screen">
+              <I18nProvider>{children}</I18nProvider>
+            </main>
           </PageTransition>
           <Footer />
           <ScrollToTop />
