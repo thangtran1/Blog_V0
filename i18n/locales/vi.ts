@@ -1,11 +1,96 @@
 export default {
-  about: {
-    welcome: "Chào mừng đến với đảo khỉ",
+  homePage: {
+    title: "Chào mừng đến với",
+    description:
+      "Nơi chia sẻ kiến thức lập trình, công nghệ và AI từ cơ bản đến nâng cao.",
+    explorePosts: "Khám phá bài viết",
+    exploreCategories: "Xem danh mục",
+    categoriesTitle: "Danh mục bài viết",
+    categoriesDescription:
+      "Khám phá các chủ đề công nghệ được phân loại chi tiết, từ cơ bản đến nâng cao",
+    posts: "bài viết",
+    likes: "lượt thích",
+    explore: "Khám phá",
+    exploreAllCategories: "Xem tất cả danh mục",
+    latestPostsTitle: "Bài viết mới nhất",
+    latestPostsDescription: "Cập nhật những kiến thức và công nghệ mới nhất",
+    readMore: "Đọc tiếp",
+    readingTime: "phút đọc",
+    exploreAllPosts: "Xem tất cả bài viết",
+    featuredPostsTitle: "Bài viết nổi bật",
+    featuredPostsDescription:
+      "Những bài viết được quan tâm và chia sẻ nhiều nhất",
+    autoChange: "Tự động chuyển sau 5 giây",
   },
-  navigation: {
+  allPosts: {
+    title: "Tất cả bài viết",
+    description:
+      "Khám phá tất cả bài viết về lập trình, công nghệ và phát triển phần mềm",
+    recentPosts: "Bài viết gần đây",
+    loadingRecentPosts: "Đang tải bài viết gần đây...",
+    searchPlaceholder: "Tìm kiếm bài viết...",
+    noRecentPosts: "Chưa có bài viết gần đây",
+    allCategories: "Tất cả danh mục",
+    reset: "Đặt lại",
+    readingTime: "phút đọc",
+    postNotFound: "Bài viết không tồn tại",
+    backToAllPosts: "Quay lại tất cả bài viết",
+    share: "Chia sẻ",
+    inThisPost: "Trong bài này",
+  },
+  categories: {
+    title: "Danh mục bài viết",
+    explore: "Khám phá",
+    categories: "danh mục với",
+    posts: "bài viết",
+    postsQuality: "bài viết chất lượng",
+    description:
+      "Từ Frontend đến Backend, từ DevOps đến AI - tất cả kiến thức bạn cần để trở thành developer toàn diện",
+    featuredPosts: "Bài viết nổi bật",
+    noPosts: "Chưa có bài viết nào",
+    category: "Danh mục",
+    postsCategory: "Bài viết",
+    experience: "Năm kinh nghiệm",
+    noPostsInCategory: "Chưa có bài viết nào trong danh mục này",
+    noDownloadData: "Không tải được dữ liệu bài viết",
+    loading: "Đang tải...",
+    noPostsInCategoryDescription:
+      "Hiện tại chưa có nội dung bài viết nào thuộc danh mục",
+    backToCategories: "Quay lại danh mục",
+  },
+  about: {
+    welcome: "Chào mừng đến với",
+    content:
+      "Xin chào, tôi là một developer đam mê chia sẻ kiến thức và khám phá công nghệ",
+    title: "Về tôi",
+    loading: "Đang tải...",
+    workContent:
+      "Có khả năng làm việc độc lập và phối hợp nhóm hiệu quả, đáp ứng nhanh với thay đổi và thử thách mới.",
+    skillsTitle: "Kỹ năng chuyên môn",
+    skillsDescription:
+      "Các công nghệ và kỹ năng tôi sử dụng để tạo ra những sản phẩm tuyệt vời",
+    lifeTitle: "Đời sống & Sở thích",
+    lifeDescription: "Những điều tôi yêu thích ngoài công việc lập trình",
+    experienceTitle: "Kinh nghiệm làm việc",
+    connectTitle: "Kết nối với tôi",
+    connectDescription:
+      "Tôi luôn sẵn sàng kết nối, thảo luận về công nghệ, chia sẻ kinh nghiệm, hoặc cùng hợp tác. Đừng ngần ngại liên hệ!",
+  },
+  footer: {
+    description:
+      "Nơi chia sẻ kiến thức và công nghệ. Từ Frontend đến Backend, từ cơ bản đến nâng cao.",
+    follow: "Theo dõi blog",
+    followDescription: "Nhận thông báo về bài viết mới nhất",
+    subscribe: "Đăng ký",
+    email: "Email",
+    emailRequired: "Vui lòng nhập email",
+    emailInvalid: "Email không hợp lệ",
+    allRightsReserved: "Tất cả quyền được bảo lưu",
+    createdWith: "Được tạo với",
+    quickLinks: "Liên kết nhanh",
     home: "Trang chủ",
     allPosts: "Tất cả bài viết",
     categories: "Danh mục",
-    about: "Về tác giả",
+    about: "Về tôi",
   },
 };

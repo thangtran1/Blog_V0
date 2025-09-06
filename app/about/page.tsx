@@ -15,8 +15,6 @@ import {
   Calendar,
   MessageCircle,
   Heart,
-  Download,
-  Trash2,
 } from "lucide-react";
 import { maxWidth, textDefault, titleName } from "@/styles/classNames";
 import {
@@ -34,7 +32,7 @@ import {
   ISkillMe,
 } from "@/lib/api-services";
 import { useEffect, useState } from "react";
-import { Button } from "antd";
+import { useI18n } from "@/i18n/i18n-provider";
 
 const iconGradients = [
   "from-amber-500 to-orange-600",
@@ -51,6 +49,7 @@ const iconMap: { [key: string]: React.FC<React.SVGProps<SVGSVGElement>> } = {
   Email: Mail,
 };
 export default function AboutPage() {
+  const { t } = useI18n();
   const [about, setAbout] = useState<IAboutMe | null>(null);
   const [skills, setSkills] = useState<ISkillMe[]>([]);
   const [lifes, setLifes] = useState<ILifesMe[]>([]);
@@ -58,7 +57,6 @@ export default function AboutPage() {
   const [connect, setConnect] = useState<IConnectMe[]>([]);
   const [cv, setCv] = useState<ICV | null>(null);
   const [loading, setLoading] = useState(false);
-
   useEffect(() => {
     const fetchAll = async () => {
       try {
@@ -156,11 +154,10 @@ export default function AboutPage() {
               </div>
               <div className="flex flex-col md:ml-10 justify-center text-center md:text-left">
                 <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-green-600 to-green-400 bg-clip-text text-transparent">
-                  Chào mừng đến với {titleName}!
+                  {t("about.welcome")} {titleName}!
                 </h1>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto md:mx-0">
-                  Xin chào, tôi là một developer đam mê chia sẻ kiến thức và
-                  khám phá công nghệ
+                  {t("about.content")}
                 </p>
               </div>
             </div>
@@ -170,12 +167,12 @@ export default function AboutPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <span className="text-3xl animate-bounce">🚀</span>
-                Về tôi
+                {t("about.title")}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6 relative z-10">
               <p className="text-lg leading-relaxed text-foreground">
-                {about?.title || "Đang tải..."}
+                {about?.title || t("about.loading")}
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 {about?.content || ""}
@@ -187,10 +184,7 @@ export default function AboutPage() {
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Calendar className="w-5 h-5 text-green-500" />
-                  <span>
-                    Có khả năng làm việc độc lập và phối hợp nhóm hiệu quả, đáp
-                    ứng nhanh với thay đổi và thử thách mới.
-                  </span>
+                  <span>{t("about.workContent")}</span>
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Heart className="w-5 h-5 text-red-500" />
@@ -204,11 +198,10 @@ export default function AboutPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <span className="text-3xl animate-bounce">💻</span>
-                Kỹ năng chuyên môn
+                {t("about.skillsTitle")}
               </CardTitle>
               <CardDescription className="text-base">
-                Các công nghệ và kỹ năng tôi sử dụng để tạo ra những sản phẩm
-                tuyệt vời
+                {t("about.skillsDescription")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -276,10 +269,10 @@ export default function AboutPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <span className="text-3xl animate-bounce">🌟</span>
-                Đời sống & Sở thích
+                {t("about.lifeTitle")}
               </CardTitle>
               <CardDescription className="text-base">
-                Những điều tôi yêu thích ngoài công việc lập trình
+                {t("about.lifeDescription")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -324,7 +317,7 @@ export default function AboutPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-2xl text-foreground">
                 <span className="text-3xl animate-bounce">💼</span>
-                Kinh nghiệm làm việc
+                {t("about.experienceTitle")}
               </CardTitle>
             </CardHeader>
 
@@ -379,17 +372,16 @@ export default function AboutPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <span className="text-3xl animate-bounce">🤝</span>
-                Kết nối với tôi
+                {t("about.connectTitle")}
               </CardTitle>
               <CardDescription className="text-base">
-                Tôi luôn sẵn sàng kết nối, thảo luận về công nghệ, chia sẻ kinh
-                nghiệm, hoặc cùng hợp tác. Đừng ngần ngại liên hệ!
+                {t("about.connectDescription")}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {connect.map((social, index) => {
-                  const IconComp = iconMap[social.title] || Github; // default icon
+                  const IconComp = iconMap[social.title] || Github;
                   const gradient = iconGradients[index % iconGradients.length];
 
                   return (

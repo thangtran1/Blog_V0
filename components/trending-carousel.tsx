@@ -8,14 +8,16 @@ import { Badge } from "@/components/ui/badge";
 import { bgWelcome, maxWidth, textDefault } from "@/styles/classNames";
 import { callFetchPostAuthor, IAllPost } from "@/lib/api-services";
 import { formatDateVN } from "@/lib/utils";
+import { useI18n } from "@/i18n/i18n-provider";
 
 export default function TrendingCarousel() {
+  const { t } = useI18n();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [featuredPosts, setFeaturedPosts] = useState<IAllPost[]>([]);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -114,10 +116,10 @@ export default function TrendingCarousel() {
             }`}
           >
             <h2 className={`text-4xl font-bold mb-4 ${textDefault}`}>
-              Bài viết nổi bật
+              {t("homePage.featuredPostsTitle")}
             </h2>
             <p className="text-muted-foreground text-lg">
-              Những bài viết được quan tâm và chia sẻ nhiều nhất
+              {t("homePage.featuredPostsDescription")}
             </p>
           </div>
 
@@ -171,7 +173,9 @@ export default function TrendingCarousel() {
                       size="sm"
                       className="border border-white text-white hover:bg-white/10 px-6 py-3 rounded-full font-semibold shadow transition duration-300"
                     >
-                      <Link href={`/posts/${currentPost._id}`}>Đọc ngay →</Link>
+                      <Link href={`/posts/${currentPost._id}`}>
+                        {t("homePage.readMore")} →
+                      </Link>
                     </Button>
                   </>
                 )}
@@ -200,7 +204,7 @@ export default function TrendingCarousel() {
               <div className="flex justify-center mt-4">
                 <div className="text-xs text-muted-foreground flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  Tự động chuyển sau 5 giây
+                  {t("homePage.autoChange")}
                 </div>
               </div>
             )}

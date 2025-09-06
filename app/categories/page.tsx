@@ -20,8 +20,10 @@ import {
 } from "@/lib/api-services";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useI18n } from "@/i18n/i18n-provider";
 
 export default function CategoriesPage() {
+  const { t } = useI18n();
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [visitorId, setVisitorId] = useState<string>("");
 
@@ -115,18 +117,17 @@ export default function CategoriesPage() {
     >
       <div className="text-center  mb-12">
         <h1 className={`text-4xl font-bold mb-1 ${textDefault}`}>
-          Danh mục bài viết
+          {t("categories.title")}
         </h1>
         <p className="text-muted-foreground text-lg mb-3 mt-2 inline-block border-b border-green-800 max-w-2xl mx-auto">
-          Khám phá{" "}
+          {t("categories.explore")}{" "}
           <span className="font-bold text-green-600">{categories.length}</span>{" "}
-          danh mục với{" "}
-          <span className="font-bold text-green-600">{totalPosts}</span> bài
-          viết chất lượng
+          {t("categories.categories")}{" "}
+          <span className="font-bold text-green-600">{totalPosts}</span>{" "}
+          {t("categories.postsQuality")}
         </p>
         <p className="text-lg text-gray-370 dark:text-gray-300 max-w-2xl mx-auto">
-          Từ Frontend đến Backend, từ DevOps đến AI - tất cả kiến thức bạn cần
-          để trở thành developer toàn diện
+          {t("categories.description")}
         </p>
       </div>
 
@@ -153,8 +154,8 @@ export default function CategoriesPage() {
                         </CardTitle>
                         <div className="flex items-center gap-2">
                           <Badge variant="secondary" className="text-xs">
-                            {category.posts ? category.posts.length : 0} bài
-                            viết
+                            {category.posts ? category.posts.length : 0}{" "}
+                            {t("categories.posts")}
                           </Badge>
                         </div>
                       </div>
@@ -168,7 +169,7 @@ export default function CategoriesPage() {
 
                     <div className="space-y-2 flex-grow overflow-auto max-h-24">
                       <h4 className="font-semibold text-sm text-muted-foreground">
-                        Bài viết nổi bật:
+                        {t("categories.featuredPosts")}
                       </h4>
                       <ul className="space-y-1">
                         {Array.isArray(category.posts) &&
@@ -184,7 +185,7 @@ export default function CategoriesPage() {
                           ))
                         ) : (
                           <li className="text-xs text-muted-foreground italic">
-                            Chưa có bài viết nào
+                            {t("categories.noPosts")}
                           </li>
                         )}
                       </ul>
@@ -193,7 +194,7 @@ export default function CategoriesPage() {
                     <div className="flex gap-4">
                       <Button asChild className="w-full group mt-auto">
                         <Link href={`/categories/${category.slug}`}>
-                          Khám phá {category.name}
+                          {t("categories.explore")} {category.name}
                           <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                         </Link>
                       </Button>
@@ -230,17 +231,24 @@ export default function CategoriesPage() {
                 <div className={`text-4xl font-bold ${textDefault}`}>
                   {categories.length}
                 </div>
-                <div className="text-muted-foreground">Danh mục</div>
+                <div className="text-muted-foreground">
+                  {" "}
+                  {t("categories.category")}
+                </div>
               </div>
               <div className="space-y-2">
                 <div className={`text-4xl font-bold ${textDefault}`}>
                   {totalPosts}
                 </div>
-                <div className="text-muted-foreground">Bài viết</div>
+                <div className="text-muted-foreground">
+                  {t("categories.postsCategory")}
+                </div>
               </div>
               <div className="space-y-2">
                 <div className={`text-4xl font-bold ${textDefault}`}>5+</div>
-                <div className="text-muted-foreground">Năm kinh nghiệm</div>
+                <div className="text-muted-foreground">
+                  {t("categories.experience")}
+                </div>
               </div>
             </div>
           </div>

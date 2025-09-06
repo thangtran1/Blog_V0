@@ -36,8 +36,10 @@ import { formatDateVN } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import toast from "react-hot-toast";
+import { useI18n } from "@/i18n/i18n-provider";
 
 export default function PostsPage() {
+  const { t } = useI18n();
   const [recentPosts, setRecentPosts] = useState<IPost[]>([]);
   const [loadingRecent, setLoadingRecent] = useState(true);
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -163,11 +165,10 @@ export default function PostsPage() {
       <div className={`${maxWidth} mx-auto `}>
         <div className="text-center  mb-12">
           <h1 className={`text-4xl font-bold mb-4 ${textDefault}`}>
-            Tất cả bài viết
+            {t("allPosts.title")}
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Khám phá tất cả bài viết về lập trình, công nghệ và phát triển phần
-            mềm
+            {t("allPosts.description")}
           </p>
         </div>
 
@@ -177,13 +178,13 @@ export default function PostsPage() {
               <Card className="border-green-200 dark:border-green-800 bg-card/50 backdrop-blur-sm shadow-sm">
                 <CardHeader>
                   <CardTitle className="text-xl font-semibold  flex items-center gap-2">
-                    📚 Bài viết gần đây
+                    📚 {t("allPosts.recentPosts")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
                   {loadingRecent && (
                     <div className="p-4 text-sm text-muted-foreground">
-                      Đang tải bài viết gần đây...
+                      {t("allPosts.loadingRecentPosts")}
                     </div>
                   )}
 
@@ -222,7 +223,7 @@ export default function PostsPage() {
 
                   {!loadingRecent && recentPosts.length === 0 && (
                     <div className="p-4 text-sm text-muted-foreground">
-                      Chưa có bài viết gần đây
+                      {t("allPosts.noRecentPosts")}
                     </div>
                   )}
                 </CardContent>
@@ -235,7 +236,7 @@ export default function PostsPage() {
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <Input
-                  placeholder="Tìm kiếm bài viết..."
+                  placeholder={t("allPosts.searchPlaceholder")}
                   className="pl-10"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -247,10 +248,12 @@ export default function PostsPage() {
               >
                 <SelectTrigger className="w-full sm:w-48">
                   <Filter className="w-4 h-4 mr-2" />
-                  <SelectValue placeholder="Tất cả danh mục" />
+                  <SelectValue placeholder={t("allPosts.allCategories")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Tất cả danh mục</SelectItem>
+                  <SelectItem value="all">
+                    {t("allPosts.allCategories")}
+                  </SelectItem>
                   {categories
                     .filter((cat) => cat.isActive)
                     .map((cat) => (
@@ -267,7 +270,7 @@ export default function PostsPage() {
                   setSearchTerm("");
                 }}
               >
-                Reset
+                {t("allPosts.reset")}
               </Button>
             </div>
 
@@ -312,10 +315,10 @@ export default function PostsPage() {
                         <div className="flex items-center gap-1">
                           <Clock className="w-4 h-4" />
                           {post.readingTime < 60
-                            ? `${post.readingTime} phút đọc`
+                            ? `${post.readingTime} ${t("allPosts.readingTime")}`
                             : `${Math.floor(post.readingTime / 60)} giờ ${
                                 post.readingTime % 60
-                              } phút đọc`}
+                              } ${t("allPosts.readingTime")}`}
                         </div>
                       </div>
                       <div

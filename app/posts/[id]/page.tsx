@@ -17,6 +17,7 @@ import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useI18n } from "@/i18n/i18n-provider";
 
 const tableOfContents = [
   {
@@ -38,7 +39,7 @@ export default function PostDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = React.use(params);
-
+  const { t } = useI18n();
   const [post, setPost] = useState<IPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -71,18 +72,18 @@ export default function PostDetailPage({
       .finally(() => setLoadingRecent(false));
   }, []);
 
-  if (loading) return <div>Đang tải bài viết...</div>;
+  if (loading) return <div>{t("allPosts.loadingRecentPosts")}</div>;
   if (error) return <div>{error}</div>;
-  if (!post) return <div>Bài viết không tồn tại</div>;
+  if (!post) return <div>{t("allPosts.postNotFound")}</div>;
 
   return (
     <div className="p-4">
       <div className={`${maxWidth} mx-auto `}>
-        <div className="mb-8">
+        <div className="mb-4">
           <Button variant="ghost" asChild>
             <Link href="/posts">
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Quay lại tất cả bài viết
+              {t("allPosts.backToAllPosts")}
             </Link>
           </Button>
         </div>
@@ -93,13 +94,13 @@ export default function PostDetailPage({
               <Card className="border-green-200 dark:border-green-800 bg-card/50 backdrop-blur-sm shadow-sm">
                 <CardHeader>
                   <CardTitle className="text-xl font-semibold flex items-center gap-2">
-                    📚 Bài viết gần đây
+                    📚 {t("allPosts.recentPosts")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
                   {loadingRecent && (
                     <div className="p-4 text-sm text-muted-foreground">
-                      Đang tải bài viết gần đây...
+                      {t("allPosts.loadingRecentPosts")}
                     </div>
                   )}
 
@@ -138,7 +139,7 @@ export default function PostDetailPage({
 
                   {!loadingRecent && recentPosts.length === 0 && (
                     <div className="p-4 text-sm text-muted-foreground">
-                      Chưa có bài viết gần đây
+                      {t("allPosts.noRecentPosts")}
                     </div>
                   )}
                 </CardContent>
@@ -166,10 +167,10 @@ export default function PostDetailPage({
                   <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4" />
                     {post.readingTime < 60
-                      ? `${post.readingTime} phút đọc`
+                      ? `${post.readingTime} ${t("allPosts.readingTime")}`
                       : `${Math.floor(post.readingTime / 60)} giờ ${
                           post.readingTime % 60
-                        } phút đọc`}
+                        } ${t("allPosts.readingTime")}`}
                   </div>
                   <Button
                     variant="ghost"
@@ -177,7 +178,7 @@ export default function PostDetailPage({
                     className="hover:text-green-600"
                   >
                     <Share2 className="w-4 h-4 mr-2" />
-                    Chia sẻ
+                    {t("allPosts.share")}
                   </Button>
                 </div>
               </div>
@@ -197,7 +198,7 @@ export default function PostDetailPage({
                   <CardTitle
                     className={`text-lg ${textDefault} flex items-center gap-2`}
                   >
-                    📋 Trong bài này
+                    📋 {t("allPosts.inThisPost")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>

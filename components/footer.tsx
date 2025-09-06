@@ -6,10 +6,11 @@ import { ICategory, callFetchCategories } from "@/lib/api-services";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { Form, Input, Button } from "antd";
+import { useI18n } from "@/i18n/i18n-provider";
 
 export default function Footer() {
   const [form] = Form.useForm();
-
+  const { t } = useI18n();
   const handleFinish = (values: { email: string }) => {
     toast.success(`Đăng ký thành công`);
 
@@ -17,7 +18,7 @@ export default function Footer() {
   };
 
   const [categories, setCategories] = useState<ICategory[]>([]);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     callFetchCategories()
       .then((res) => {
@@ -26,8 +27,18 @@ export default function Footer() {
       .catch((err) => {
         console.error(err);
         setCategories([]);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
+  if (loading) {
+    return (
+      <div className="flex justify-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
   return (
     <footer className="bg-muted/30 w-full border-t">
       <div className="p-4 md:py-8">
@@ -43,8 +54,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
-              Nơi chia sẻ kiến thức lập trình và công nghệ. Từ Frontend đến
-              Backend, từ cơ bản đến nâng cao.
+              {t("footer.description")}
             </p>
             <div className="flex space-x-4">
               <Link
@@ -70,7 +80,7 @@ export default function Footer() {
 
           <div className="space-y-4">
             <h3 className="font-semibold text-foreground text-base">
-              Liên kết nhanh
+              {t("footer.quickLinks")}
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
@@ -78,7 +88,7 @@ export default function Footer() {
                   href="/"
                   className="text-muted-foreground hover:text-green-500 transition-colors block py-1"
                 >
-                  Trang chủ
+                  {t("footer.home")}
                 </Link>
               </li>
               <li>
@@ -86,7 +96,7 @@ export default function Footer() {
                   href="/posts"
                   className="text-muted-foreground hover:text-green-500 transition-colors block py-1"
                 >
-                  Tất cả bài viết
+                  {t("footer.allPosts")}
                 </Link>
               </li>
               <li>
@@ -94,7 +104,7 @@ export default function Footer() {
                   href="/about"
                   className="text-muted-foreground hover:text-green-500 transition-colors block py-1"
                 >
-                  Về tác giả
+                  {t("footer.about")}
                 </Link>
               </li>
               <li>
@@ -102,7 +112,7 @@ export default function Footer() {
                   href="/categories"
                   className="text-muted-foreground hover:text-green-500 transition-colors block py-1"
                 >
-                  Danh mục
+                  {t("footer.categories")}
                 </Link>
               </li>
             </ul>
@@ -110,7 +120,7 @@ export default function Footer() {
 
           <div className="space-y-4">
             <h3 className="font-semibold text-foreground text-base">
-              Danh mục
+              {t("footer.categories")}
             </h3>
             <ul className="space-y-2 text-sm">
               {categories.map((cat) => (
@@ -128,10 +138,10 @@ export default function Footer() {
 
           <div className="space-y-4 sm:col-span-2 lg:col-span-1">
             <h3 className="font-semibold text-foreground text-base">
-              Theo dõi blog
+              {t("footer.follow")}
             </h3>
             <p className="text-muted-foreground text-sm">
-              Nhận thông báo về bài viết mới nhất
+              {t("footer.followDescription")}
             </p>
             <Form
               form={form}
@@ -140,20 +150,20 @@ export default function Footer() {
               className="space-y-3"
             >
               <style>{`
-    label.ant-form-item-required {
-      color: hsl(var(--muted-foreground)) !important;
-    }
-  `}</style>
+                label.ant-form-item-required {
+                  color: hsl(var(--muted-foreground)) !important;
+                }
+              `}</style>
 
               <Form.Item
-                label="Email của bạn"
+                label={t("footer.email")}
                 name="email"
                 rules={[
-                  { required: true, message: "Vui lòng nhập email!" },
-                  { type: "email", message: "Email không hợp lệ!" },
+                  { required: true, message: t("footer.emailRequired") },
+                  { type: "email", message: t("footer.emailInvalid") },
                 ]}
               >
-                <Input placeholder="Email của bạn" />
+                <Input placeholder={t("footer.email")} />
               </Form.Item>
 
               <Form.Item>
@@ -162,7 +172,7 @@ export default function Footer() {
                   htmlType="submit"
                   className="w-full font-medium bg-gradient-to-r from-green-500 to-green-500 text-primary-foreground hover:bg-primary/90"
                 >
-                  Đăng ký
+                  {t("footer.subscribe")}
                 </Button>
               </Form.Item>
             </Form>
@@ -174,10 +184,10 @@ export default function Footer() {
           className={`${maxWidth} mx-auto mt-2 pt-4 sm:px-0 flex flex-col space-y-4 md:flex-row md:justify-between md:items-center md:space-y-0`}
         >
           <p className="text-muted-foreground text-sm text-center md:text-left">
-            © 2025 {titleName}. Tất cả quyền được bảo lưu.
+            © 2025 {titleName}. {t("footer.allRightsReserved")}
           </p>
           <p className="text-muted-foreground text-sm flex items-center justify-center md:justify-end gap-1">
-            Được tạo với <Heart className="h-4 w-4 text-red-500" /> bởi{" "}
+            {t("footer.createdWith")} <Heart className="h-4 w-4 text-red-500" />{" "}
             {titleName}
           </p>
         </div>

@@ -18,12 +18,14 @@ import {
   callFetchPostBySlugCategory,
   IPostByCategory,
 } from "@/lib/api-services";
+import { useI18n } from "@/i18n/i18n-provider";
 
 export default function CategoryPage({
   params,
 }: {
   params: Promise<{ category: string }>;
 }) {
+  const { t } = useI18n();
   const categoryParams = React.use(params);
   const categorySlug = categoryParams.category;
 
@@ -40,28 +42,28 @@ export default function CategoryPage({
         setPosts(res.data);
       })
       .catch(() => {
-        setError("Không tải được dữ liệu bài viết");
+        setError(t("categories.noDownloadData"));
       })
       .finally(() => {
         setLoading(false);
       });
   }, [categorySlug]);
 
-  if (loading) return <div>Đang tải...</div>;
+  if (loading) return <div>{t("categories.loading")}</div>;
   if (error) return <div>{error}</div>;
   if (posts.length === 0)
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center max-w-xl mx-auto">
         <Folder className="w-16 h-16 mb-4 text-gray-400" />
         <h2 className="text-2xl font-semibold mb-2 text-gray-700">
-          Chưa có bài viết nào trong danh mục này
+          {t("categories.noPostsInCategory")}
         </h2>
         <p className="text-gray-500 mb-6">
-          Hiện tại chưa có nội dung bài viết nào thuộc danh mục{" "}
+          {t("categories.noPostsInCategoryDescription")}{" "}
           <strong>{categorySlug}</strong>.
         </p>
         <Link href="/categories">
-          <Button variant="outline">Quay lại danh mục</Button>
+          <Button variant="outline">{t("categories.backToCategories")}</Button>
         </Link>
       </div>
     );
@@ -71,11 +73,11 @@ export default function CategoryPage({
   return (
     <div className="p-4">
       <div className={`${maxWidth} mx-auto`}>
-        <div className="mb-8">
+        <div className="mb-4">
           <Button variant="ghost" asChild>
             <Link href="/categories">
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Quay lại danh mục
+              {t("categories.backToCategories")}
             </Link>
           </Button>
         </div>
@@ -92,7 +94,7 @@ export default function CategoryPage({
               variant="secondary"
               className="text-sm border border-green-200 px-3"
             >
-              {posts.length} bài viết
+              {posts.length} {t("categories.posts")}
             </Badge>
           </div>
         </div>

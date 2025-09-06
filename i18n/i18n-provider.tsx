@@ -29,9 +29,7 @@ if (!i18n.isInitialized) {
         lookupLocalStorage: "i18nextLng",
         lookupCookie: "i18next",
       },
-      react: {
-        useSuspense: false,
-      },
+      react: { useSuspense: false },
     });
 }
 
@@ -50,20 +48,19 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
     }
   }, []);
 
-  if (!ready) return null;
+  if (!ready) {
+    return (
+      <div className="flex justify-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
 };
 
 export const useI18n = () => {
   const { t, i18n } = useTranslation();
-  const [ready, setReady] = useState(i18n.isInitialized);
-
-  useEffect(() => {
-    if (!i18n.isInitialized) {
-      i18n.on("initialized", () => setReady(true));
-    }
-  }, [i18n]);
 
   const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
@@ -71,10 +68,5 @@ export const useI18n = () => {
 
   const currentLanguage = i18n.language;
 
-  return {
-    t,
-    changeLanguage,
-    currentLanguage,
-    ready,
-  };
+  return { t, changeLanguage, currentLanguage };
 };

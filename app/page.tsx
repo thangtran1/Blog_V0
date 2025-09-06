@@ -42,11 +42,11 @@ import toast from "react-hot-toast";
 import Marquee from "react-fast-marquee";
 import { useI18n } from "@/i18n/i18n-provider";
 
-const texts = [
-  "Chào mừng bạn đến với Kai Codes. Nơi chia sẻ những kiến thức về lập trình và AI.",
-];
 export default function HomePage() {
-  const { t, ready } = useI18n();
+  const { t } = useI18n();
+  const texts = [
+    `${t("homePage.title")} ${titleName}. ${t("homePage.description")}`,
+  ];
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [recentPosts, setRecentPosts] = useState<IPost[]>([]);
   const [loadingRecent, setLoadingRecent] = useState(true);
@@ -134,7 +134,7 @@ export default function HomePage() {
       try {
         const [res, likedRes] = await Promise.all([
           callFetchRecentPosts(),
-          callFetchLikedCategories(visitorId), // 👈 gọi API lấy post đã like
+          callFetchLikedCategories(visitorId),
         ]);
 
         const likedPostIds = likedRes.data;
@@ -243,14 +243,6 @@ export default function HomePage() {
     }
   };
 
-  if (!ready) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-500"></div>
-      </div>
-    );
-  }
-
   return (
     <>
       <section
@@ -278,11 +270,10 @@ export default function HomePage() {
               </div>
             </div>
             <div className="text-4xl lg:text-6xl font-bold mb-1 leading-tight bg-gradient-to-r from-white to-green-100 bg-clip-text text-transparent animate-slide-in-up stagger-1">
-              {t("navigation.home")} {titleName}!
+              {t("homePage.title")} {titleName}!
             </div>
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-4 text-green-100/70 italic animate-slide-in-up stagger-2">
-              Nơi chia sẻ kiến thức lập trình, công nghệ và AI từ cơ bản đến
-              nâng cao.
+              {t("homePage.description")}
             </p>
             <div className="flex  gap-2 justify-center animate-scale-in stagger-4">
               <Button
@@ -290,7 +281,7 @@ export default function HomePage() {
                 size="sm"
                 className="border border-white text-white hover:bg-white/10 px-6 py-3 rounded-full font-semibold shadow transition duration-300"
               >
-                <Link href="/posts">Khám phá bài viết →</Link>
+                <Link href="/posts">{t("homePage.explorePosts")} →</Link>
               </Button>
 
               <Button
@@ -298,7 +289,9 @@ export default function HomePage() {
                 size="sm"
                 className="border border-white text-white hover:bg-white/10 px-6 py-3 rounded-full font-semibold shadow transition duration-300"
               >
-                <Link href="/categories">Xem danh mục →</Link>
+                <Link href="/categories">
+                  {t("homePage.exploreCategories")} →
+                </Link>
               </Button>
             </div>
           </div>
@@ -327,11 +320,10 @@ export default function HomePage() {
                 }`}
               >
                 <h2 className={`text-4xl ${textDefault} font-bold mb-4 `}>
-                  Danh mục bài viết
+                  {t("homePage.categoriesTitle")}
                 </h2>
                 <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                  Khám phá các chủ đề công nghệ được phân loại chi tiết, từ cơ
-                  bản đến nâng cao
+                  {t("homePage.categoriesDescription")}
                 </p>
               </div>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -356,11 +348,11 @@ export default function HomePage() {
 
                             <div className="flex items-center gap-1">
                               <Badge variant="destructive" className="text-xs">
-                                {category.posts ? category.posts.length : 0} bài
-                                viết
+                                {category.posts ? category.posts.length : 0}{" "}
+                                {t("homePage.posts")}
                               </Badge>
                               <Badge variant="destructive" className="text-xs">
-                                {category.totalLike} lượt thích
+                                {category.totalLike} {t("homePage.likes")}
                               </Badge>
                             </div>
                           </div>
@@ -375,7 +367,7 @@ export default function HomePage() {
                         <div className="flex gap-4">
                           <Button asChild className="w-full mt-auto">
                             <Link href={`/categories/${category.slug}`}>
-                              Khám phá {category.name}
+                              {t("homePage.explore")} {category.name}
                               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                             </Link>
                           </Button>
@@ -410,7 +402,7 @@ export default function HomePage() {
                   className="hover:scale-105 transition-transform bg-transparent border-2 border-green-500/20 hover:border-green-500"
                 >
                   <Link href="/categories">
-                    Xem tất cả danh mục
+                    {t("homePage.exploreCategories")}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
@@ -431,10 +423,10 @@ export default function HomePage() {
                 }`}
               >
                 <h2 className={`text-3xl font-bold mb-4 ${textDefault}`}>
-                  Bài viết mới nhất
+                  {t("homePage.latestPostsTitle")}
                 </h2>
                 <p className="text-muted-foreground text-lg">
-                  Cập nhật những kiến thức và công nghệ mới nhất
+                  {t("homePage.latestPostsDescription")}
                 </p>
               </div>
 
@@ -486,17 +478,19 @@ export default function HomePage() {
                             <div className="flex items-center gap-1">
                               <Clock className="w-4 h-4" />
                               {post.readingTime < 60
-                                ? `${post.readingTime} phút đọc`
+                                ? `${post.readingTime} ${t(
+                                    "homePage.readingTime"
+                                  )}`
                                 : `${Math.floor(post.readingTime / 60)} giờ ${
                                     post.readingTime % 60
-                                  } phút đọc`}
+                                  } ${t("homePage.readingTime")}`}
                             </div>
                           </div>
                         </div>
                         <div className="flex gap-4">
                           <Button asChild className="w-full group">
                             <Link href={`/posts/${post._id}`}>
-                              Đọc tiếp
+                              {t("homePage.readMore")}
                               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                             </Link>
                           </Button>
@@ -530,7 +524,7 @@ export default function HomePage() {
                   className="hover:scale-105 transition-transform bg-transparent border-2 border-green-500/20 hover:border-green-500"
                 >
                   <Link href="/posts">
-                    Xem tất cả bài viết
+                    {t("homePage.exploreAllPosts")}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
