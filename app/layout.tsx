@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   icons: {
     icon: "/icon-public.png",
   },
-  generator: "v0.dev",
+  generator: "thangcodes.dev",
 };
 
 export default function RootLayout({

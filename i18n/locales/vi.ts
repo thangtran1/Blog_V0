@@ -37,6 +37,20 @@ export default {
     backToAllPosts: "Quay lại tất cả bài viết",
     share: "Chia sẻ",
     inThisPost: "Trong bài này",
+    unlikedSuccess: "Đã bỏ tym bài viết thành công ❤️‍🔥",
+    likedSuccess: "Đã tym bài viết thành công 💖",
+    error: "Gọi API like/unlike thất bại",
+
+    tableOfContents1:
+      "Search Engine là gì? Tại sao cần Search Engine trong ứng dụng hiện đại?",
+    tableOfContents2: "Search Engine (Công cụ tìm kiếm) là gì?",
+    tableOfContents3: "Tại sao ứng dụng đại cần Search Engine chuyên dụng?",
+    tableOfContents4: "Nhược điểm và thách thức",
+    tableOfContents5: "Elasticsearch là gì? Vì sao lại mạnh mẽ đến vậy?",
+    tableOfContents6: "Đặc điểm nổi bật của Elasticsearch",
+    tableOfContents7: "Lịch sử phát triển của Elasticsearch",
+    noDownloadData: "Không tải được dữ liệu bài viết",
+    noDownloadDataDescription: "Không tải được dữ liệu bài viết",
   },
   categories: {
     title: "Danh mục bài viết",
@@ -57,6 +71,9 @@ export default {
     noPostsInCategoryDescription:
       "Hiện tại chưa có nội dung bài viết nào thuộc danh mục",
     backToCategories: "Quay lại danh mục",
+    unlikedSuccess: "Đã bỏ tym thành công ❤️‍🔥",
+    likedSuccess: "Đã tym bài viết thành công 💖",
+    error: "Gọi API like/unlike thất bại",
   },
   about: {
     welcome: "Chào mừng đến với",

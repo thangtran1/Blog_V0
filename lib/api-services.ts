@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
-// Axios instance configuration
 const apiClient = axios.create({
   baseURL: NEXT_PUBLIC_API_URL,
   timeout: 10000,
@@ -10,7 +9,6 @@ const apiClient = axios.create({
   },
 });
 
-// Request interceptor - Add auth token
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("access_token");
@@ -22,7 +20,6 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor - Handle errors
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -167,10 +164,6 @@ export interface ICV {
   updatedAt: string;
   __v: number;
 }
-
-// ====================================================================
-// USERS API SERVICES - Trang tác giả, profile
-// ====================================================================
 
 // API ABOUT ME
 

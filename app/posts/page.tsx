@@ -75,10 +75,10 @@ export default function PostsPage() {
         const [postRes, catRes, likedRes] = await Promise.all([
           callFetchPostAuthor(),
           callFetchCategories(),
-          callFetchLikedCategories(visitorId), // 👈 thêm API này
+          callFetchLikedCategories(visitorId),
         ]);
 
-        const likedPostIds = likedRes.data; // mảng ID đã tym
+        const likedPostIds = likedRes.data;
 
         const postsWithLike = postRes.data.map((post: IAllPost) => ({
           ...post,
@@ -90,7 +90,7 @@ export default function PostsPage() {
         setFilteredPosts(postsWithLike);
         setCategories(catRes.data);
       } catch (err) {
-        console.error("Lỗi fetch post/cat/liked:", err);
+        console.error(t("allPosts.error"), err);
       }
     };
 
@@ -131,17 +131,17 @@ export default function PostsPage() {
                   targetId: postId,
                   type: "post",
                 });
-                toast.success("Đã bỏ tym bài viết thành công ❤️‍🔥");
+                toast.success(t("allPosts.unlikedSuccess"));
               } else {
                 await callLike({
                   visitorId,
                   targetId: postId,
                   type: "post",
                 });
-                toast.success("Đã tym bài viết thành công 💖");
+                toast.success(t("allPosts.likedSuccess"));
               }
             } catch (err) {
-              console.error("Gọi API like/unlike thất bại", err);
+              console.error(t("allPosts.error"), err);
             }
 
             return {
@@ -156,7 +156,7 @@ export default function PostsPage() {
 
       setFilteredPosts(updatedPosts);
     } catch (err) {
-      console.error("Lỗi xử lý like bài viết:", err);
+      console.error(t("allPosts.error"), err);
     }
   };
 

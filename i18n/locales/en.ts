@@ -41,6 +41,19 @@ export default {
     loading: "Loading...",
     noPostsInCategoryDescription: "No posts in this category",
     backToCategories: "Back to categories",
+    unlikedSuccess: "Unliked successfully ❤️‍🔥",
+    likedSuccess: "Liked successfully 💖",
+    error: "Call API like/unlike failed",
+
+    tableOfContents1:
+      "Search Engine là gì? Tại sao cần Search Engine trong ứng dụng hiện đại?",
+    tableOfContents2: "Search Engine (Công cụ tìm kiếm) là gì?",
+    tableOfContents3: "Tại sao ứng dụng đại cần Search Engine chuyên dụng?",
+    tableOfContents4: "Nhược điểm và thách thức",
+    tableOfContents5: "Elasticsearch là gì? Vì sao lại mạnh mẽ đến vậy?",
+    tableOfContents6: "Đặc điểm nổi bật của Elasticsearch",
+    tableOfContents7: "Lịch sử phát triển của Elasticsearch",
+    noDownloadDataDescription: "No download data",
   },
   categories: {
     title: "Categories",
@@ -58,6 +71,8 @@ export default {
     noDownloadData: "No download data",
     loading: "Loading...",
     backToCategories: "Back to categories",
+    unlikedSuccess: "Unliked successfully ❤️‍🔥",
+    likedSuccess: "Liked successfully 💖",
   },
   about: {
     welcome: "Welcome to",

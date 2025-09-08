@@ -19,20 +19,6 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useI18n } from "@/i18n/i18n-provider";
 
-const tableOfContents = [
-  {
-    id: "1",
-    title:
-      "Search Engine là gì? Tại sao cần Search Engine trong ứng dụng hiện đại?",
-  },
-  { id: "1.1", title: "Search Engine (Công cụ tìm kiếm) là gì?" },
-  { id: "1.2", title: "Tại sao ứng dụng đại cần Search Engine chuyên dụng?" },
-  { id: "1.3", title: "Nhược điểm và thách thức" },
-  { id: "2", title: "Elasticsearch là gì? Vì sao lại mạnh mẽ đến vậy?" },
-  { id: "2.1", title: "Đặc điểm nổi bật của Elasticsearch" },
-  { id: "2.2", title: "Lịch sử phát triển của Elasticsearch" },
-];
-
 export default function PostDetailPage({
   params,
 }: {
@@ -40,6 +26,18 @@ export default function PostDetailPage({
 }) {
   const { id } = React.use(params);
   const { t } = useI18n();
+  const tableOfContents = [
+    {
+      id: "1",
+      title: t("allPosts.tableOfContents1"),
+    },
+    { id: "1.1", title: t("allPosts.tableOfContents2") },
+    { id: "1.2", title: t("allPosts.tableOfContents3") },
+    { id: "1.3", title: t("allPosts.tableOfContents4") },
+    { id: "2", title: t("allPosts.tableOfContents5") },
+    { id: "2.1", title: t("allPosts.tableOfContents6") },
+    { id: "2.2", title: t("allPosts.tableOfContents7") },
+  ];
   const [post, setPost] = useState<IPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -56,7 +54,7 @@ export default function PostDetailPage({
       .then((res) => {
         setPost(res.data);
       })
-      .catch(() => setError("Không tải được bài viết"))
+      .catch(() => setError(t("allPosts.noDownloadData")))
       .finally(() => setLoading(false));
   }, [id]);
 

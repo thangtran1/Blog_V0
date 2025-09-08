@@ -12,7 +12,6 @@ import {
   Code,
   ChevronLeft,
   ChevronRight,
-  UserCircle,
   Files,
   X,
 } from "lucide-react";

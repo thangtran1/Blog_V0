@@ -100,34 +100,6 @@ export default function AboutPage() {
     }
   };
 
-  const handleDownload = async () => {
-    if (!cv?.fileUrl) return;
-
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/${cv.fileUrl}`
-      );
-      if (!response.ok) throw new Error("Không tải được file");
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-
-      const link = document.createElement("a");
-      link.href = url;
-
-      link.download = cv.fileName || "file_download";
-
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-
-      window.URL.revokeObjectURL(url);
-      alert("Tải file thành công");
-    } catch (error) {
-      console.error("Lỗi tải file:", error);
-    }
-  };
-
   if (loading) {
     return (
       <div className="flex justify-center py-8">

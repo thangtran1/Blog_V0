@@ -41,6 +41,7 @@ import { formatDateVN } from "@/lib/utils";
 import toast from "react-hot-toast";
 import Marquee from "react-fast-marquee";
 import { useI18n } from "@/i18n/i18n-provider";
+import CategorySection from "./categories/categorySection";
 
 export default function HomePage() {
   const { t } = useI18n();
@@ -313,7 +314,7 @@ export default function HomePage() {
           <div className="">
             <div className={`${maxWidth} mx-auto`}>
               <div
-                className={`text-center mb-16 transition-all duration-1000 ${
+                className={`text-center mb-6 transition-all duration-1000 ${
                   sectionsVisible.categories
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-10"
@@ -326,74 +327,12 @@ export default function HomePage() {
                   {t("homePage.categoriesDescription")}
                 </p>
               </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {categories.map((category, index) => (
-                  <div
-                    key={index}
-                    className="group animate-fade-in-up rounded-md bg-gradient-to-br from-card to-muted/50  dark:border-gray-700 hover:scale-105 transform transition duration-500 hover:shadow-xl dark:hover:shadow-green-900"
-                    style={{ animationDelay: `${index * 100}ms` }}
-                  >
-                    <Card className="flex flex-col h-full hover:border-green-400 dark:hover:border-green-600 transition-colors duration-300">
-                      <CardHeader className="pb-4">
-                        <div className="flex items-start gap-4">
-                          <img
-                            src={category.image}
-                            alt={category.name}
-                            className="w-24 h-24 border border-green-200 dark:border-green-400 rounded-2xl object-cover shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-300"
-                          />
-                          <div className="flex-1">
-                            <CardTitle className="text-xl group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors mb-2">
-                              {category.name}
-                            </CardTitle>
-
-                            <div className="flex items-center gap-1">
-                              <Badge variant="destructive" className="text-xs">
-                                {category.posts ? category.posts.length : 0}{" "}
-                                {t("homePage.posts")}
-                              </Badge>
-                              <Badge variant="destructive" className="text-xs">
-                                {category.totalLike} {t("homePage.likes")}
-                              </Badge>
-                            </div>
-                          </div>
-                        </div>
-                      </CardHeader>
-
-                      <CardContent className="flex flex-col flex-grow space-y-4 p-5">
-                        <CardDescription className="leading-relaxed text-sm line-clamp-2 min-h-[2.5rem]">
-                          {category.description}
-                        </CardDescription>
-
-                        <div className="flex gap-4">
-                          <Button asChild className="w-full mt-auto">
-                            <Link href={`/categories/${category.slug}`}>
-                              {t("homePage.explore")} {category.name}
-                              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                            </Link>
-                          </Button>
-
-                          <div
-                            key={category._id}
-                            className="relative px-3 py-2 flex justify-center items-center border border-red-400 rounded-lg bg-transparent group"
-                          >
-                            <Heart
-                              className={`w-5 h-5 cursor-pointer transition-transform group-hover:scale-125 ${
-                                category.liked
-                                  ? "fill-red-500 text-red-500"
-                                  : "text-red-500"
-                              }`}
-                              onClick={() => handleLikeCategories(category._id)}
-                            />
-                            <span className="absolute text-[10px] font-semibold text-white bg-red-500 rounded-full w-6 h-6 flex items-center justify-center -top-2 -right-2 shadow-md">
-                              {category.totalLike}
-                            </span>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                ))}
-              </div>
+              <CategorySection
+                categories={categories}
+                handleLike={handleLikeCategories}
+                maxWidth={maxWidth}
+                limit={4}
+              />
               <div className="text-center mt-6">
                 <Button
                   asChild
@@ -411,12 +350,11 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Latest Posts Section */}
         <section id="latest" className="py-6 bg-background">
           <div className="">
             <div className={`${maxWidth} mx-auto `}>
               <div
-                className={`text-center mb-12 transition-all duration-1000 ${
+                className={`text-center mb-6 transition-all duration-1000 ${
                   sectionsVisible.latest
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-10"
