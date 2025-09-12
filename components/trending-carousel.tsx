@@ -109,7 +109,7 @@ export default function TrendingCarousel() {
       <div className="">
         <div className={`${maxWidth} mx-auto `}>
           <div
-            className={`text-center mb-12 transition-all duration-1000 ${
+            className={`text-center mb-6 transition-all duration-1000 ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-10"
